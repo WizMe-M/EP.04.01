@@ -32,5 +32,11 @@
         <input type="submit" value="Выполнить">
     </form>
 </fieldset>
+
+<br>
+<div th:if="${res != null}">
+    <h3>Результат операции:</h3>
+    <p th:text="${res}"></p>
+</div>
 </body>
 </html>
