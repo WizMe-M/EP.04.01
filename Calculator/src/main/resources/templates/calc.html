@@ -9,13 +9,25 @@
     <legend>Калькулятор</legend>
     <form action="/calc" method="post" autocomplete="on">
         <label for="first">Введите первое число</label><br>
-        <input id="first" type="text"><br>
+        <input id="first" type="text" name="a"><br>
 
         <label for="second">Введите второе число</label><br>
-        <input id="second" type="text"><br>
+        <input id="second" type="text" name="b"><br>
 
-        <label for="operation">Выберите операцию</label><br>
-        <input id="operation" type="radio"><br>
+        <label for="op">Выберите операцию</label><br>
+        <fieldset id="op">
+            <input id="sum" type="radio" name="op" value="SUM" checked>
+            <label for="sum">+</label><br>
+
+            <input id="subtract" type="radio" name="op" value="SUBTRACT">
+            <label for="subtract">-</label><br>
+
+            <input id="multiply" type="radio" name="op" value="MULTIPLY">
+            <label for="multiply">*</label><br>
+
+            <input id="divide" type="radio" name="op" value="DIVIDE">
+            <label for="divide">/</label><br>
+        </fieldset>
 
         <input type="submit" value="Выполнить">
     </form>
