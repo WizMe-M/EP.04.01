@@ -1,6 +1,7 @@
 package com.timkin.calculator;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,12 +15,13 @@ public class MainController {
     }
 
     @GetMapping("/calc")
-    public String openCalculator() {
+    public String openCalculator(@RequestParam(name = "res", required = false) String result, Model model) {
+        model.addAttribute("res", result);
         return "calc";
     }
 
     @PostMapping("/calc")
-    public String calculate(@RequestParam double a, @RequestParam double b, @RequestParam String op) {
+    public String calculate(@RequestParam double a, @RequestParam double b, @RequestParam String op, Model model) {
         String operationSign = op.toUpperCase();
 
         Calculator operation = switch (operationSign) {
@@ -31,6 +33,7 @@ public class MainController {
         };
 
         double result = operation.executeBinaryOperation(a, b);
-        return "redirect:/calc";
+        model.addAttribute("res", result);
+        return "/calc";
     }
 }
