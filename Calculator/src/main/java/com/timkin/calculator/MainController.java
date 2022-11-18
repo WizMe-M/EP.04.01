@@ -19,7 +19,7 @@ public class MainController {
     }
 
     @PostMapping("/calc")
-    public String calculate(@RequestParam int a, @RequestParam int b, @RequestParam String op) {
+    public String calculate(@RequestParam double a, @RequestParam double b, @RequestParam String op) {
         String operationSign = op.toUpperCase();
 
         Calculator operation = switch (operationSign) {
