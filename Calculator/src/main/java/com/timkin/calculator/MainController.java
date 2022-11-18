@@ -18,8 +18,18 @@ public class MainController {
     }
 
     @PostMapping
-    public String calculate() {
+    public String calculate(int a, int b, String op) {
+        String operationSign = op.toUpperCase();
 
+        Calculator operation = switch (operationSign) {
+            case "SUM" -> Calculator.SUM;
+            case "SUBTRACT" -> Calculator.SUBTRACT;
+            case "MULTIPLY" -> Calculator.MULTIPLY;
+            case "DIVIDE" -> Calculator.DIVIDE;
+            default -> throw new IllegalArgumentException("Argument 'op' was not in correct format");
+        };
+
+        double result = operation.executeBinaryOperation(a, b);
         return "redirect:/calc";
     }
 }
