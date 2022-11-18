@@ -7,6 +7,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 @Controller
 public class MainController {
 
+    @GetMapping
+    public String index() {
+        return "redirect:/calc";
+    }
+
     @GetMapping("/calc")
     public String openCalculator() {
         return "calc";
