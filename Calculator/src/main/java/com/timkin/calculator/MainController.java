@@ -3,6 +3,7 @@ package com.timkin.calculator;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class MainController {
@@ -17,8 +18,8 @@ public class MainController {
         return "calc";
     }
 
-    @PostMapping
-    public String calculate(int a, int b, String op) {
+    @PostMapping("/calc")
+    public String calculate(@RequestParam int a, @RequestParam int b, @RequestParam String op) {
         String operationSign = op.toUpperCase();
 
         Calculator operation = switch (operationSign) {
