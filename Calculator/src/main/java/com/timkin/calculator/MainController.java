@@ -15,13 +15,21 @@ public class MainController {
     }
 
     @GetMapping("/calc")
-    public String openCalculator(@RequestParam(name = "res", required = false) String result, Model model) {
-        model.addAttribute("res", result);
-        return "calc";
+    public String openCalculator() {
+        return "/calc";
     }
 
-    @PostMapping("/calc")
-    public String calculate(@RequestParam double a, @RequestParam double b, @RequestParam String op, Model model) {
+    @GetMapping("/calculate")
+    public String calculateGet(@RequestParam double a, @RequestParam double b, @RequestParam String op, Model model) {
+        return calculate(a, b, op, model);
+    }
+
+    @PostMapping("/calculate")
+    public String calculatePost(@RequestParam double a, @RequestParam double b, @RequestParam String op, Model model) {
+        return calculate(a, b, op, model);
+    }
+
+    private String calculate(@RequestParam double a, @RequestParam double b, @RequestParam String op, Model model) {
         String operationSign = op.toUpperCase();
 
         Calculator operation = switch (operationSign) {
@@ -34,6 +42,6 @@ public class MainController {
 
         double result = operation.executeBinaryOperation(a, b);
         model.addAttribute("res", result);
-        return "/calc";
+        return "/result";
     }
 }

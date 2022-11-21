@@ -7,7 +7,7 @@
 <body>
 <fieldset>
     <legend>Калькулятор</legend>
-    <form action="/calc" method="post" autocomplete="on">
+    <form action="/calculate" method="post" autocomplete="on">
         <label for="first">Введите первое число</label><br>
         <input id="first" type="text" name="a" required><br>
 
@@ -29,14 +29,10 @@
             <label for="divide">/</label><br>
         </fieldset>
 
-        <input type="submit" value="Выполнить">
+        <br>
+        <input type="submit" value="Выполнить (get)" formmethod="get">
+        <input type="submit" value="Выполнить (post)" formmethod="post">
     </form>
 </fieldset>
-
-<br>
-<div th:if="${res != null}">
-    <h3>Результат операции:</h3>
-    <p th:text="${res}"></p>
-</div>
 </body>
 </html>
