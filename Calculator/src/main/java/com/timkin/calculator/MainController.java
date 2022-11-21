@@ -29,7 +29,7 @@ public class MainController {
         return calculate(a, b, op, model);
     }
 
-    private String calculate(@RequestParam double a, @RequestParam double b, @RequestParam String op, Model model) {
+    private String calculate(double a, double b, String op, Model model) {
         String operationSign = op.toUpperCase();
 
         Calculator operation = switch (operationSign) {
