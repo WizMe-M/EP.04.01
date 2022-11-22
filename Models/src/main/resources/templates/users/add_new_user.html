@@ -15,12 +15,14 @@
 
     <style>
         div.main-content {
-            margin: 10% 20%;
+            margin: 0 20%;
         }
     </style>
 
 </head>
 <body>
+<div th:insert="fragments/headers :: header"></div>
+
 <div class="main-content">
     <form action="/users/add" method="post">
         <fieldset>
