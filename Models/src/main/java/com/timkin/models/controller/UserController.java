@@ -1,5 +1,6 @@
 package com.timkin.models.controller;
 
+import com.timkin.models.repo.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -8,6 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/users")
 public class UserController {
 
+    private UserRepository repository;
+
+    public UserController(UserRepository repository) {
+        this.repository = repository;
+    }
+
     @GetMapping
     public String index() {
         return "redirect:/users/all";
@@ -15,6 +22,6 @@ public class UserController {
 
     @GetMapping("/all")
     public String openAllUsersTable(){
-        return "main/index";
+        return "users/all_users";
     }
 }
