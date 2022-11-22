@@ -3,6 +3,7 @@ package com.timkin.models.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
@@ -22,7 +23,7 @@ public class User {
     private String password;
 
     @Column(name = "registration_date", nullable = false)
-    private Date registrationDate;
+    private Date registrationDate = Date.from(Instant.now());
 
     @Column(nullable = false)
     private int age;
