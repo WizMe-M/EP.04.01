@@ -7,13 +7,77 @@ import javax.persistence.*;
 public class Motorcycle {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @Column(length = 20, nullable = false)
     private String model;
+
+    @Column
     private double price;
-    private boolean sold;
+
+    @Column
+    private boolean sold = false;
+
+    @Column(name = "engine_volume")
     private double engineVolume;
+
+    @Column(name = "engine_type", length = 20, nullable = false)
     private String engineType;
+
+    public Motorcycle() {
+    }
+
+    public Motorcycle(String model, double price, boolean sold, double engineVolume, String engineType) {
+        this.model = model;
+        this.price = price;
+        this.sold = sold;
+        this.engineVolume = engineVolume;
+        this.engineType = engineType;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public boolean isSold() {
+        return sold;
+    }
+
+    public void setSold(boolean sold) {
+        this.sold = sold;
+    }
+
+    public double getEngineVolume() {
+        return engineVolume;
+    }
+
+    public void setEngineVolume(double engineVolume) {
+        this.engineVolume = engineVolume;
+    }
+
+    public String getEngineType() {
+        return engineType;
+    }
+
+    public void setEngineType(String engineType) {
+        this.engineType = engineType;
+    }
 }
