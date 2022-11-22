@@ -17,6 +17,19 @@
         div.main-content {
             margin: 0 20%;
         }
+
+        div.two-btns {
+            display: flex;
+            flex-direction: row;
+            padding: 5px;
+        }
+
+        div.two-btns > div {
+            flex: 1 1 auto;
+            text-align: center;
+
+            margin: 5px; /* and that, will result in a 10px gap */
+        }
     </style>
 
 </head>
@@ -24,7 +37,7 @@
 <div th:insert="fragments/headers :: header"></div>
 
 <div class="main-content">
-    <form action="/users/add" method="post">
+    <form id="add-user" action="/users/add" method="post">
         <fieldset>
             <legend>
                 <div class="py-5 text-center">
@@ -45,8 +58,8 @@
         <div class="col-12">
             <label for="password" class="form-label">Password</label>
             <div class="input-group has-validation">
-                <input type="password" class="form-control" id="password" placeholder="Password"
-                       required minlength="8" maxlength="16" name="password">
+                <input type="password" class="form-control" id="password" placeholder="Password from 8 to 16 symbols"
+                       required pattern=".{8,16}" name="password">
                 <div class="invalid-feedback">Your password is required.</div>
             </div>
         </div>
@@ -59,10 +72,17 @@
                 <div class="invalid-feedback">Your age is required.</div>
             </div>
         </div>
-
-        <hr class="my-4">
-        <button class="w-100 btn btn-primary btn-lg" type="submit">Add user</button>
     </form>
+
+    <hr class="my-4">
+    <div class="two-btns">
+        <div>
+            <button class="btn btn-success" type="submit" form="add-user">Add user</button>
+        </div>
+        <div>
+            <a role="button" class="btn btn-danger" href="/users/all">Cancel</a>
+        </div>
+    </div>
 </div>
 </body>
 </html>
