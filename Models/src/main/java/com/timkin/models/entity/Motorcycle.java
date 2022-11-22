@@ -14,13 +14,13 @@ public class Motorcycle {
     @Column(length = 20, nullable = false)
     private String model;
 
-    @Column
+    @Column(nullable = false)
     private double price;
 
-    @Column
+    @Column(nullable = false)
     private boolean sold = false;
 
-    @Column(name = "engine_volume")
+    @Column(name = "engine_volume", nullable = false)
     private double engineVolume;
 
     @Column(name = "engine_type", length = 20, nullable = false)
