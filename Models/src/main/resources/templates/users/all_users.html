@@ -24,12 +24,13 @@
         <th>Age</th>
         <th>Registration date</th>
     </tr>
-    <tr>
-        <td>ID HERRE</td>
-        <td>LOGIN HERE</td>
-        <td>PASSWORD HERE</td>
-        <td>AGE HERE</td>
-        <td>REGISTRATION DATE HERE</td>
+    <!--/*@thymesVar id="user" type="com.timkin.models.entity.User"*/-->
+    <tr th:each="user : ${users}">
+        <td th:text="${user.getId()}">ID HERRE</td>
+        <td th:text="${user.getLogin()}">LOGIN HERE</td>
+        <td th:text="${user.getPassword()}">PASSWORD HERE</td>
+        <td th:text="${user.getAge()}">AGE HERE</td>
+        <td th:text="${user.getRegistrationDate()}">REGISTRATION DATE HERE</td>
     </tr>
 </table>
 
