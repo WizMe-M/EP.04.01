@@ -22,7 +22,7 @@
 </head>
 <body>
 <div class="main-content">
-    <form>
+    <form action="/users/add" method="post">
         <fieldset>
             <legend>
                 <div class="py-5 text-center">
@@ -34,7 +34,8 @@
             <label for="login" class="form-label">Login</label>
             <div class="input-group has-validation">
                 <span class="input-group-text">@</span>
-                <input type="text" class="form-control" id="login" placeholder="Login" required>
+                <input type="text" class="form-control" id="login" placeholder="Login"
+                       required minlength="10" maxlength="25" name="login">
                 <div class="invalid-feedback">Your login is required.</div>
             </div>
         </div>
@@ -42,7 +43,8 @@
         <div class="col-12">
             <label for="password" class="form-label">Password</label>
             <div class="input-group has-validation">
-                <input type="password" class="form-control" id="password" placeholder="Password" required>
+                <input type="password" class="form-control" id="password" placeholder="Password"
+                       required minlength="8" maxlength="16" name="password">
                 <div class="invalid-feedback">Your password is required.</div>
             </div>
         </div>
@@ -50,7 +52,8 @@
         <div class="col-12">
             <label for="age" class="form-label">Age</label>
             <div class="input-group has-validation">
-                <input type="number" class="form-control" id="age" placeholder="Age" required min="14" max="100">
+                <input type="number" class="form-control" id="age" placeholder="Age"
+                       required min="14" max="100" name="age">
                 <div class="invalid-feedback">Your age is required.</div>
             </div>
         </div>
