@@ -22,7 +22,7 @@ public class MotorcycleController {
 
     @GetMapping
     public String index() {
-        return "redirect:/users/all";
+        return "redirect:/motorcycles/all";
     }
 
     @GetMapping("/all")
