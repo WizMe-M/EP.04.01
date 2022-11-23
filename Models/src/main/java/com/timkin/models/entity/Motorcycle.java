@@ -18,7 +18,7 @@ public class Motorcycle {
     private double price;
 
     @Column(nullable = false)
-    private boolean sold = false;
+    private boolean sold;
 
     @Column(name = "engine_volume", nullable = false)
     private double engineVolume;
