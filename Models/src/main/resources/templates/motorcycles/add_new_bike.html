@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add motorcycle</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+          crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"></script>
+
+    <style>
+        div.main-content {
+            margin: 0 20%;
+        }
+
+        div.two-btns {
+            display: flex;
+            flex-direction: row;
+            padding: 5px;
+        }
+
+        div.two-btns > div {
+            flex: 1 1 auto;
+            text-align: center;
+
+            margin: 5px; /* and that, will result in a 10px gap */
+        }
+
+        div.col-12 {
+            margin: 5px 0 15px;
+        }
+
+        div.py-5 {
+            padding-bottom: 10px !important;
+        }
+    </style>
+
+</head>
+<body>
+<div th:insert="fragments/headers :: header"></div>
+
+<div class="main-content">
+    <form id="add-bike" action="/motorcycles/add" method="post">
+        <fieldset>
+            <legend>
+                <div class="py-5 text-center">
+                    <h2>Create motorcycle</h2>
+                </div>
+            </legend>
+        </fieldset>
+
+        <div class="col-12">
+            <label for="model" class="form-label">Model</label>
+            <div class="input-group has-validation">
+                <input id="model" type="text" class="form-control" placeholder="Model"
+                       required minlength="3" maxlength="20" name="model">
+                <div class="invalid-feedback">Model is required.</div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <label for="price" class="form-label">Price</label>
+            <div class="input-group has-validation">
+                <input type="number" class="form-control" id="price" placeholder="Price"
+                       required min="100" max="10000" name="price">
+                <div class="invalid-feedback">Price is required.</div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <label for="engine_volume" class="form-label">Engine volume</label>
+            <div class="input-group has-validation">
+                <input type="number" class="form-control" id="engine_volume" placeholder="Engine volume"
+                       required min="1" name="engine-volume">
+                <div class="invalid-feedback">Engine volume is required.</div>
+            </div>
+        </div>
+
+        <div class="col-12">
+            <label for="engine_type" class="form-label">Engine type</label>
+            <div class="input-group has-validation">
+                <input id="engine_type" type="text" class="form-control" placeholder="Engine type"
+                       required pattern=".{5,20}" name="engine-type">
+                <div class="invalid-feedback">Engine type is required.</div>
+            </div>
+        </div>
+
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="sold" name="sold">
+            <label class="form-check-label" for="sold">Was motorcycle sold?</label>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="two-btns">
+            <div>
+                <button class="btn btn-success" type="submit">Add motorcycle</button>
+            </div>
+            <div>
+                <a role="button" class="btn btn-danger" href="/motorcycles/all">Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+</body>
+</html>

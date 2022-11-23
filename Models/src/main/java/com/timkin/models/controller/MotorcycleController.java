@@ -5,7 +5,9 @@ import com.timkin.models.repo.MotorcycleRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -28,5 +30,23 @@ public class MotorcycleController {
         List<Motorcycle> all = repository.findAll();
         model.addAttribute("bikes", all);
         return "motorcycles/all_bikes";
+    }
+
+    @GetMapping("/add")
+    public String openAddBikePage() {
+        return "motorcycles/add_new_bike";
+    }
+
+    @PostMapping("/add")
+    public String addBike(
+            @RequestParam String model,
+            @RequestParam double price,
+            @RequestParam(name = "engine-volume") double engineVolume,
+            @RequestParam(name = "engine-type") String engineType,
+            @RequestParam boolean sold
+    ) {
+        Motorcycle motorcycle = new Motorcycle(model, price, sold, engineVolume, engineType);
+        repository.save(motorcycle);
+        return "redirect:/motorcycles/all";
     }
 }
