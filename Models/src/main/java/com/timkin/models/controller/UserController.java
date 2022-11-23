@@ -48,4 +48,9 @@ public class UserController {
         repository.save(user);
         return "redirect:/users/all";
     }
+
+    @GetMapping("/profile")
+    public String openProfile() {
+        return "users/profile";
+    }
 }
