@@ -16,7 +16,7 @@ public class User {
     @GenericGenerator(name = "uuid4", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @Column(length = 25, nullable = false)
+    @Column(length = 25, nullable = false, unique = true)
     private String login;
 
     @Column(length = 16, nullable = false)

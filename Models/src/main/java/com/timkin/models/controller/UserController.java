@@ -4,10 +4,7 @@ import com.timkin.models.entity.User;
 import com.timkin.models.repo.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -49,8 +46,13 @@ public class UserController {
         return "redirect:/users/all";
     }
 
-    @GetMapping("/profile")
-    public String openProfile() {
+    @GetMapping("/profile/{profile-name}")
+    public String openProfile(
+            @PathVariable(name = "profile-name") String login,
+            Model model
+    ) {
+        User user = repository.findByLogin(login).orElseThrow();
+        model.addAttribute("profile", user);
         return "users/profile";
     }
 }
