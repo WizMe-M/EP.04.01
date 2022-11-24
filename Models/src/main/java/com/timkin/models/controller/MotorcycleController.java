@@ -4,12 +4,10 @@ import com.timkin.models.entity.Motorcycle;
 import com.timkin.models.repo.MotorcycleRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/motorcycles")
@@ -48,5 +46,20 @@ public class MotorcycleController {
         Motorcycle motorcycle = new Motorcycle(model, price, sold, engineVolume, engineType);
         repository.save(motorcycle);
         return "redirect:/motorcycles/all";
+    }
+
+    @GetMapping("/details/{id}")
+    public String openDetails(
+            @PathVariable int id,
+            Model model
+    ) {
+        Optional<Motorcycle> found = repository.findById(id);
+        if (found.isEmpty()) {
+            return "redirect:/motorcycles/all";
+        }
+
+        Motorcycle motorcycle = found.get();
+        model.addAttribute("motorcycle", motorcycle);
+        return "motorcycles/motorcycle_details";
     }
 }
