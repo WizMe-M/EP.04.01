@@ -33,6 +33,8 @@
             <legend><h2 th:text="'Edit ' + ${user_profile.getLogin()}">EDIT USER</h2></legend>
         </fieldset>
 
+        <input type="hidden" id="uuid" th:field="*{id}" th:value="${user_profile.getId()}" />
+
         <div class="col-12">
             <label for="login" class="form-label">Login</label>
             <div class="input-group has-validation">

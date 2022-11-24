@@ -4,7 +4,10 @@ import com.timkin.models.entity.User;
 import com.timkin.models.repo.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -77,8 +80,12 @@ public class UserController {
             @PathVariable(name = "profile-name") String login,
             User profile
     ) {
+        Optional<User> found = repository.findByLogin(login);
+        if (found.isEmpty()) {
+            return "redirect:/users/all";
+        }
         repository.save(profile);
-        return "users/edit_profile";
+        return "redirect:/users/" + profile.getLogin();
     }
 
     @GetMapping("/{profile-name}/delete")
@@ -86,11 +93,10 @@ public class UserController {
             @PathVariable(name = "profile-name") String login
     ) {
         Optional<User> found = repository.findByLogin(login);
-        if (found.isEmpty()) {
-            return "redirect:/users/all";
+        if (found.isPresent()) {
+            User deleting = found.get();
+            repository.delete(deleting);
         }
-        User deleting = found.get();
-        repository.delete(deleting);
         return "redirect:/users/all";
     }
 }
