@@ -52,14 +52,15 @@ public class MotorcycleController {
     @GetMapping("/details/{id}")
     public String openDetails(
             @PathVariable int id,
-            Model model
+            Model model,
+            Motorcycle motorcycle
     ) {
         Optional<Motorcycle> found = repository.findById(id);
         if (found.isEmpty()) {
             return "redirect:/motorcycles/all";
         }
 
-        Motorcycle motorcycle = found.get();
+        motorcycle = found.get();
         model.addAttribute("motorcycle", motorcycle);
         return "motorcycles/motorcycle_details";
     }
@@ -67,7 +68,8 @@ public class MotorcycleController {
     @GetMapping("/details/{id}/edit")
     public String openEditDetails(
             @PathVariable int id,
-            Motorcycle details
+            Motorcycle details,
+            Model model
     ) {
         Optional<Motorcycle> found = repository.findById(id);
         if (found.isEmpty()) {
@@ -75,6 +77,7 @@ public class MotorcycleController {
         }
 
         details = found.get();
+        model.addAttribute("details", details);
         return "motorcycles/edit_details";
     }
 
