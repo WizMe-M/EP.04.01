@@ -32,19 +32,12 @@ public class MotorcycleController {
     }
 
     @GetMapping("/add")
-    public String openAddBikePage() {
+    public String openAddBikePage(Motorcycle motorcycle) {
         return "motorcycles/add_new_bike";
     }
 
     @PostMapping("/add")
-    public String addBike(
-            @RequestParam String model,
-            @RequestParam double price,
-            @RequestParam(name = "engine-volume") double engineVolume,
-            @RequestParam(name = "engine-type") String engineType,
-            @RequestParam boolean sold
-    ) {
-        Motorcycle motorcycle = new Motorcycle(model, price, sold, engineVolume, engineType);
+    public String addBike(Motorcycle motorcycle) {
         repository.save(motorcycle);
         return "redirect:/motorcycles/all";
     }

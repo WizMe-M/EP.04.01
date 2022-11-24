@@ -48,12 +48,12 @@
 
 <div class="main-content">
     <div class="title">
-        <h1 th:text="'Motorcycle #' + ${motorcycle.getId()}">MOTORCYCLE NUMBER</h1>
+        <h1 th:text="'Motorcycle #' + ${id}">MOTORCYCLE NUMBER</h1>
     </div>
 
     <div class="flexed-row">
-        <a role="button" class="btn btn-primary" th:href="'/motorcycles/details/' + ${motorcycle.getId()} + '/edit'">Edit</a>
-        <a role="button" class="btn btn-danger" th:href="'/motorcycles/delete-motorcycle/' + ${motorcycle.getId()}">Delete</a>
+        <a role="button" class="btn btn-primary" th:href="'/motorcycles/details/' + ${id} + '/edit'">Edit</a>
+        <a role="button" class="btn btn-danger" th:href="'/motorcycles/delete-motorcycle/' + ${id}">Delete</a>
     </div>
 
     <hr class="my-4">

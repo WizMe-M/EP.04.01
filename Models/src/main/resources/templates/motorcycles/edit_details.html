@@ -27,38 +27,52 @@
 <div th:insert="fragments/headers :: header"></div>
 
 <div class="main-content">
-    <form id="edit-bike-details" th:object="${}"
+    <!--/*@thymesVar id="motorcycle" type="com.timkin.models.entity.Motorcycle"*/-->
+    <form id="edit-bike-details" th:object="${motorcycle}"
           th:action="'/motorcycles/details/' + ${id} + '/edit'" method="post">
         <fieldset>
-            <legend><h2 th:text="'Edit ' + ${user_profile.getLogin()}">EDIT USER</h2></legend>
+            <legend><h2 th:text="'Edit motorcycle #' + ${id}">EDIT motorcycle</h2></legend>
         </fieldset>
 
         <div class="col-12">
-            <label for="login" class="form-label">Login</label>
+            <label for="model" class="form-label">Model</label>
             <div class="input-group has-validation">
-                <span class="input-group-text">@</span>
-                <input type="text" class="form-control" id="login" placeholder="Login"
-                       required minlength="3" maxlength="25" th:field="*{login}">
-                <div class="invalid-feedback">Your login is required.</div>
+                <input type="text" class="form-control" id="model" placeholder="Model"
+                       required minlength="3" maxlength="25" th:field="*{model}">
+                <div class="invalid-feedback">Model name is required.</div>
             </div>
         </div>
 
         <div class="col-12">
-            <label for="password" class="form-label">Password</label>
+            <label for="price" class="form-label">Price</label>
             <div class="input-group has-validation">
-                <input type="password" class="form-control" id="password" placeholder="Password from 8 to 16 symbols"
-                       required pattern=".{8,16}" th:field="*{password}">
-                <div class="invalid-feedback">Your password is required.</div>
+                <input type="number" class="form-control" id="price" placeholder="Price"
+                       required min="14" max="100" th:field="*{price}">
+                <div class="invalid-feedback">Price is required.</div>
             </div>
         </div>
 
         <div class="col-12">
-            <label for="age" class="form-label">Age</label>
+            <label for="engine-volume" class="form-label">Engine volume</label>
             <div class="input-group has-validation">
-                <input type="number" class="form-control" id="age" placeholder="Age"
-                       required min="14" max="100" th:field="*{age}">
-                <div class="invalid-feedback">Your age is required.</div>
+                <input type="number" class="form-control" id="engine-volume" placeholder="Engine volume"
+                       required min="14" max="100" th:field="*{engineVolume}">
+                <div class="invalid-feedback">Engine volume is required.</div>
             </div>
+        </div>
+
+        <div class="col-12">
+            <label for="engine-type" class="form-label">Engine type</label>
+            <div class="input-group has-validation">
+                <input type="text" class="form-control" id="engine-type" placeholder="Engine type"
+                       required th:field="*{engineType}">
+                <div class="invalid-feedback">Engine type is required.</div>
+            </div>
+        </div>
+
+        <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="sold" th:field="*{sold}">
+            <label class="form-check-label" for="sold">Was motorcycle sold?</label>
         </div>
 
         <hr class="my-4">
@@ -66,7 +80,7 @@
         <div class="flexed-row">
             <button class="btn btn-success" type="submit">Save changes</button>
             <a role="button" class="btn btn-danger"
-               th:href="'/users/' + ${user_profile.getLogin()}">Back to profile</a>
+               th:href="'/motorcycles/details/' + ${id}">Back to motorcycle details</a>
         </div>
     </form>
 </div>
