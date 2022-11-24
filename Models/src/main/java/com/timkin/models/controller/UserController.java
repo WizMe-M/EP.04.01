@@ -67,8 +67,7 @@ public class UserController {
         if (found.isEmpty()) {
             return "redirect:/users/all";
         }
-
-        profile = repository.findByLogin(login).orElseThrow();
+        profile = found.get();
         model.addAttribute("user_profile", profile);
         return "users/edit_profile";
     }

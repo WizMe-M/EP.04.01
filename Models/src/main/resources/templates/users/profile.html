@@ -18,7 +18,7 @@
 
     <style>
         div.main-content {
-            margin: 5% 0;
+            margin: 5% 20%;
         }
 
         div.title {
@@ -29,7 +29,7 @@
         }
 
         ul.responsive-table {
-            margin: 20px 20%;
+            margin: 20px 20px;
         }
 
         .responsive-table .col-1, .responsive-table .col-2 {
@@ -47,8 +47,8 @@
     </div>
 
     <div class="flexed-row">
-        <a role="button" class="btn btn-primary" href="/">Edit</a>
-        <a role="button" class="btn btn-danger" href="/">Delete</a>
+        <a role="button" class="btn btn-primary" th:href="'/users/' + ${profile.getLogin()} + '/edit'">Edit</a>
+        <a role="button" class="btn btn-danger" th:href="'/users/' + ${profile.getLogin()} + '/delete'">Delete</a>
     </div>
 
     <hr class="my-4">

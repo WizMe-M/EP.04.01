@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title th:text="'Edit ' + ${profile.getLogin()}">EDIT USER</title>
+    <title th:text="'Edit ' + ${user_profile.getLogin()}">EDIT USER</title>
 
     <link rel="stylesheet" type="text/css" href="/flexed-row.css">
     <link rel="stylesheet" type="text/css" href="/table-list.css">
@@ -27,13 +27,10 @@
 <div th:insert="fragments/headers :: header"></div>
 
 <div class="main-content">
-    <form id="edit-user" th:action="'/users/profile/' + ${profile.getLogin()} + '/edit'" method="post">
+    <form id="edit-user" th:object="${user_profile}"
+          th:action="'/users/' + ${user_profile.getLogin()} + '/edit'" method="post">
         <fieldset>
-            <legend>
-                <div class="py-5 text-center">
-                    <h2 th:text="'Edit ' + ${profile.getLogin()}">EDIT USER</h2>
-                </div>
-            </legend>
+            <legend><h2 th:text="'Edit ' + ${user_profile.getLogin()}">EDIT USER</h2></legend>
         </fieldset>
 
         <div class="col-12">
@@ -41,7 +38,7 @@
             <div class="input-group has-validation">
                 <span class="input-group-text">@</span>
                 <input type="text" class="form-control" id="login" placeholder="Login"
-                       required minlength="3" maxlength="25" name="login">
+                       required minlength="3" maxlength="25" th:field="*{login}">
                 <div class="invalid-feedback">Your login is required.</div>
             </div>
         </div>
@@ -50,7 +47,7 @@
             <label for="password" class="form-label">Password</label>
             <div class="input-group has-validation">
                 <input type="password" class="form-control" id="password" placeholder="Password from 8 to 16 symbols"
-                       required pattern=".{8,16}" name="password">
+                       required pattern=".{8,16}" th:field="*{password}">
                 <div class="invalid-feedback">Your password is required.</div>
             </div>
         </div>
@@ -59,7 +56,7 @@
             <label for="age" class="form-label">Age</label>
             <div class="input-group has-validation">
                 <input type="number" class="form-control" id="age" placeholder="Age"
-                       required min="14" max="100" name="age">
+                       required min="14" max="100" th:field="*{age}">
                 <div class="invalid-feedback">Your age is required.</div>
             </div>
         </div>
