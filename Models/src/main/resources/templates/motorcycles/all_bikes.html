@@ -58,6 +58,8 @@
                 <th>Engine type</th>
                 <th>Is sold?</th>
                 <th></th>
+                <th></th>
+                <th></th>
             </tr>
             </thead>
 
@@ -75,6 +77,14 @@
                 <td>
                     <a th:href="'/motorcycles/details/' + ${bike.getId()}" role="button"
                        class="btn btn-primary">Details</a>
+                </td>
+                <td>
+                    <a th:href="'/motorcycles/details/' + ${bike.getId()} + '/edit'" role="button"
+                       class="btn btn-warning">Edit</a>
+                </td>
+                <td>
+                    <a th:href="'/motorcycles/delete-motorcycle/' + ${bike.getId()}" role="button"
+                       class="btn btn-danger">Delete</a>
                 </td>
             </tr>
             </tbody>

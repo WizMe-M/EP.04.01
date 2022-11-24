@@ -1,6 +1,7 @@
 package com.timkin.models.controller;
 
 import com.timkin.models.entity.Motorcycle;
+import com.timkin.models.entity.User;
 import com.timkin.models.repo.MotorcycleRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -61,5 +62,40 @@ public class MotorcycleController {
         Motorcycle motorcycle = found.get();
         model.addAttribute("motorcycle", motorcycle);
         return "motorcycles/motorcycle_details";
+    }
+
+    @GetMapping("/details/{id}/edit")
+    public String openEditDetails(
+            @PathVariable int id,
+            Motorcycle details
+    ) {
+        Optional<Motorcycle> found = repository.findById(id);
+        if (found.isEmpty()) {
+            return "redirect:/motorcycles/all";
+        }
+
+        details = found.get();
+        return "motorcycles/edit_details";
+    }
+
+    @PostMapping("/details/{id}/edit")
+    public String saveChangedDetails(
+            @PathVariable int id,
+            Motorcycle details
+    ) {
+        repository.save(details);
+        return "motorcycles/motorcycle_details";
+    }
+
+    @GetMapping("/delete-motorcycle/{id}")
+    public String deleteMotorcycle(
+            @PathVariable int id
+    ) {
+        Optional<Motorcycle> found = repository.findById(id);
+        if (found.isPresent()) {
+            Motorcycle deleting = found.get();
+            repository.delete(deleting);
+        }
+        return "redirect:/motorcycles/all";
     }
 }
