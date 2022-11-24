@@ -1,0 +1,11 @@
+div.flexed-row {
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+}
+
+div.flexed-row button, div.flexed-row a {
+    flex: 1 1 auto;
+    text-align: center;
+    margin: 5px;
+}
