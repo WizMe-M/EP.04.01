@@ -57,6 +57,7 @@
                 <th>Engine volume</th>
                 <th>Engine type</th>
                 <th>Is sold?</th>
+                <th></th>
             </tr>
             </thead>
 
@@ -70,6 +71,10 @@
                 <td th:text="${bike.getEngineType()}">ENGINE TYPE HERE</td>
                 <td>
                     <input type="checkbox" disabled th:checked="${bike.isSold()}">
+                </td>
+                <td>
+                    <a th:href="'/motorcycles/details/' + ${bike.getId()}" role="button"
+                       class="btn btn-primary">Details</a>
                 </td>
             </tr>
             </tbody>
