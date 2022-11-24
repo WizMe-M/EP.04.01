@@ -51,9 +51,10 @@
             <tr>
                 <th>ID</th>
                 <th>Login</th>
-                <th>Password</th>
                 <th>Age</th>
                 <th>Registration date</th>
+                <th></th>
+                <th></th>
                 <th></th>
             </tr>
             </thead>
@@ -66,7 +67,14 @@
                 <td th:text="${user.getAge()}">AGE HERE</td>
                 <td th:text="${user.getRegistrationDate()}">REGISTRATION DATE HERE</td>
                 <td>
-                    <a th:href="'/users/profile/' + ${user.getLogin()}" class="btn btn-primary">Profile</a>
+                    <a th:href="'/users/' + ${user.getLogin()}" class="btn btn-primary">Profile</a>
+                </td>
+                <td>
+                    <a th:href="'/users/' + ${user.getLogin()} + '/edit'" class="btn btn-warning">Edit</a>
+                </td>
+                <td>
+                    <a role="button" th:href="'/users/' + ${user.getLogin()} + '/delete'"
+                       class="btn btn-danger">Delete</a>
                 </td>
             </tr>
             </tbody>

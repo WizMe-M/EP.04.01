@@ -80,4 +80,17 @@ public class UserController {
         repository.save(profile);
         return "users/edit_profile";
     }
+
+    @GetMapping("/{profile-name}/delete")
+    public String deleteUser(
+            @PathVariable(name = "profile-name") String login
+    ) {
+        Optional<User> found = repository.findByLogin(login);
+        if (found.isEmpty()) {
+            return "redirect:/users/all";
+        }
+        User deleting = found.get();
+        repository.delete(deleting);
+        return "redirect:/users/all";
+    }
 }
