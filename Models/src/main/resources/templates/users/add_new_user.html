@@ -37,52 +37,51 @@
 <div th:insert="fragments/headers :: header"></div>
 
 <div class="main-content">
-    <form id="add-user" action="/users/add" method="post">
+    <!--/*@thymesVar id="user" type="com.timkin.models.entity.User"*/-->
+    <form action="/users/add" method="post" th:object="${user}">
         <fieldset>
-            <legend>
-                <div class="py-5 text-center">
-                    <h2>Create user</h2>
-                </div>
-            </legend>
+            <legend><h2>Create user</h2></legend>
         </fieldset>
+
         <div class="col-12">
             <label for="login" class="form-label">Login</label>
             <div class="input-group has-validation">
                 <span class="input-group-text">@</span>
-                <input type="text" class="form-control" id="login" placeholder="Login"
-                       required minlength="3" maxlength="25" name="login">
-                <div class="invalid-feedback">Your login is required.</div>
+                <input th:field="*{login}" type="text" class="form-control" id="login" placeholder="Login"
+                       required minlength="3" maxlength="25">
+                <div class="invalid-feedback">Login is required.</div>
             </div>
         </div>
 
         <div class="col-12">
             <label for="password" class="form-label">Password</label>
             <div class="input-group has-validation">
-                <input type="password" class="form-control" id="password" placeholder="Password from 8 to 16 symbols"
-                       required pattern=".{8,16}" name="password">
-                <div class="invalid-feedback">Your password is required.</div>
+                <input th:field="*{password}" type="password" class="form-control" id="password"
+                       placeholder="Password from 8 to 16 symbols"
+                       required pattern=".{8,16}">
+                <div class="invalid-feedback">Password is required.</div>
             </div>
         </div>
 
         <div class="col-12">
             <label for="age" class="form-label">Age</label>
             <div class="input-group has-validation">
-                <input type="number" class="form-control" id="age" placeholder="Age"
-                       required min="14" max="100" name="age">
-                <div class="invalid-feedback">Your age is required.</div>
+                <input th:field="*{age}" type="number" class="form-control" id="age" placeholder="Age"
+                       required min="14" max="100">
+                <div class="invalid-feedback">Age is required.</div>
+            </div>
+        </div>
+
+        <hr class="my-4">
+        <div class="two-btns">
+            <div>
+                <button class="btn btn-success" type="submit">Add user</button>
+            </div>
+            <div>
+                <a role="button" class="btn btn-danger" href="/users/all">Cancel</a>
             </div>
         </div>
     </form>
-
-    <hr class="my-4">
-    <div class="two-btns">
-        <div>
-            <button class="btn btn-success" type="submit" form="add-user">Add user</button>
-        </div>
-        <div>
-            <a role="button" class="btn btn-danger" href="/users/all">Cancel</a>
-        </div>
-    </div>
 </div>
 </body>
 </html>

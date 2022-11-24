@@ -31,17 +31,13 @@ public class UserController {
     }
 
     @GetMapping("/add")
-    public String openAddUserPage() {
+    public String openAddUserPage(User user) {
         return "users/add_new_user";
     }
 
     @PostMapping("/add")
     public String createUser(
-            @RequestParam String login,
-            @RequestParam String password,
-            @RequestParam int age
-    ) {
-        User user = new User(login, password, age);
+            User user) {
         repository.save(user);
         return "redirect:/users/all";
     }
