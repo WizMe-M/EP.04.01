@@ -37,8 +37,8 @@ public class UserController {
             @RequestParam(name = "s") String searchString,
             Model model
     ) {
-        List<User> all = repository.findByLoginContainsIgnoreCase(searchString);
-        model.addAttribute("users", all);
+        List<User> filtered = repository.findByLoginContainsIgnoreCase(searchString);
+        model.addAttribute("users", filtered);
         return "users/all_users";
     }
 
