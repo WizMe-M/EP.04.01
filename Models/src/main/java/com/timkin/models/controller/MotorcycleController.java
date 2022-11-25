@@ -31,6 +31,16 @@ public class MotorcycleController {
         return "motorcycles/all_bikes";
     }
 
+    @GetMapping("/search")
+    public String searchBikes(
+            @RequestParam(name = "s") String searchString,
+            Model model
+    ) {
+        List<Motorcycle> filtered = repository.findByModelContainsIgnoreCase(searchString);
+        model.addAttribute("bikes", filtered);
+        return "motorcycles/all_bikes";
+    }
+
     @GetMapping("/add")
     public String openAddBikePage(Motorcycle motorcycle) {
         return "motorcycles/add_new_bike";
