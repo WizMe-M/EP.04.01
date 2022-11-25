@@ -18,7 +18,7 @@
 
     <style>
         div.main-content {
-            margin: 5% 0;
+            margin: 5% 25%;
         }
     </style>
 
@@ -28,7 +28,7 @@
 
 <div class="main-content">
     <!--/*@thymesVar id="motorcycle" type="com.timkin.models.entity.Motorcycle"*/-->
-    <form id="edit-bike-details" th:object="${motorcycle}"
+    <form id="edit-bike-details" th:object="${details}"
           th:action="'/motorcycles/details/' + ${id} + '/edit'" method="post">
         <fieldset>
             <legend><h2 th:text="'Edit motorcycle #' + ${id}">EDIT motorcycle</h2></legend>
@@ -38,7 +38,7 @@
             <label for="model" class="form-label">Model</label>
             <div class="input-group has-validation">
                 <input type="text" class="form-control" id="model" placeholder="Model"
-                       required minlength="3" maxlength="25" th:field="*{model}">
+                       required th:field="*{model}">
                 <div class="invalid-feedback">Model name is required.</div>
             </div>
         </div>
@@ -47,7 +47,7 @@
             <label for="price" class="form-label">Price</label>
             <div class="input-group has-validation">
                 <input type="number" class="form-control" id="price" placeholder="Price"
-                       required min="14" max="100" th:field="*{price}">
+                       required th:field="*{price}">
                 <div class="invalid-feedback">Price is required.</div>
             </div>
         </div>
@@ -56,7 +56,7 @@
             <label for="engine-volume" class="form-label">Engine volume</label>
             <div class="input-group has-validation">
                 <input type="number" class="form-control" id="engine-volume" placeholder="Engine volume"
-                       required min="14" max="100" th:field="*{engineVolume}">
+                       required th:field="*{engineVolume}">
                 <div class="invalid-feedback">Engine volume is required.</div>
             </div>
         </div>
@@ -71,7 +71,8 @@
         </div>
 
         <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="sold" th:field="*{sold}">
+            <input type="checkbox" class="form-check-input" id="sold"
+                   th:field="*{sold}" th:checked="${motorcycle.isSold()}">
             <label class="form-check-label" for="sold">Was motorcycle sold?</label>
         </div>
 

@@ -78,7 +78,6 @@ public class MotorcycleController {
         if (found.isEmpty()) {
             return "redirect:/motorcycles/all";
         }
-
         details = found.get();
         model.addAttribute("details", details);
         return "motorcycles/edit_details";
@@ -89,6 +88,10 @@ public class MotorcycleController {
             @PathVariable int id,
             Motorcycle details
     ) {
+        Optional<Motorcycle> found = repository.findById(id);
+        if (found.isEmpty()) {
+            return "redirect:/motorcycles/all";
+        }
         repository.save(details);
         return "motorcycles/motorcycle_details";
     }
