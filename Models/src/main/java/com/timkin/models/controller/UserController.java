@@ -49,7 +49,9 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public String createUser(@Valid User user, BindingResult validState) {
+    public String createUser(
+            @Valid User user,
+            BindingResult validState) {
         if (validState.hasErrors()) {
             return "users/add_new_user";
         }
@@ -76,29 +78,34 @@ public class UserController {
     public String openEditProfile(
             @PathVariable(name = "profile_name") String login,
             Model model,
-            User profile
+            @ModelAttribute(name = "profile") User user
     ) {
         Optional<User> found = repository.findByLogin(login);
         if (found.isEmpty()) {
             return "redirect:/users/all";
         }
-        profile = found.get();
-        model.addAttribute("user_profile", profile);
+        user = found.get();
+        model.addAttribute("profile", user);
         return "users/edit_profile";
     }
 
     @PostMapping("/{profile_name}/edit")
     public String saveEditProfile(
             @PathVariable(name = "profile_name") String login,
-            @Valid User profile,
+            @ModelAttribute(name = "profile") @Valid User user,
             BindingResult validState
     ) {
         Optional<User> found = repository.findByLogin(login);
         if (found.isEmpty()) {
             return "redirect:/users/all";
         }
-        repository.save(profile);
-        return "redirect:/users/" + profile.getLogin();
+
+        if (validState.hasErrors()) {
+            return "users/edit_profile";
+        }
+
+        repository.save(user);
+        return "redirect:/users/" + user.getLogin();
     }
 
     @GetMapping("/{profile_name}/delete")

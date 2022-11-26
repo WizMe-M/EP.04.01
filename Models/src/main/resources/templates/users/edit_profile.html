@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:form="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title th:text="'Edit ' + ${user_profile.getLogin()}">EDIT USER</title>
+    <title th:text="'Edit ' + ${profile_name}">EDIT USER</title>
 
     <link rel="stylesheet" type="text/css" href="/flexed-row.css">
     <link rel="stylesheet" type="text/css" href="/table-list.css">
@@ -20,6 +20,10 @@
         div.main-content {
             margin: 5% 30%;
         }
+
+        .invalid-feedback {
+            display: block;
+        }
     </style>
 
 </head>
@@ -27,39 +31,35 @@
 <div th:insert="fragments/headers :: header"></div>
 
 <div class="main-content">
-    <form id="edit-user" th:object="${user_profile}"
-          th:action="'/users/' + ${user_profile.getLogin()} + '/edit'" method="post">
+    <form id="edit-user" th:action="'/users/' + ${profile_name} + '/edit'" method="post" th:object="${profile}">
         <fieldset>
-            <legend><h2 th:text="'Edit ' + ${user_profile.getLogin()}">EDIT USER</h2></legend>
+            <legend><h2 th:text="'Edit ' + ${profile_name}">EDIT USER</h2></legend>
         </fieldset>
 
-        <input type="hidden" th:field="*{id}" />
+        <input type="hidden" th:field="*{id}"/>
 
         <div class="col-12">
             <label for="login" class="form-label">Login</label>
             <div class="input-group has-validation">
                 <span class="input-group-text">@</span>
-                <input type="text" class="form-control" id="login" placeholder="Login"
-                       required minlength="3" maxlength="25" th:field="*{login}">
-                <div class="invalid-feedback">Your login is required.</div>
+                <input type="text" class="form-control" id="login" placeholder="Login" th:field="*{login}">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>
             </div>
         </div>
 
         <div class="col-12">
             <label for="password" class="form-label">Password</label>
             <div class="input-group has-validation">
-                <input type="password" class="form-control" id="password" placeholder="Password from 8 to 16 symbols"
-                       required pattern=".{8,16}" th:field="*{password}">
-                <div class="invalid-feedback">Your password is required.</div>
+                <input type="password" class="form-control" id="password" placeholder="Password" th:field="*{password}">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
             </div>
         </div>
 
         <div class="col-12">
             <label for="age" class="form-label">Age</label>
             <div class="input-group has-validation">
-                <input type="number" class="form-control" id="age" placeholder="Age"
-                       required min="14" max="100" th:field="*{age}">
-                <div class="invalid-feedback">Your age is required.</div>
+                <input type="number" class="form-control" id="age" placeholder="Age" th:field="*{age}" required>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
             </div>
         </div>
 
@@ -68,7 +68,7 @@
         <div class="flexed-row">
             <button class="btn btn-success" type="submit">Save changes</button>
             <a role="button" class="btn btn-danger"
-               th:href="'/users/' + ${user_profile.getLogin()}">Back to profile</a>
+               th:href="'/users/' + ${profile_name}">Back to profile</a>
         </div>
     </form>
 </div>
