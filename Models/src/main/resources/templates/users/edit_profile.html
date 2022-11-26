@@ -28,6 +28,14 @@
         legend h2 {
             text-align: center;
         }
+
+        div.col-12 {
+            margin: 0 0 20px 0;
+        }
+
+        span {
+            border-radius: 0.325em 0 0 0.325em!important;
+        }
     </style>
 
 </head>
@@ -42,27 +50,27 @@
 
         <input type="hidden" th:field="*{id}"/>
 
-        <div class="col-12">
-            <label for="login" class="form-label">Login</label>
-            <div class="input-group has-validation">
-                <span class="input-group-text">@</span>
+        <div class="input-group has-validation col-12">
+            <span class="input-group-text">@</span>
+            <div class="form-floating is-invalid">
                 <input type="text" class="form-control" id="login" placeholder="Login" th:field="*{login}">
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>
+                <label for="login">Login</label>
             </div>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>
         </div>
 
         <div class="col-12">
-            <label for="password" class="form-label">Password</label>
-            <div class="input-group has-validation">
+            <div class="form-floating">
                 <input type="password" class="form-control" id="password" placeholder="Password" th:field="*{password}">
+                <label for="password" class="form-label">Password</label>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
             </div>
         </div>
 
         <div class="col-12">
-            <label for="age" class="form-label">Age</label>
-            <div class="input-group has-validation">
+            <div class="form-floating">
                 <input type="number" class="form-control" id="age" placeholder="Age" th:field="*{age}" required>
+                <label for="age" class="form-label">Age</label>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
             </div>
         </div>
