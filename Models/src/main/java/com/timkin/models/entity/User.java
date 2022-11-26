@@ -23,14 +23,13 @@ public class User {
     private String login;
 
     @Column(length = 16, nullable = false)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*+\\-=])(?!.*\\s)$",
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*+\\-=])(?!.*\\s).+$",
             message = "Password should contain at least one uppercase char, one lowercase char, one digit and one special character, and NOT contain space characters")
     @Size(min = 8, max = 16, message = "Password's length should be in range from 8 to 16")
     @NotEmpty(message = "Password can't be null or empty")
     private String password;
 
     @Column(name = "registration_date", nullable = false)
-    @Null(message = "Registration date will be set after user's registration, you can't set it manually")
     private Date registrationDate = Date.from(Instant.now());
 
     @Column(nullable = false)

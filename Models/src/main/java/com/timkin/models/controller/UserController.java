@@ -2,11 +2,12 @@ package com.timkin.models.controller;
 
 import com.timkin.models.entity.User;
 import com.timkin.models.repo.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +49,10 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public String createUser(User user) {
+    public String createUser(@Valid User user, BindingResult validState) {
+        if (validState.hasErrors()) {
+            return "users/add_new_user";
+        }
         repository.save(user);
         return "redirect:/users/all";
     }
