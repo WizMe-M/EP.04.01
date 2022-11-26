@@ -20,6 +20,10 @@
         div.main-content {
             margin: 5% 25%;
         }
+
+        .invalid-feedback {
+            display: block;
+        }
     </style>
 
 </head>
@@ -34,46 +38,48 @@
             <legend><h2 th:text="'Edit motorcycle #' + ${id}">EDIT motorcycle</h2></legend>
         </fieldset>
 
+        <input type="hidden" th:field="*{id}"/>
+
         <div class="col-12">
             <label for="model" class="form-label">Model</label>
             <div class="input-group has-validation">
-                <input type="text" class="form-control" id="model" placeholder="Model"
-                       required th:field="*{model}">
-                <div class="invalid-feedback">Model name is required.</div>
+                <input id="model" type="text" class="form-control" placeholder="Model" th:field="*{model}">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></div>
             </div>
         </div>
 
         <div class="col-12">
             <label for="price" class="form-label">Price</label>
             <div class="input-group has-validation">
-                <input type="number" class="form-control" id="price" placeholder="Price"
-                       required th:field="*{price}">
-                <div class="invalid-feedback">Price is required.</div>
+                <input type="number" class="form-control" id="price" placeholder="Price" required th:field="*{price}">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
             </div>
         </div>
 
         <div class="col-12">
-            <label for="engine-volume" class="form-label">Engine volume</label>
+            <label for="engine_volume" class="form-label">Engine volume</label>
             <div class="input-group has-validation">
-                <input type="number" class="form-control" id="engine-volume" placeholder="Engine volume"
+                <input type="number" class="form-control" id="engine_volume" placeholder="Engine volume"
                        required th:field="*{engineVolume}">
-                <div class="invalid-feedback">Engine volume is required.</div>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('engineVolume')}"
+                     th:errors="*{engineVolume}"></div>
             </div>
         </div>
 
         <div class="col-12">
-            <label for="engine-type" class="form-label">Engine type</label>
+            <label for="engine_type" class="form-label">Engine type</label>
             <div class="input-group has-validation">
-                <input type="text" class="form-control" id="engine-type" placeholder="Engine type"
-                       required th:field="*{engineType}">
-                <div class="invalid-feedback">Engine type is required.</div>
+                <input id="engine_type" type="text" class="form-control" placeholder="Engine type"
+                       th:field="*{engineType}">
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('engineType')}"
+                     th:errors="*{engineType}"></div>
             </div>
         </div>
 
         <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="sold"
-                   th:field="*{sold}" th:checked="${motorcycle.isSold()}">
+            <input type="checkbox" class="form-check-input" id="sold" th:field="*{sold}">
             <label class="form-check-label" for="sold">Was motorcycle sold?</label>
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('sold')}" th:errors="*{sold}"></div>
         </div>
 
         <hr class="my-4">

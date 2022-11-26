@@ -5,8 +5,10 @@ import com.timkin.models.entity.User;
 import com.timkin.models.repo.MotorcycleRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +49,13 @@ public class MotorcycleController {
     }
 
     @PostMapping("/add")
-    public String addBike(Motorcycle motorcycle) {
+    public String addBike(
+            @Valid Motorcycle motorcycle,
+            BindingResult validState
+    ) {
+        if (validState.hasErrors()) {
+            return "motorcycles/add_new_bike";
+        }
         repository.save(motorcycle);
         return "redirect:/motorcycles/all";
     }
@@ -71,29 +79,35 @@ public class MotorcycleController {
     @GetMapping("/details/{id}/edit")
     public String openEditDetails(
             @PathVariable int id,
-            Motorcycle details,
+            @ModelAttribute(name = "details") Motorcycle motorcycle,
             Model model
     ) {
         Optional<Motorcycle> found = repository.findById(id);
         if (found.isEmpty()) {
             return "redirect:/motorcycles/all";
         }
-        details = found.get();
-        model.addAttribute("details", details);
+        motorcycle = found.get();
+        model.addAttribute("details", motorcycle);
         return "motorcycles/edit_details";
     }
 
     @PostMapping("/details/{id}/edit")
     public String saveChangedDetails(
             @PathVariable int id,
-            Motorcycle details
+            @ModelAttribute(name = "details") @Valid Motorcycle motorcycle,
+            BindingResult validState
     ) {
         Optional<Motorcycle> found = repository.findById(id);
         if (found.isEmpty()) {
             return "redirect:/motorcycles/all";
         }
-        repository.save(details);
-        return "motorcycles/motorcycle_details";
+
+        if (validState.hasErrors()) {
+            return "motorcycles/edit_details";
+        }
+
+        repository.save(motorcycle);
+        return String.format("redirect:/motorcycles/details/%d", motorcycle.getId());
     }
 
     @GetMapping("/delete-motorcycle/{id}")
