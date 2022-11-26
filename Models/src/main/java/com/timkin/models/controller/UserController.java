@@ -57,9 +57,9 @@ public class UserController {
         return "redirect:/users/all";
     }
 
-    @GetMapping("/{profile-name}")
+    @GetMapping("/{profile_name}")
     public String openProfile(
-            @PathVariable(name = "profile-name") String login,
+            @PathVariable(name = "profile_name") String login,
             Model model,
             User profile
     ) {
@@ -72,9 +72,9 @@ public class UserController {
         return "users/profile";
     }
 
-    @GetMapping("/{profile-name}/edit")
+    @GetMapping("/{profile_name}/edit")
     public String openEditProfile(
-            @PathVariable(name = "profile-name") String login,
+            @PathVariable(name = "profile_name") String login,
             Model model,
             User profile
     ) {
@@ -87,10 +87,11 @@ public class UserController {
         return "users/edit_profile";
     }
 
-    @PostMapping("/{profile-name}/edit")
+    @PostMapping("/{profile_name}/edit")
     public String saveEditProfile(
-            @PathVariable(name = "profile-name") String login,
-            User profile
+            @PathVariable(name = "profile_name") String login,
+            @Valid User profile,
+            BindingResult validState
     ) {
         Optional<User> found = repository.findByLogin(login);
         if (found.isEmpty()) {
@@ -100,9 +101,9 @@ public class UserController {
         return "redirect:/users/" + profile.getLogin();
     }
 
-    @GetMapping("/{profile-name}/delete")
+    @GetMapping("/{profile_name}/delete")
     public String deleteUser(
-            @PathVariable(name = "profile-name") String login
+            @PathVariable(name = "profile_name") String login
     ) {
         Optional<User> found = repository.findByLogin(login);
         if (found.isPresent()) {
