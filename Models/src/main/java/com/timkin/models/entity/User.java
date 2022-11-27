@@ -6,18 +6,19 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "users")
+@Table(name = "users", uniqueConstraints = @UniqueConstraint(name = "uk_user_login", columnNames = "login"))
 public class User {
     @Id
     @Column
-    @GeneratedValue(generator = "uuid4")
-    @GenericGenerator(name = "uuid4", strategy = "org.hibernate.id.UUIDGenerator")
+    @GeneratedValue(generator = "guid")
+    @GenericGenerator(name = "guid", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
 
-    @Column(length = 25, nullable = false, unique = true)
+    @Column(length = 25, nullable = false)
     @Size(min = 3, max = 25, message = "Login's length should be in range from 3 to 25")
     @NotBlank(message = "Login should not be null, not be empty and not consist of only space characters")
     private String login;
@@ -32,19 +33,20 @@ public class User {
     @Column(name = "registration_date", nullable = false)
     private Date registrationDate = Date.from(Instant.now());
 
-    @Column(nullable = false)
-    @Min(value = 14, message = "It is permissible to use the application for users at least 14 years old")
-    @Max(value = 120, message = "Set a realistic age (the most old people live to the age of 115-120 years)")
-    @NotNull(message = "Age can't be null")
-    private int age;
+    @OneToOne
+    @JoinColumn(name = "profile_id", foreignKey = @ForeignKey(name = "fk_user_profile"))
+    private Profile profile;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id", foreignKey = @ForeignKey(name = "fk_user_role"))
+    private Role role;
 
     public User() {
     }
 
-    public User(String login, String password, int age) {
+    public User(String login, String password) {
         this.login = login;
         this.password = password;
-        this.age = age;
     }
 
     public UUID getId() {
@@ -77,13 +79,5 @@ public class User {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 }
