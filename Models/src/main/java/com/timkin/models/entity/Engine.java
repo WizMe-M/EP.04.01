@@ -16,6 +16,9 @@ public class Engine {
     private int id;
 
     @Column(nullable = false)
+    private String model;
+
+    @Column(nullable = false)
     @Positive(message = "Engine volume should be positive")
     @Min(value = 5, message = "Minimum volume is 5")
     @Max(value = 1000, message = "Maximum volume is 1000")
@@ -29,7 +32,8 @@ public class Engine {
     public Engine() {
     }
 
-    public Engine(double volume, EngineType type) {
+    public Engine(String model, double volume, EngineType type) {
+        this.model = model;
         this.volume = volume;
         this.type = type;
     }
@@ -40,6 +44,14 @@ public class Engine {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
     }
 
     public double getVolume() {
