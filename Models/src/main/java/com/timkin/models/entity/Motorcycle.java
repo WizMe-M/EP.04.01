@@ -33,6 +33,15 @@ public class Motorcycle {
     @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "fk_motorcycle_engine"))
     private Engine engine;
 
+
+    @ManyToMany
+    @JoinTable(name = "purchased_motorcycles",
+            joinColumns = @JoinColumn(name = "motorcycle_id", referencedColumnName = "id"),
+            foreignKey = @ForeignKey(name = "fk_purchasedmotorcycles_user"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseForeignKey = @ForeignKey(name = "fk_purchasedmotorcycles_motorcycle"))
+    private List<User> customers;
+
     public Motorcycle() {
     }
 
