@@ -25,14 +25,9 @@ public class Motorcycle {
     @NotNull(message = "Price can't be null")
     private double price;
 
-    @Column(nullable = false)
-    @NotNull(message = "Flag 'Is sold' can't be null")
-    private boolean sold;
-
-    @ManyToOne
+    @ManyToOne(optional = false)
     @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "fk_motorcycle_engine"))
     private Engine engine;
-
 
     @ManyToMany
     @JoinTable(name = "purchased_motorcycles",
@@ -45,10 +40,9 @@ public class Motorcycle {
     public Motorcycle() {
     }
 
-    public Motorcycle(String model, double price, boolean sold) {
+    public Motorcycle(String model, double price) {
         this.model = model;
         this.price = price;
-        this.sold = sold;
     }
 
     public int getId() {
@@ -75,11 +69,19 @@ public class Motorcycle {
         this.price = price;
     }
 
-    public boolean isSold() {
-        return sold;
+    public Engine getEngine() {
+        return engine;
     }
 
-    public void setSold(boolean sold) {
-        this.sold = sold;
+    public void setEngine(Engine engine) {
+        this.engine = engine;
+    }
+
+    public List<User> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<User> customers) {
+        this.customers = customers;
     }
 }

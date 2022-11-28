@@ -89,4 +89,28 @@ public class User {
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
     }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<Motorcycle> getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(List<Motorcycle> purchases) {
+        this.purchases = purchases;
+    }
 }
