@@ -45,6 +45,7 @@
 <body>
 <div th:insert="fragments/headers :: header"></div>
 
+<!--TODO: this is not a profile but user's personal data-->
 <div class="main-content">
     <div class="title">
         <h1 th:text="${profile.getLogin()}">USER PROFILE</h1>
@@ -67,6 +68,7 @@
                 <div class="col col-1">Registered at:</div>
                 <div class="col col-2" th:text="${profile.getRegistrationDate()}"></div>
             </li>
+            <!--TODO: move to the profile-->
             <li class="table-row">
                 <div class="col col-1">User's age:</div>
                 <div class="col col-2" th:text="${profile.getAge()}"></div>

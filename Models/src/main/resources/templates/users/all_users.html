@@ -87,6 +87,7 @@
             <tr th:each="user : ${users}">
                 <td th:text="${user.getId()}">ID HERE</td>
                 <td th:text="${user.getLogin()}">LOGIN HERE</td>
+                <!--TODO: print role and full name here-->
                 <td th:text="${user.getAge()}">AGE HERE</td>
                 <td th:text="${user.getRegistrationDate()}">REGISTRATION DATE HERE</td>
                 <td>

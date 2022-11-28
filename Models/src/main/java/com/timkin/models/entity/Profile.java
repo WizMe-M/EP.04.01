@@ -9,6 +9,7 @@ import javax.persistence.Table;
 @Table(name = "profiles")
 public class Profile {
 
+    // TODO: add data validation
     @Id
     @Column
     private int id;
