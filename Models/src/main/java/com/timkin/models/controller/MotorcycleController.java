@@ -1,7 +1,6 @@
 package com.timkin.models.controller;
 
 import com.timkin.models.entity.Motorcycle;
-import com.timkin.models.entity.User;
 import com.timkin.models.repo.MotorcycleRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
