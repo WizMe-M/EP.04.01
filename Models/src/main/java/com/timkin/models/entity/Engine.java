@@ -25,4 +25,36 @@ public class Engine {
     @ManyToOne
     @JoinColumn(name = "engine_type_id", foreignKey = @ForeignKey(name = "fk_engine_enginetype"))
     private EngineType type;
+
+    public Engine() {
+    }
+
+    public Engine(double volume, EngineType type) {
+        this.volume = volume;
+        this.type = type;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public double getVolume() {
+        return volume;
+    }
+
+    public void setVolume(double volume) {
+        this.volume = volume;
+    }
+
+    public EngineType getType() {
+        return type;
+    }
+
+    public void setType(EngineType type) {
+        this.type = type;
+    }
 }

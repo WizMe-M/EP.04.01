@@ -17,4 +17,27 @@ public class EngineType {
     @Size(min = 3, max = 20, message = "Model name length should be in range from 4 to 20")
     @NotBlank(message = "Model name should not be null, not be empty and not consist of only space characters")
     private String name;
+
+    public EngineType() {
+    }
+
+    public EngineType(String name) {
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
