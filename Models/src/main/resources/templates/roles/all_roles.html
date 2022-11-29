@@ -17,13 +17,32 @@
             crossorigin="anonymous"></script>
 
     <style>
+        div.flexed-col {
+            display: flex;
+            flex-direction: column;
+            align-content: center;
+        }
+
+        div.flexed-col h1 {
+            width: 100%;
+            padding: 40px 0;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+        }
+
+        div.flexed-col a {
+            width: 300px;
+            align-self: center;
+        }
+
         div.main-content {
-            margin: 10% 0;
+            margin: 0 0 10% 0;
         }
 
         div.title {
             width: 100%;
-            padding-bottom: 40px;
+            padding: 40px 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -40,31 +59,37 @@
         .flexed-row .filler {
             flex-grow: 1;
         }
+
+        h2 {
+            color: black;
+        }
     </style>
 </head>
 <body>
 
 <div th:insert="fragments/headers :: header"></div>
 
-<div class="main-content">
+<div class="main-content" th:unless="${#lists.isEmpty(roles)}">
     <div class="title">
         <h1>Role Table:</h1>
     </div>
 
     <div class="flexed-row">
         <div>
-            <a role="button" class="btn btn-success" href="/roles/all">Add new user</a>
+            <a class="btn btn-success" href="/roles/add">Add new user</a>
         </div>
 
         <div class="filler"></div>
 
-        <form action="/roles/search" method="get">
-            <div class="flexed-row">
-                <input type="search" class="form-control" id="search-input-field" placeholder="Search" name="s"
-                       aria-label="Search">
-                <button class="btn btn-outline-primary" type="submit">Search</button>
-            </div>
-        </form>
+        <div>
+            <form action="/roles/search" method="get">
+                <div class="flexed-row">
+                    <input type="search" class="form-control" id="search-input-field" placeholder="Search" name="s"
+                           aria-label="Search">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <div class="table-wrapper" th:unless="${#lists.isEmpty(roles)}">
@@ -84,9 +109,6 @@
                 <td th:text="${role.getId()}">ID HERE</td>
                 <td th:text="${role.getName()}">ROLE NAME HERE</td>
                 <td>
-                    <a th:href="'/roles/' + ${role.getId()}" class="btn btn-primary">Profile</a>
-                </td>
-                <td>
                     <a th:href="'/roles/' + ${role.getId()} + '/edit'" class="btn btn-warning">Edit</a>
                 </td>
                 <td>
@@ -96,9 +118,13 @@
             </tbody>
         </table>
     </div>
+</div>
 
-    <div th:if="${#lists.isEmpty(roles)}">
-        <h2>There is no roles yet!</h2>
+<div th:if="${#lists.isEmpty(roles)}">
+    <div class="flexed-col">
+        <h1>There is no roles yet... Create one! </h1>
+
+        <a class="btn btn-success" href="/roles/add">Add new role</a>
     </div>
 </div>
 

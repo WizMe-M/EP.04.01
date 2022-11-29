@@ -1,6 +1,8 @@
 package com.timkin.models.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(name = "uk_role_name", columnNames = "name"))
@@ -11,6 +13,8 @@ public class Role {
     private int id;
 
     @Column(length = 20)
+    @Size(min = 4, max = 20, message = "Role name's length should be from 4 to 20")
+    @NotBlank(message = "Role name should not be null, not empty or contain only space characters")
     private String name;
 
     public Role() {

@@ -4,10 +4,10 @@ import com.timkin.models.entity.Role;
 import com.timkin.models.repo.RoleRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -22,7 +22,7 @@ public class RoleController {
 
     @GetMapping
     public String index() {
-        return "redirect:/all";
+        return "redirect:/roles/all";
     }
 
     @GetMapping("/all")
@@ -40,5 +40,22 @@ public class RoleController {
         List<Role> filtered = repository.findByNameContainsIgnoreCase(searchString);
         model.addAttribute("roles", filtered);
         return "roles/all_roles";
+    }
+
+    @GetMapping("/add")
+    public String openAddRole(@ModelAttribute Role role) {
+        return "roles/add_role";
+    }
+
+    @PostMapping("/add")
+    public String createRole(
+            @ModelAttribute @Valid Role role,
+            BindingResult validationState
+    ) {
+        if (validationState.hasErrors()) {
+            return "roles/add_role";
+        }
+        repository.save(role);
+        return "redirect:/roles";
     }
 }
