@@ -12,13 +12,7 @@ public class ModelsApplication {
 
     // TODO: add EngineController
     // TODO: add EngineTypeController
-    // TODO: add RoleController
-
-    // TODO: add EngineRepo
-    // TODO: add EngineRepo
-    // TODO: add RoleRepo
 
     // TODO: add 'create/total/detail/edit views' for Engine
     // TODO: add 'create/total/edit views' for EngineType
-    // TODO: add 'create/total/edit views' for Role
 }
