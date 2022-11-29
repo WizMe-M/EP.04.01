@@ -57,14 +57,6 @@
             </div>
         </div>
 
-        <div class="col-12">
-            <label for="age" class="form-label">Age</label>
-            <div class="input-group has-validation">
-                <input th:field="*{age}" type="number" class="form-control" id="age" placeholder="Age" required>
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></div>
-            </div>
-        </div>
-
         <hr class="my-4">
 
         <div class="flexed-row">
