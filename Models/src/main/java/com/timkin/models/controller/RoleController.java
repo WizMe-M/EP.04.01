@@ -89,4 +89,12 @@ public class RoleController {
         repository.save(role);
         return "redirect:/roles/all";
     }
+
+    @GetMapping("/{role_id}/delete")
+    public String deleteRole(
+            @PathVariable(name = "role_id") int id
+    ) {
+        repository.deleteById(id);
+        return "redirect:/roles/all";
+    }
 }
