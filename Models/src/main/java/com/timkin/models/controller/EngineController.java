@@ -7,6 +7,7 @@ import com.timkin.models.repo.EngineTypeRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -46,5 +47,15 @@ public class EngineController {
         List<Engine> filtered = engineRepository.findByModelContainsIgnoreCase(searchString);
         model.addAttribute("engines", filtered);
         return "engines/all_engines_and_types";
+    }
+
+    @GetMapping("/add")
+    public String createEngine(
+            @ModelAttribute Engine engine,
+            Model model
+    ) {
+        List<EngineType> types = typeRepository.findAll();
+        model.addAttribute("engine_types", types);
+        return "engines/add_engine";
     }
 }
