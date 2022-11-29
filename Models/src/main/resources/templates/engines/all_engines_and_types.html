@@ -66,16 +66,13 @@
         </form>
     </div>
 
-    <div class="table-wrapper">
+    <div class="flexed-row">
         <table class="fl-table">
             <thead>
             <tr>
                 <th>ID</th>
                 <th>Model</th>
-                <th>Price</th>
-                <th>Engine volume</th>
-                <th>Engine type</th>
-                <th>Is sold?</th>
+                <th>Volume</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -83,26 +80,53 @@
             </thead>
 
             <tbody>
-            <!--/*@thymesVar id="bike" type="com.timkin.models.entity.Motorcycle"*/-->
-            <tr th:each="bike : ${bikes}">
-                <td th:text="${bike.getId()}">ID HERE</td>
-                <td th:text="${bike.getModel()}">MODEL HERE</td>
-                <td th:text="${bike.getPrice()}">PRICE HERE</td>
-                <td th:text="${bike.getEngineVolume()}">ENGINE VOLUME HERE</td>
-                <td th:text="${bike.getEngineType()}">ENGINE TYPE HERE</td>
+            <!--/*@thymesVar id="engine" type="com.timkin.models.entity.Engine"*/-->
+            <tr th:each="engine : ${engines}">
+                <td th:text="${engine.getId()}">ID HERE</td>
+                <td th:text="${engine.getModel()}">MODEL HERE</td>
+                <td th:text="${engine.getVolume()}">VOLUME HERE</td>
+                <td th:text="${engine.getType().getName()}">TYPE NAME HERE</td>
                 <td>
-                    <input type="checkbox" disabled th:checked="${bike.isSold()}">
-                </td>
-                <td>
-                    <a th:href="'/motorcycles/details/' + ${bike.getId()}" role="button"
+                    <a th:href="'/motorcycles/details/' + ${engine.getId()}" role="button"
                        class="btn btn-primary">Details</a>
                 </td>
                 <td>
-                    <a th:href="'/motorcycles/details/' + ${bike.getId()} + '/edit'" role="button"
+                    <a th:href="'/motorcycles/details/' + ${engine.getId()} + '/edit'" role="button"
                        class="btn btn-warning">Edit</a>
                 </td>
                 <td>
-                    <a th:href="'/motorcycles/delete-motorcycle/' + ${bike.getId()}" role="button"
+                    <a th:href="'/motorcycles/delete-motorcycle/' + ${engine.getId()}" role="button"
+                       class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <table class="fl-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <!--/*@thymesVar id="engineType" type="com.timkin.models.entity.EngineType"*/-->
+            <tr th:each="engineType : ${engineTypes}">
+                <td th:text="${engineType.getId()}">ID HERE</td>
+                <td th:text="${engineType.getName()}">MODEL HERE</td>
+                <td>
+                    <a th:href="'/motorcycles/details/' + ${engineType.getId()}" role="button"
+                       class="btn btn-primary">Details</a>
+                </td>
+                <td>
+                    <a th:href="'/motorcycles/details/' + ${engineType.getId()} + '/edit'" role="button"
+                       class="btn btn-warning">Edit</a>
+                </td>
+                <td>
+                    <a th:href="'/motorcycles/delete-motorcycle/' + ${engineType.getId()}" role="button"
                        class="btn btn-danger">Delete</a>
                 </td>
             </tr>
