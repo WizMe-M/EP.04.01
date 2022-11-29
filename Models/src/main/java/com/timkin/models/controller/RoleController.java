@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/roles")
@@ -57,5 +58,35 @@ public class RoleController {
         }
         repository.save(role);
         return "redirect:/roles";
+    }
+
+    @GetMapping("/{role_id}/edit")
+    public String openRenameRole(
+            @PathVariable(name = "role_id") int id,
+            @ModelAttribute Role role,
+            Model model
+    ) {
+        Optional<Role> found = repository.findById(id);
+        if (found.isEmpty()) {
+            return "redirect:/roles/all";
+        }
+
+        role = found.orElseThrow();
+        model.addAttribute(role);
+        return "roles/edit_role";
+    }
+
+    @PostMapping("/{role_id}/edit")
+    public String renameRole(
+            @PathVariable(name = "role_id") int id,
+            @ModelAttribute @Valid Role role,
+            BindingResult validationState
+    ) {
+        if (validationState.hasErrors()) {
+            return "roles/edit_role";
+        }
+
+        repository.save(role);
+        return "redirect:/roles/all";
     }
 }
