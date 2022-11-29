@@ -1,9 +1,8 @@
 package com.timkin.models.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.List;
+import java.util.UUID;
 
 @Entity
 @Table(name = "profiles")
@@ -11,6 +10,7 @@ public class Profile {
 
     // TODO: add data validation
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
     private int id;
 
@@ -28,6 +28,19 @@ public class Profile {
 
     @Column
     private String description;
+
+    @OneToOne(mappedBy = "profile")
+    @JoinColumn(name = "profile_id", foreignKey = @ForeignKey(name = "fk_profile_user"))
+    private User user;
+
+    @ManyToMany
+    @JoinTable(name = "purchased_motorcycles",
+            joinColumns = @JoinColumn(name = "profile_id", referencedColumnName = "id"),
+            foreignKey = @ForeignKey(name = "fk_purchasedmotorcycles_profile"),
+            inverseJoinColumns = @JoinColumn(name = "motorcycle_id", referencedColumnName = "id"),
+            inverseForeignKey = @ForeignKey(name = "fk_purchasedmotorcycles_motorcycle"))
+    private List<Motorcycle> purchases;
+
 
     public Profile() {
     }
@@ -78,5 +91,21 @@ public class Profile {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public List<Motorcycle> getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(List<Motorcycle> purchases) {
+        this.purchases = purchases;
     }
 }

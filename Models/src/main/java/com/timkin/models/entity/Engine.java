@@ -15,6 +15,9 @@ public class Engine {
     @Column
     private int id;
 
+    @Column
+    private String model;
+
     @Column(nullable = false)
     private String model;
 

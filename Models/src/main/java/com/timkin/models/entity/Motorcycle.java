@@ -7,7 +7,6 @@ import java.util.List;
 @Entity
 @Table(name = "motorcycles")
 public class Motorcycle {
-
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,10 +31,10 @@ public class Motorcycle {
     @ManyToMany
     @JoinTable(name = "purchased_motorcycles",
             joinColumns = @JoinColumn(name = "motorcycle_id", referencedColumnName = "id"),
-            foreignKey = @ForeignKey(name = "fk_purchasedmotorcycles_user"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseForeignKey = @ForeignKey(name = "fk_purchasedmotorcycles_motorcycle"))
-    private List<User> customers;
+            foreignKey = @ForeignKey(name = "fk_purchasedmotorcycles_motorcycle"),
+            inverseJoinColumns = @JoinColumn(name = "profile_id", referencedColumnName = "id"),
+            inverseForeignKey = @ForeignKey(name = "fk_purchasedmotorcycles_profile"))
+    private List<Profile> customers;
 
     public Motorcycle() {
     }
@@ -77,11 +76,11 @@ public class Motorcycle {
         this.engine = engine;
     }
 
-    public List<User> getCustomers() {
+    public List<Profile> getCustomers() {
         return customers;
     }
 
-    public void setCustomers(List<User> customers) {
+    public void setCustomers(List<Profile> customers) {
         this.customers = customers;
     }
 }
