@@ -6,7 +6,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.Instant;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -33,13 +32,18 @@ public class User {
     @Column(name = "registration_date", nullable = false)
     private Date registrationDate = Date.from(Instant.now());
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "profile_id", foreignKey = @ForeignKey(name = "fk_user_profile"))
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @MapsId
+    @JoinColumn(name = "id", foreignKey = @ForeignKey(name = "fk_user_profile"))
     private Profile profile;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", foreignKey = @ForeignKey(name = "fk_user_role"))
     private Role role;
+
+    public boolean hasCreatedProfile() {
+        return true;
+    }
 
     public User() {
     }

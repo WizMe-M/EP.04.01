@@ -10,9 +10,8 @@ public class Profile {
 
     // TODO: add data validation
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
-    private int id;
+    private UUID id;
 
     @Column
     private String firstName;
@@ -29,8 +28,9 @@ public class Profile {
     @Column
     private String description;
 
-    @OneToOne(mappedBy = "profile")
-    @JoinColumn(name = "profile_id", foreignKey = @ForeignKey(name = "fk_profile_user"))
+    @OneToOne(fetch = FetchType.EAGER)
+    @MapsId
+    @JoinColumn(name = "id", foreignKey = @ForeignKey(name = "fk_profile_user"))
     private User user;
 
     @ManyToMany
@@ -45,11 +45,11 @@ public class Profile {
     public Profile() {
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
