@@ -41,14 +41,6 @@ public class User {
     @JoinColumn(name = "role_id", foreignKey = @ForeignKey(name = "fk_user_role"))
     private Role role;
 
-    @ManyToMany
-    @JoinTable(name = "purchased_motorcycles",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            foreignKey = @ForeignKey(name = "fk_purchasedmotorcycles_user"),
-            inverseJoinColumns = @JoinColumn(name = "motorcycle_id", referencedColumnName = "id"),
-            inverseForeignKey = @ForeignKey(name = "fk_purchasedmotorcycles_motorcycle"))
-    private List<Motorcycle> purchases;
-
     public User() {
     }
 
@@ -103,13 +95,5 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public List<Motorcycle> getPurchases() {
-        return purchases;
-    }
-
-    public void setPurchases(List<Motorcycle> purchases) {
-        this.purchases = purchases;
     }
 }

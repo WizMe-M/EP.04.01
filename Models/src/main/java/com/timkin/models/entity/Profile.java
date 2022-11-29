@@ -1,6 +1,7 @@
 package com.timkin.models.entity;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -30,6 +31,15 @@ public class Profile {
     @OneToOne(mappedBy = "profile")
     @JoinColumn(name = "profile_id", foreignKey = @ForeignKey(name = "fk_profile_user"))
     private User user;
+
+    @ManyToMany
+    @JoinTable(name = "purchased_motorcycles",
+            joinColumns = @JoinColumn(name = "profile_id", referencedColumnName = "id"),
+            foreignKey = @ForeignKey(name = "fk_purchasedmotorcycles_profile"),
+            inverseJoinColumns = @JoinColumn(name = "motorcycle_id", referencedColumnName = "id"),
+            inverseForeignKey = @ForeignKey(name = "fk_purchasedmotorcycles_motorcycle"))
+    private List<Motorcycle> purchases;
+
 
     public Profile() {
     }
@@ -88,5 +98,13 @@ public class Profile {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public List<Motorcycle> getPurchases() {
+        return purchases;
+    }
+
+    public void setPurchases(List<Motorcycle> purchases) {
+        this.purchases = purchases;
     }
 }
