@@ -1,6 +1,7 @@
 package com.timkin.models.controller;
 
 import com.timkin.models.entity.User;
+import com.timkin.models.repo.ProfileRepository;
 import com.timkin.models.repo.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,10 +16,12 @@ import java.util.Optional;
 @RequestMapping("/users")
 public class UserController {
 
-    private final UserRepository repository;
+    private final ProfileRepository profileRepository;
+    private final UserRepository userRepository;
 
-    public UserController(UserRepository repository) {
-        this.repository = repository;
+    public UserController(UserRepository userRepository, ProfileRepository profileRepository) {
+        this.userRepository = userRepository;
+        this.profileRepository = profileRepository;
     }
 
     @GetMapping
@@ -28,7 +31,7 @@ public class UserController {
 
     @GetMapping("/all")
     public String openAllUsersTable(Model model) {
-        List<User> all = repository.findAll();
+        List<User> all = userRepository.findAll();
         model.addAttribute("users", all);
         return "users/all_users";
     }
@@ -38,7 +41,7 @@ public class UserController {
             @RequestParam(name = "s") String searchString,
             Model model
     ) {
-        List<User> filtered = repository.findByLoginContainsIgnoreCase(searchString);
+        List<User> filtered = userRepository.findByLoginContainsIgnoreCase(searchString);
         model.addAttribute("users", filtered);
         return "users/all_users";
     }
@@ -55,7 +58,7 @@ public class UserController {
         if (validState.hasErrors()) {
             return "users/add_new_user";
         }
-        repository.save(user);
+        userRepository.save(user);
         return "redirect:/users/all";
     }
 
@@ -65,7 +68,7 @@ public class UserController {
             Model model,
             User profile
     ) {
-        Optional<User> found = repository.findByLogin(login);
+        Optional<User> found = userRepository.findByLogin(login);
         if (found.isEmpty()) {
             return "redirect:/users/all";
         }
@@ -80,7 +83,7 @@ public class UserController {
             Model model,
             @ModelAttribute(name = "profile") User user
     ) {
-        Optional<User> found = repository.findByLogin(login);
+        Optional<User> found = userRepository.findByLogin(login);
         if (found.isEmpty()) {
             return "redirect:/users/all";
         }
@@ -95,7 +98,7 @@ public class UserController {
             @ModelAttribute(name = "profile") @Valid User user,
             BindingResult validState
     ) {
-        Optional<User> found = repository.findByLogin(login);
+        Optional<User> found = userRepository.findByLogin(login);
         if (found.isEmpty()) {
             return "redirect:/users/all";
         }
@@ -104,7 +107,7 @@ public class UserController {
             return "users/edit_profile";
         }
 
-        repository.save(user);
+        userRepository.save(user);
         return "redirect:/users/" + user.getLogin();
     }
 
@@ -112,10 +115,10 @@ public class UserController {
     public String deleteUser(
             @PathVariable(name = "profile_name") String login
     ) {
-        Optional<User> found = repository.findByLogin(login);
+        Optional<User> found = userRepository.findByLogin(login);
         if (found.isPresent()) {
             User deleting = found.get();
-            repository.delete(deleting);
+            userRepository.delete(deleting);
         }
         return "redirect:/users/all";
     }
