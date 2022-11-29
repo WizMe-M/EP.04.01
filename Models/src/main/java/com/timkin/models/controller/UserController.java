@@ -1,14 +1,17 @@
 package com.timkin.models.controller;
 
+import com.timkin.models.entity.Profile;
 import com.timkin.models.entity.User;
 import com.timkin.models.repo.ProfileRepository;
 import com.timkin.models.repo.UserRepository;
+import com.timkin.models.viewmodel.UserProfileViewModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,8 +34,10 @@ public class UserController {
 
     @GetMapping("/all")
     public String openAllUsersTable(Model model) {
-        List<User> all = userRepository.findAll();
-        model.addAttribute("users", all);
+        List<User> allUsers = userRepository.findAll();
+        List<Profile> allProfiles = profileRepository.findAll();
+        List<UserProfileViewModel> vm = zipInViewModels(allUsers, allProfiles);
+        model.addAttribute("users", vm);
         return "users/all_users";
     }
 
@@ -42,8 +47,26 @@ public class UserController {
             Model model
     ) {
         List<User> filtered = userRepository.findByLoginContainsIgnoreCase(searchString);
-        model.addAttribute("users", filtered);
+        List<Profile> allProfiles = profileRepository.findAll();
+        List<UserProfileViewModel> vm = zipInViewModels(filtered, allProfiles);
+        model.addAttribute("users", vm);
         return "users/all_users";
+    }
+
+    private List<UserProfileViewModel> zipInViewModels(List<User> users, List<Profile> profiles) {
+        ArrayList<UserProfileViewModel> viewModels = new ArrayList<>();
+        for (User u : users) {
+            Profile profile = null;
+            for (Profile p : profiles) {
+                if (p.getId().equals(u.getId())) {
+                    profile = p;
+                    break;
+                }
+            }
+            UserProfileViewModel vm = new UserProfileViewModel(u, profile);
+            viewModels.add(vm);
+        }
+        return viewModels;
     }
 
     @GetMapping("/add")

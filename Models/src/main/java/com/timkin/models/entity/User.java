@@ -32,18 +32,9 @@ public class User {
     @Column(name = "registration_date", nullable = false)
     private Date registrationDate = Date.from(Instant.now());
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @MapsId
-    @JoinColumn(name = "id", foreignKey = @ForeignKey(name = "fk_user_profile"))
-    private Profile profile;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", foreignKey = @ForeignKey(name = "fk_user_role"))
     private Role role;
-
-    public boolean hasCreatedProfile() {
-        return true;
-    }
 
     public User() {
     }
@@ -83,14 +74,6 @@ public class User {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
-    }
-
-    public Profile getProfile() {
-        return profile;
-    }
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
     }
 
     public Role getRole() {

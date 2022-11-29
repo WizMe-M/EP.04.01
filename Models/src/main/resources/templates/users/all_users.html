@@ -74,8 +74,9 @@
             <tr>
                 <th>ID</th>
                 <th>Login</th>
-                <th>Age</th>
                 <th>Registration date</th>
+                <th>Role</th>
+                <th>Has profile</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -83,21 +84,21 @@
             </thead>
 
             <tbody>
-            <!--/*@thymesVar id="user" type="com.timkin.models.entity.User"*/-->
+            <!--/*@thymesVar id="user" type="com.timkin.models.viewmodel.UserProfileViewModel"*/-->
             <tr th:each="user : ${users}">
-                <td th:text="${user.getId()}">ID HERE</td>
-                <td th:text="${user.getLogin()}">LOGIN HERE</td>
-                <!--TODO: print role and full name here-->
-                <td th:text="${user.getAge()}">AGE HERE</td>
-                <td th:text="${user.getRegistrationDate()}">REGISTRATION DATE HERE</td>
+                <td th:text="${user.getUser().getId()}">ID HERE</td>
+                <td th:text="${user.getUser().getLogin()}">LOGIN HERE</td>
+                <td th:text="${user.getUser().getRegistrationDate()}">REGISTRATION DATE HERE</td>
+                <td th:text="${user.getUser().getRole().getName()}">ROLE NAME HERE</td>
+                <td><label><input type="checkbox" th:checked="${user.hasProfile()}" disabled></label></td>
                 <td>
-                    <a th:href="'/users/' + ${user.getLogin()}" class="btn btn-primary">Profile</a>
+                    <a th:href="'/users/' + ${user.getUser().getLogin()}" class="btn btn-primary">Profile</a>
                 </td>
                 <td>
-                    <a th:href="'/users/' + ${user.getLogin()} + '/edit'" class="btn btn-warning">Edit</a>
+                    <a th:href="'/users/' + ${user.getUser().getLogin()} + '/edit'" class="btn btn-warning">Edit</a>
                 </td>
                 <td>
-                    <a role="button" th:href="'/users/' + ${user.getLogin()} + '/delete'"
+                    <a role="button" th:href="'/users/' + ${user.getUser().getLogin()} + '/delete'"
                        class="btn btn-danger">Delete</a>
                 </td>
             </tr>

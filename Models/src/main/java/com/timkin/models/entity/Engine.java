@@ -19,9 +19,6 @@ public class Engine {
     private String model;
 
     @Column(nullable = false)
-    private String model;
-
-    @Column(nullable = false)
     @Positive(message = "Engine volume should be positive")
     @Min(value = 5, message = "Minimum volume is 5")
     @Max(value = 1000, message = "Maximum volume is 1000")
