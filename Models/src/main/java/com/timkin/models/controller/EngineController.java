@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/engines")
@@ -64,7 +65,7 @@ public class EngineController {
             @ModelAttribute @Valid Engine engine,
             BindingResult validationState,
             Model model
-    ){
+    ) {
         if (validationState.hasErrors()) {
             List<EngineType> engines = typeRepository.findAll();
             model.addAttribute("engine_types", engines);
@@ -88,6 +89,40 @@ public class EngineController {
             return "engines/add_engine_type";
         }
         typeRepository.save(engineType);
+        return "redirect:/engines/all";
+    }
+
+    @GetMapping("/rename-type/{type_id}")
+    public String openRenameType(
+            @PathVariable("type_id") int id,
+            @ModelAttribute("type") EngineType type,
+            Model model
+    ) {
+        Optional<EngineType> found = typeRepository.findById(id);
+        if (found.isEmpty()) {
+            return "redirect:/engines/all";
+        }
+        type = found.get();
+        model.addAttribute("type", type);
+        return "engines/edit_engine_type";
+    }
+
+    @PostMapping("/rename-type/{type_id}")
+    public String renameType(
+            @PathVariable("type_id") int id,
+            @ModelAttribute("type") @Valid EngineType type,
+            BindingResult validationState
+    ) {
+        if (validationState.hasErrors()) {
+            return "engines/edit_engine_type";
+        }
+        typeRepository.save(type);
+        return "redirect:/engines/all";
+    }
+
+    @GetMapping("/delete-type/{type_id}")
+    public String deleteType(@PathVariable("type_id") int id) {
+        typeRepository.deleteById(id);
         return "redirect:/engines/all";
     }
 }
