@@ -91,9 +91,7 @@ public class RoleController {
     }
 
     @GetMapping("/{role_id}/delete")
-    public String deleteRole(
-            @PathVariable(name = "role_id") int id
-    ) {
+     public String deleteRole(@PathVariable(name = "role_id") int id) {
         repository.deleteById(id);
         return "redirect:/roles/all";
     }
