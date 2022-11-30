@@ -101,13 +101,19 @@ public class EngineController {
             @ModelAttribute @Valid Engine engine,
             BindingResult validationState,
             Model model
-    ){
-        if (validationState.hasErrors()){
+    ) {
+        if (validationState.hasErrors()) {
             List<EngineType> types = typeRepository.findAll();
             model.addAttribute("engine_types", types);
             return "engines/edit_engine";
         }
         engineRepository.save(engine);
+        return "redirect:/engines/all";
+    }
+
+    @GetMapping("/{engine_id}")
+    public String deleteEngine(@PathVariable("engine_id") int id) {
+        engineRepository.deleteById(id);
         return "redirect:/engines/all";
     }
 
