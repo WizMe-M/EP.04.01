@@ -1,13 +1,14 @@
 package com.timkin.models.controller;
 
+import com.timkin.models.entity.Profile;
 import com.timkin.models.entity.Role;
 import com.timkin.models.entity.User;
+import com.timkin.models.repo.ProfileRepository;
 import com.timkin.models.repo.RoleRepository;
 import com.timkin.models.repo.UserRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,10 +21,16 @@ public class UserController {
 
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final ProfileRepository profileRepository;
 
-    public UserController(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserController(
+            UserRepository userRepository,
+            RoleRepository roleRepository,
+            ProfileRepository profileRepository
+    ) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.profileRepository = profileRepository;
     }
 
     @GetMapping
@@ -121,6 +128,21 @@ public class UserController {
         }
         userRepository.save(details);
         return "redirect:/users/all";
+    }
+
+    @GetMapping("/{profile_name}/profile/create")
+    public String createProfile(
+            @PathVariable(name = "profile_name") String login
+    ) {
+        Optional<User> found = userRepository.findByLogin(login);
+        if (found.isEmpty()) {
+            return "redirect:/users/all";
+        }
+        User user = found.get();
+        Profile profile = new Profile(user);
+        profileRepository.save(profile);
+
+        return "redirect:/users/%s/details".formatted(login);
     }
 
     @GetMapping("/{profile_name}")

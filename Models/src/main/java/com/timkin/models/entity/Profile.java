@@ -40,9 +40,11 @@ public class Profile {
             inverseJoinColumns = @JoinColumn(name = "motorcycle_id", referencedColumnName = "id"),
             inverseForeignKey = @ForeignKey(name = "fk_purchasedmotorcycles_motorcycle"))
     private List<Motorcycle> purchases;
-
-
     public Profile() {
+    }
+
+    public Profile(User user) {
+        this.user = user;
     }
 
     public UUID getId() {
