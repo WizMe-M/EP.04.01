@@ -5,6 +5,7 @@ import com.timkin.models.entity.EngineType;
 import com.timkin.models.entity.Role;
 import com.timkin.models.repo.EngineRepository;
 import com.timkin.models.repo.EngineTypeRepository;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -70,6 +71,41 @@ public class EngineController {
             List<EngineType> engines = typeRepository.findAll();
             model.addAttribute("engine_types", engines);
             return "engines/add_engine";
+        }
+        engineRepository.save(engine);
+        return "redirect:/engines/all";
+    }
+
+    @GetMapping("/{engine_id}/edit")
+    public String openEditEngine(
+            @PathVariable("engine_id") int id,
+            @ModelAttribute Engine engine,
+            Model model
+    ) {
+        Optional<Engine> found = engineRepository.findById(id);
+        if (found.isEmpty()) {
+            return "redirect:/engines/all";
+        }
+        engine = found.get();
+        model.addAttribute(engine);
+
+        List<EngineType> types = typeRepository.findAll();
+        model.addAttribute("engine_types", types);
+
+        return "engines/edit_engine";
+    }
+
+    @PostMapping("/{engine_id}/edit")
+    public String editEngine(
+            @PathVariable("engine_id") int id,
+            @ModelAttribute @Valid Engine engine,
+            BindingResult validationState,
+            Model model
+    ){
+        if (validationState.hasErrors()){
+            List<EngineType> types = typeRepository.findAll();
+            model.addAttribute("engine_types", types);
+            return "engines/edit_engine";
         }
         engineRepository.save(engine);
         return "redirect:/engines/all";
