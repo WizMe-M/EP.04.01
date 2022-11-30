@@ -62,14 +62,48 @@ public class UserController {
     public String createUser(
             Model model,
             @Valid User user,
-            BindingResult validState
+            BindingResult validationState
     ) {
-        if (validState.hasErrors()) {
+        if (validationState.hasErrors()) {
             List<Role> roles = roleRepository.findAll();
             model.addAttribute("roles", roles);
             return "users/add_new_user";
         }
         userRepository.save(user);
+        return "redirect:/users/all";
+    }
+
+    @GetMapping("/{profile_name}/edit-details")
+    public String openEditDetails(
+            @PathVariable(name = "profile_name") String login,
+            Model model,
+            @ModelAttribute("details") User details
+    ) {
+        Optional<User> found = userRepository.findByLogin(login);
+        if (found.isEmpty()) {
+            return "redirect:/users/all";
+        }
+        details = found.get();
+        model.addAttribute("details", details);
+
+        List<Role> roles = roleRepository.findAll();
+        model.addAttribute("roles", roles);
+        return "users/edit_details";
+    }
+
+    @PostMapping("/{profile_name}/edit-details")
+    public String saveChangedDetails(
+            @PathVariable(name = "profile_name") String login,
+            Model model,
+            @ModelAttribute("details") User details,
+            BindingResult validationState
+    ) {
+        if (validationState.hasErrors()) {
+            List<Role> roles = roleRepository.findAll();
+            model.addAttribute("roles", roles);
+            return "users/edit_details";
+        }
+        userRepository.save(details);
         return "redirect:/users/all";
     }
 
