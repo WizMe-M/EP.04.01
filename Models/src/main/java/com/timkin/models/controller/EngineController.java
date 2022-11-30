@@ -37,7 +37,7 @@ public class EngineController {
         List<Engine> allEngines = engineRepository.findAll();
         model.addAttribute("engines", allEngines);
         List<EngineType> allEngineTypes = typeRepository.findAll();
-        model.addAttribute("engineTypes", allEngineTypes);
+        model.addAttribute("engine_types", allEngineTypes);
         return "engines/all_engines_and_types";
     }
 
@@ -46,9 +46,21 @@ public class EngineController {
             @RequestParam(name = "s") String searchString,
             Model model
     ) {
-        List<Engine> filtered = engineRepository.findByModelContainsIgnoreCase(searchString);
-        model.addAttribute("engines", filtered);
+        List<Engine> filteredEngines = engineRepository.findByModelContainsIgnoreCase(searchString);
+        model.addAttribute("engines", filteredEngines);
+        List<EngineType> filteredTypes = typeRepository.findByNameContainsIgnoreCase(searchString);
+        model.addAttribute("engine_types", filteredTypes);
         return "engines/all_engines_and_types";
+    }
+
+    @GetMapping("/info/{engine_id}")
+    public String openEngineInfo(
+            @PathVariable("engine_id") int id,
+            @ModelAttribute("info") Engine engine,
+            Model model
+    ) {
+
+        return "";
     }
 
     @GetMapping("/add")
