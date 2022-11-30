@@ -80,9 +80,10 @@ public class UserController {
         return "redirect:/users/all";
     }
 
-    @GetMapping("/{profile_name}/details")
+    @GetMapping("/{login}/details")
     public String openDetails(
-            @PathVariable(name = "profile_name") String login,
+            @PathVariable
+            String login,
             @ModelAttribute("details") User details,
             Model model
     ) {
@@ -96,9 +97,9 @@ public class UserController {
         return "users/details";
     }
 
-    @GetMapping("/{profile_name}/edit-details")
+    @GetMapping("/{login}/edit-details")
     public String openEditDetails(
-            @PathVariable(name = "profile_name") String login,
+            @PathVariable String login,
             Model model,
             @ModelAttribute("details") User details
     ) {
@@ -114,9 +115,9 @@ public class UserController {
         return "users/edit_details";
     }
 
-    @PostMapping("/{profile_name}/edit-details")
+    @PostMapping("/{login}/edit-details")
     public String saveChangedDetails(
-            @PathVariable(name = "profile_name") String login,
+            @PathVariable String login,
             Model model,
             @ModelAttribute("details") User details,
             BindingResult validationState
@@ -130,9 +131,9 @@ public class UserController {
         return "redirect:/users/all";
     }
 
-    @GetMapping("/{profile_name}/profile/create")
+    @GetMapping("/{login}/profile/create")
     public String createProfile(
-            @PathVariable(name = "profile_name") String login
+            @PathVariable String login
     ) {
         Optional<User> found = userRepository.findByLogin(login);
         if (found.isEmpty()) {
@@ -145,9 +146,9 @@ public class UserController {
         return "redirect:/users/%s/details".formatted(login);
     }
 
-    @GetMapping("/{profile_name}")
+    @GetMapping("/{login}")
     public String openProfile(
-            @PathVariable(name = "profile_name") String login,
+            @PathVariable String login,
             Model model,
             User profile
     ) {
@@ -160,9 +161,9 @@ public class UserController {
         return "users/profile";
     }
 
-    @GetMapping("/{profile_name}/edit")
+    @GetMapping("/{login}/edit")
     public String openEditProfile(
-            @PathVariable(name = "profile_name") String login,
+            @PathVariable String login,
             Model model,
             @ModelAttribute(name = "profile") User user
     ) {
@@ -175,9 +176,9 @@ public class UserController {
         return "users/edit_profile";
     }
 
-    @PostMapping("/{profile_name}/edit")
+    @PostMapping("/{login}/edit")
     public String saveEditProfile(
-            @PathVariable(name = "profile_name") String login,
+            @PathVariable String login,
             @ModelAttribute(name = "profile") @Valid User user,
             BindingResult validState
     ) {
@@ -194,9 +195,9 @@ public class UserController {
         return "redirect:/users/" + user.getLogin();
     }
 
-    @GetMapping("/{profile_name}/delete")
+    @GetMapping("/{login}/delete")
     public String deleteUser(
-            @PathVariable(name = "profile_name") String login
+            @PathVariable String login
     ) {
         Optional<User> found = userRepository.findByLogin(login);
         if (found.isPresent()) {

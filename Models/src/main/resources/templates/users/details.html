@@ -59,18 +59,18 @@
         <div class="row">
             <div class="col">
                 <div th:if="${details.hasProfile()}">
-                    <a class="btn btn-outline-primary" th:href="'/users/' + ${profile_name} + '/profile'">Profile</a>
+                    <a class="btn btn-outline-primary" th:href="'/users/' + ${login} + '/profile'">Profile</a>
                 </div>
                 <div th:unless="${details.hasProfile()}">
-                    <a class="btn btn-success" th:href="'/users/' + ${profile_name} + '/profile/create'">Create
+                    <a class="btn btn-success" th:href="'/users/' + ${login} + '/profile/create'">Create
                         profile</a>
                 </div>
             </div>
             <div class="col">
-                <a role="button" class="btn btn-warning" th:href="'/users/' + ${profile_name} + '/edit'">Edit</a>
+                <a role="button" class="btn btn-warning" th:href="'/users/' + ${login} + '/edit'">Edit</a>
             </div>
             <div class="col">
-                <a role="button" class="btn btn-danger" th:href="'/users/' + ${profile_name} + '/delete'">Delete</a>
+                <a role="button" class="btn btn-danger" th:href="'/users/' + ${login} + '/delete'">Delete</a>
             </div>
             <div class="row filler"></div>
         </div>

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:form="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title th:text="'Edit ' + ${profile_name}">EDIT USER</title>
+    <title th:text="'Edit ' + ${login}">EDIT USER</title>
 
     <link rel="stylesheet" type="text/css" href="/flexed-row.css">
     <link rel="stylesheet" type="text/css" href="/table-list.css">
@@ -43,9 +43,9 @@
 <div th:insert="fragments/headers :: header"></div>
 
 <div class="main-content">
-    <form id="edit-user" th:action="'/users/' + ${profile_name} + '/edit'" method="post" th:object="${profile}">
+    <form id="edit-user" th:action="'/users/' + ${login} + '/edit'" method="post" th:object="${profile}">
         <fieldset>
-            <legend><h2 th:text="'Edit ' + ${profile_name}">EDIT USER</h2></legend>
+            <legend><h2 th:text="'Edit ' + ${login}">EDIT USER</h2></legend>
         </fieldset>
 
         <input type="hidden" th:field="*{id}"/>
@@ -81,7 +81,7 @@
         <div class="flexed-row">
             <button class="btn btn-success" type="submit">Save changes</button>
             <a role="button" class="btn btn-danger"
-               th:href="'/users/' + ${profile_name}">Back to profile</a>
+               th:href="'/users/' + ${login}">Back to profile</a>
         </div>
     </form>
 </div>
