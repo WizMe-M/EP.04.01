@@ -1,17 +1,16 @@
 package com.timkin.models.controller;
 
-import com.timkin.models.entity.Profile;
+import com.timkin.models.entity.Role;
 import com.timkin.models.entity.User;
-import com.timkin.models.repo.ProfileRepository;
+import com.timkin.models.repo.RoleRepository;
 import com.timkin.models.repo.UserRepository;
-import com.timkin.models.viewmodel.UserProfileViewModel;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,12 +18,12 @@ import java.util.Optional;
 @RequestMapping("/users")
 public class UserController {
 
-    private final ProfileRepository profileRepository;
+    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
 
-    public UserController(UserRepository userRepository, ProfileRepository profileRepository) {
+    public UserController(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
-        this.profileRepository = profileRepository;
+        this.roleRepository = roleRepository;
     }
 
     @GetMapping
@@ -34,10 +33,8 @@ public class UserController {
 
     @GetMapping("/all")
     public String openAllUsersTable(Model model) {
-        List<User> allUsers = userRepository.findAll();
-        List<Profile> allProfiles = profileRepository.findAll();
-        List<UserProfileViewModel> vm = zipInViewModels(allUsers, allProfiles);
-        model.addAttribute("users", vm);
+        List<User> all = userRepository.findAll();
+        model.addAttribute("users", all);
         return "users/all_users";
     }
 
@@ -47,38 +44,29 @@ public class UserController {
             Model model
     ) {
         List<User> filtered = userRepository.findByLoginContainsIgnoreCase(searchString);
-        List<Profile> allProfiles = profileRepository.findAll();
-        List<UserProfileViewModel> vm = zipInViewModels(filtered, allProfiles);
-        model.addAttribute("users", vm);
+        model.addAttribute("users", filtered);
         return "users/all_users";
     }
 
-    private List<UserProfileViewModel> zipInViewModels(List<User> users, List<Profile> profiles) {
-        ArrayList<UserProfileViewModel> viewModels = new ArrayList<>();
-        for (User u : users) {
-            Profile profile = null;
-            for (Profile p : profiles) {
-                if (p.getId().equals(u.getId())) {
-                    profile = p;
-                    break;
-                }
-            }
-            UserProfileViewModel vm = new UserProfileViewModel(u, profile);
-            viewModels.add(vm);
-        }
-        return viewModels;
-    }
-
     @GetMapping("/add")
-    public String openAddUserPage(User user) {
+    public String openAddUserPage(
+            @ModelAttribute User user,
+            Model model
+    ) {
+        List<Role> all = roleRepository.findAll();
+        model.addAttribute("roles", all);
         return "users/add_new_user";
     }
 
     @PostMapping("/add")
     public String createUser(
+            Model model,
             @Valid User user,
-            BindingResult validState) {
+            BindingResult validState
+    ) {
         if (validState.hasErrors()) {
+            List<Role> roles = roleRepository.findAll();
+            model.addAttribute("roles", roles);
             return "users/add_new_user";
         }
         userRepository.save(user);

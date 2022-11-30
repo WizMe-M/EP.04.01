@@ -40,29 +40,46 @@
             <legend><h2>Create user</h2></legend>
         </fieldset>
 
-        <div class="col-12">
-            <label for="login" class="form-label">Login</label>
-            <div class="input-group has-validation">
+        <div class="d-grid gap-3">
+            <div class="input-group">
                 <span class="input-group-text">@</span>
-                <input th:field="*{login}" type="text" class="form-control" id="login" placeholder="Login">
+                <div class="form-floating">
+                    <input type="text" class="form-control" id="login" placeholder="Login" th:field="*{login}">
+                    <label for="login">Login</label>
+                </div>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>
             </div>
-        </div>
 
-        <div class="col-12">
-            <label for="password" class="form-label">Password</label>
-            <div class="input-group has-validation">
-                <input th:field="*{password}" type="password" class="form-control" id="password" placeholder="Password">
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+            <div class="col-12">
+                <div class="form-floating">
+                    <input type="password" class="form-control" id="password" placeholder="Password"
+                           th:field="*{password}">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                </div>
             </div>
-        </div>
 
-        <!--TODO: move to the profile creation-->
-        <hr class="my-4">
+            <div th:unless="${#lists.isEmpty(roles)}">
+                <div class="input-group">
+                    <button class="btn btn-outline-secondary" formaction="/roles/add">Add role</button>
+                    <div class="form-floating">
+                        <select class="form-select" id="roles" name="role">
+                            <option value="-1" hidden disabled selected>Select some role</option>
+                            <!--/*@thymesVar id="role" type="com.timkin.models.entity.Role"*/-->
+                            <option th:each="role : ${roles}"
+                                    th:value="${role.getId()}"
+                                    th:text="${role.getName()}"></option>
+                        </select>
+                        <label for="roles">User's role</label>
+                    </div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></div>
+                </div>
+            </div>
 
-        <div class="flexed-row">
-            <button class="btn btn-success" type="submit">Add user</button>
-            <a role="button" class="btn btn-danger" href="/users/all">Cancel</a>
+            <div class="flexed-row">
+                <button class="btn btn-success" type="submit">Add user</button>
+                <a role="button" class="btn btn-danger" href="/users/all">Cancel</a>
+            </div>
         </div>
     </form>
 </div>

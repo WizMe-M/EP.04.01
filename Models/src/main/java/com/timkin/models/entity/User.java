@@ -34,7 +34,15 @@ public class User {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", foreignKey = @ForeignKey(name = "fk_user_role"))
+    @NotNull(message = "Role must be set for user")
     private Role role;
+
+    @OneToOne(mappedBy = "user")
+    private Profile profile;
+
+    public boolean hasProfile() {
+        return profile != null;
+    }
 
     public User() {
     }
@@ -82,5 +90,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
     }
 }
