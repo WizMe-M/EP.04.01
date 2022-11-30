@@ -36,44 +36,44 @@
     <!--/*@thymesVar id="engine" type="com.timkin.models.entity.Engine"*/-->
     <form action="/engines/add" method="post" th:object="${engine}">
         <fieldset>
-            <legend><h2>Add engine</h2></legend>
+            <legend><h2>Add new engine</h2></legend>
         </fieldset>
 
-        <div class="col-12">
+        <div class="d-grid gap-3">
             <div class="form-floating">
-                <label for="model" class="form-label">Model</label>
-                <input type="text" class="form-control" id="model" th:field="*{model}">
+                <input type="text" class="form-control" id="model" placeholder="Model" th:field="*{model}">
+                <label for="model">Model name</label>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></div>
             </div>
-        </div>
 
-        <div class="col-12">
             <div class="form-floating">
-                <label for="volume" class="form-label">Volume</label>
-                <input type="number" class="form-control" id="volume" th:field="*{volume}" required>
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('volume')}" th:errors="*{volume}"></div>
+                <input type="number" required class="form-control" id="volume" placeholder="Volume"
+                       th:field="*{volume}">
+                <label for="volume" class="form-label">Volume in cm<sup>3</sup></label>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('volume')}"
+                     th:errors="*{volume}"></div>
             </div>
-        </div>
 
-        <div class="col-12" th:if="${#lists.isEmpty(engine_types)}">
-            <div class="input-group">
-                <span class="input-group-addon"><a role="button" href="/engines/add">Create new type</a></span>
-                <div class="form-floating">
-                    <!--/*@thymesVar id="type" type="com.timkin.models.entity.EngineType"*/-->
-                    <select class="form-select" id="engine_types" aria-label="Floating label select example"
-                            title="Please select engine types" th:each="type : ${engine_types}">
-                        <option th:value="${type.getId()}" th:text="${type.getName()}"></option>
-                    </select>
-                    <label for="engine_types">Engine type</label>
+            <div th:unless="${#lists.isEmpty(engine_types)}">
+                <div class="input-group">
+                    <button class="btn btn-outline-secondary" formaction="/engines/add-type" formmethod="get">Add type</button>
+                    <div class="form-floating">
+                        <select class="form-select" id="types" th:field="*{type}">
+                            <!--/*@thymesVar id="engine_type" type="com.timkin.models.entity.EngineType"*/-->
+                            <option th:each="engine_type : ${engine_types}"
+                                    th:value="${engine_type.getId()}"
+                                    th:text="${engine_type.getName()}"></option>
+                        </select>
+                        <label for="types">User's role</label>
+                    </div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
                 </div>
             </div>
-        </div>
 
-        <hr class="my-4">
-
-        <div class="flexed-row">
-            <button class="btn btn-success" type="submit">Add user</button>
-            <a role="button" class="btn btn-danger" href="/users/all">Cancel</a>
+            <div class="flexed-row">
+                <button class="btn btn-success" type="submit">Add engine</button>
+                <a role="button" class="btn btn-danger" href="/engines/all">Cancel</a>
+            </div>
         </div>
     </form>
 </div>

@@ -2,6 +2,7 @@ package com.timkin.models.controller;
 
 import com.timkin.models.entity.Engine;
 import com.timkin.models.entity.EngineType;
+import com.timkin.models.entity.Role;
 import com.timkin.models.repo.EngineRepository;
 import com.timkin.models.repo.EngineTypeRepository;
 import org.springframework.stereotype.Controller;
@@ -49,13 +50,28 @@ public class EngineController {
     }
 
     @GetMapping("/add")
-    public String createEngine(
+    public String openCreateEngine(
             @ModelAttribute Engine engine,
             Model model
     ) {
         List<EngineType> types = typeRepository.findAll();
         model.addAttribute("engine_types", types);
         return "engines/add_engine";
+    }
+
+    @PostMapping("/add")
+    public String createEngine(
+            @ModelAttribute @Valid Engine engine,
+            BindingResult validationState,
+            Model model
+    ){
+        if (validationState.hasErrors()) {
+            List<EngineType> engines = typeRepository.findAll();
+            model.addAttribute("engine_types", engines);
+            return "engines/add_engine";
+        }
+        engineRepository.save(engine);
+        return "redirect:/engines/all";
     }
 
     @GetMapping("/add-type")

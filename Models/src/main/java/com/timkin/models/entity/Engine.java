@@ -1,10 +1,7 @@
 package com.timkin.models.entity;
 
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
+import javax.validation.constraints.*;
 
 @Entity
 @Table(name = "engines")
@@ -15,7 +12,9 @@ public class Engine {
     @Column
     private int id;
 
-    @Column
+    @Column(length = 30, nullable = false)
+    @Size(min = 3, max = 30,message = "Model name's length should be from 3 to 30 characters")
+    @NotBlank(message = "Model name should not be null, empty or contain only space characters")
     private String model;
 
     @Column(nullable = false)
@@ -27,6 +26,7 @@ public class Engine {
 
     @ManyToOne
     @JoinColumn(name = "engine_type_id", foreignKey = @ForeignKey(name = "fk_engine_enginetype"))
+    @NotNull(message = "Engine type can't be null")
     private EngineType type;
 
     public Engine() {
