@@ -63,8 +63,7 @@
                 <div class="input-group">
                     <button class="btn btn-outline-secondary" formaction="/roles/add">Add role</button>
                     <div class="form-floating">
-                        <select class="form-select" id="roles" name="role">
-                            <option value="-1" hidden disabled selected>Select some role</option>
+                        <select class="form-select" id="roles" th:field="*{role}">
                             <!--/*@thymesVar id="role" type="com.timkin.models.entity.Role"*/-->
                             <option th:each="role : ${roles}"
                                     th:value="${role.getId()}"
