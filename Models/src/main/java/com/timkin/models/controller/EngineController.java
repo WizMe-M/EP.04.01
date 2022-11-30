@@ -6,11 +6,10 @@ import com.timkin.models.repo.EngineRepository;
 import com.timkin.models.repo.EngineTypeRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Controller
@@ -57,5 +56,22 @@ public class EngineController {
         List<EngineType> types = typeRepository.findAll();
         model.addAttribute("engine_types", types);
         return "engines/add_engine";
+    }
+
+    @GetMapping("/add-type")
+    public String openAddType(@ModelAttribute("type") EngineType engineType) {
+        return "engines/add_engine_type";
+    }
+
+    @PostMapping("/add-type")
+    public String addType(
+            @ModelAttribute("type") @Valid EngineType engineType,
+            BindingResult validationState
+    ) {
+        if (validationState.hasErrors()) {
+            return "engines/add_engine_type";
+        }
+        typeRepository.save(engineType);
+        return "redirect:/engines/all";
     }
 }
