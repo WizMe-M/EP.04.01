@@ -73,6 +73,22 @@ public class UserController {
         return "redirect:/users/all";
     }
 
+    @GetMapping("/{profile_name}/details")
+    public String openDetails(
+            @PathVariable(name = "profile_name") String login,
+            @ModelAttribute("details") User details,
+            Model model
+    ) {
+        Optional<User> found = userRepository.findByLogin(login);
+        if (found.isEmpty()) {
+            return "redirect:/users/all";
+        }
+        details = found.get();
+        model.addAttribute("details", details);
+
+        return "users/details";
+    }
+
     @GetMapping("/{profile_name}/edit-details")
     public String openEditDetails(
             @PathVariable(name = "profile_name") String login,
