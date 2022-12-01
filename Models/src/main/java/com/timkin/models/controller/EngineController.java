@@ -53,7 +53,14 @@ public class EngineController {
         return "engines/all_engines_and_types";
     }
 
-    @GetMapping("/info/{engine_id}")
+    @GetMapping("/{engine_id}")
+    public String openEngine(
+            @PathVariable("engine_id") int id
+    ) {
+        return "redirect:/engines/%d/info".formatted(id);
+    }
+
+    @GetMapping("/{engine_id}/info")
     public String openEngineInfo(
             @PathVariable("engine_id") int id,
             @ModelAttribute("info") Engine engine,
@@ -134,12 +141,12 @@ public class EngineController {
         return "redirect:/engines/all";
     }
 
-    @GetMapping("/add-type")
+    @GetMapping("/types/add")
     public String openAddType(@ModelAttribute("type") EngineType engineType) {
         return "engines/add_engine_type";
     }
 
-    @PostMapping("/add-type")
+    @PostMapping("/types/add")
     public String addType(
             @ModelAttribute("type") @Valid EngineType engineType,
             BindingResult validationState
@@ -151,7 +158,7 @@ public class EngineController {
         return "redirect:/engines/all";
     }
 
-    @GetMapping("/rename-type/{type_id}")
+    @GetMapping("/types/{type_id}/edit")
     public String openRenameType(
             @PathVariable("type_id") int id,
             @ModelAttribute("type") EngineType type,
@@ -166,7 +173,7 @@ public class EngineController {
         return "engines/edit_engine_type";
     }
 
-    @PostMapping("/rename-type/{type_id}")
+    @PostMapping("/types/{type_id}/edit")
     public String renameType(
             @PathVariable("type_id") int id,
             @ModelAttribute("type") @Valid EngineType type,
@@ -179,7 +186,7 @@ public class EngineController {
         return "redirect:/engines/all";
     }
 
-    @GetMapping("/delete-type/{type_id}")
+    @GetMapping("/types/{type_id}/delete")
     public String deleteType(@PathVariable("type_id") int id) {
         typeRepository.deleteById(id);
         return "redirect:/engines/all";

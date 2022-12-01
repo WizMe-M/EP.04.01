@@ -42,7 +42,7 @@
     <div class="title"><h1>Engine types:</h1></div>
 
     <div class="flexed-row">
-        <div><a class="btn btn-success" href="/engines/add-type">Add type</a></div>
+        <div><a class="btn btn-success" href="/engines/types/add">Add type</a></div>
 
         <div style="margin: 0 40px;"><a class="btn btn-success" href="/engines/add">Add engine</a></div>
 
@@ -73,12 +73,8 @@
             <tr th:each="type : ${engine_types}">
                 <td th:text="${type.getId()}">ID HERE</td>
                 <td th:text="${type.getName()}">NAME HERE</td>
-                <td>
-                    <a th:href="'/engines/rename-type/' + ${type.getId()}" class="btn btn-warning">Edit</a>
-                </td>
-                <td>
-                    <a th:href="'/engines/delete-type/' + ${type.getId()}" class="btn btn-danger">Delete</a>
-                </td>
+                <td><a th:href="'/engines/types/' + ${type.getId()} + '/edit'" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="'/engines/types/' + ${type.getId()} + '/delete'" class="btn btn-danger">Delete</a></td>
             </tr>
             </tbody>
         </table>
@@ -107,15 +103,9 @@
                 <td th:text="${engine.getModel()}">MODEL HERE</td>
                 <td th:text="${engine.getVolume()}">VOLUME HERE</td>
                 <td th:text="${engine.getType().getName()}">TYPE NAME HERE</td>
-                <td>
-                    <a th:href="'/engines/info/' + ${engine.getId()}" class="btn btn-primary">Info</a>
-                </td>
-                <td>
-                    <a th:href="'/engines/' + ${engine.getId()} + '/edit'" class="btn btn-warning">Edit</a>
-                </td>
-                <td>
-                    <a th:href="'/engines/' + ${engine.getId()} + '/delete'" class="btn btn-danger">Delete</a>
-                </td>
+                <td><a th:href="'/engines/' + ${engine.getId()}" class="btn btn-primary">Info</a></td>
+                <td><a th:href="'/engines/' + ${engine.getId()} + '/edit'" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="'/engines/' + ${engine.getId()} + '/delete'" class="btn btn-danger">Delete</a></td>
             </tr>
             </tbody>
         </table>
