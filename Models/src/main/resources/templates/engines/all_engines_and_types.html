@@ -108,7 +108,7 @@
                 <td th:text="${engine.getVolume()}">VOLUME HERE</td>
                 <td th:text="${engine.getType().getName()}">TYPE NAME HERE</td>
                 <td>
-                    <a th:href="'/engines/info' + ${engine.getId()}" class="btn btn-primary">Details</a>
+                    <a th:href="'/engines/info/' + ${engine.getId()}" class="btn btn-primary">Info</a>
                 </td>
                 <td>
                     <a th:href="'/engines/' + ${engine.getId()} + '/edit'" class="btn btn-warning">Edit</a>
