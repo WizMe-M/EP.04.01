@@ -128,7 +128,7 @@ public class EngineController {
         return "redirect:/engines/all";
     }
 
-    @GetMapping("/{engine_id}")
+    @GetMapping("/{engine_id}/delete")
     public String deleteEngine(@PathVariable("engine_id") int id) {
         engineRepository.deleteById(id);
         return "redirect:/engines/all";
