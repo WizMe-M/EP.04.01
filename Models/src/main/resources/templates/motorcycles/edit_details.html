@@ -36,62 +36,44 @@
 
 <div class="main-content">
     <!--/*@thymesVar id="motorcycle" type="com.timkin.models.entity.Motorcycle"*/-->
-    <form id="edit-bike-details" th:object="${details}"
-          th:action="'/motorcycles/details/' + ${id} + '/edit'" method="post">
+    <form method="post" th:object="${details}">
         <fieldset>
             <legend><h2 th:text="'Edit motorcycle #' + ${id}">EDIT motorcycle</h2></legend>
         </fieldset>
 
-        <div class="col-12">
-            <label for="model" class="form-label">Model</label>
-            <div class="input-group has-validation">
-                <input id="model" type="text" class="form-control" placeholder="Model" th:field="*{model}">
+        <div class="d-grid gap-3">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="model" placeholder="Model" th:field="*{model}">
+                <label for="model" class="form-label">Model</label>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></div>
             </div>
-        </div>
 
-        <div class="col-12">
-            <label for="price" class="form-label">Price</label>
-            <div class="input-group has-validation">
-                <input type="number" class="form-control" id="price" placeholder="Price" required th:field="*{price}">
+            <div class="form-floating">
+                <input type="number" required class="form-control" id="price" placeholder="Price" th:field="*{price}">
+                <label for="price" class="form-label">Price in dollars</label>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
             </div>
-        </div>
 
-        <!--TODO: replace with engine selection-->
-        <div class="col-12">
-            <label for="engine_volume" class="form-label">Engine volume</label>
-            <div class="input-group has-validation">
-                <input type="number" class="form-control" id="engine_volume" placeholder="Engine volume"
-                       required th:field="*{engineVolume}">
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('engineVolume')}"
-                     th:errors="*{engineVolume}"></div>
+            <div th:unless="${#lists.isEmpty(engines)}">
+                <div class="input-group">
+                    <a class="btn btn-outline-secondary" href="/engines/add">Add engine</a>
+                    <div class="form-floating">
+                        <select class="form-select" id="engines" th:field="*{engine}">
+                            <!--/*@thymesVar id="engine" type="com.timkin.models.entity.Engine"*/-->
+                            <option th:each="engine : ${engines}"
+                                    th:value="${engine.getId()}"
+                                    th:text="${engine.getModel()}"></option>
+                        </select>
+                        <label for="engines">Motorcycle's engine Model</label>
+                    </div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('engine')}" th:errors="*{engine}"></div>
+                </div>
             </div>
-        </div>
 
-        <!--TODO: replace with engine selection-->
-        <div class="col-12">
-            <label for="engine_type" class="form-label">Engine type</label>
-            <div class="input-group has-validation">
-                <input id="engine_type" type="text" class="form-control" placeholder="Engine type"
-                       th:field="*{engineType}">
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('engineType')}"
-                     th:errors="*{engineType}"></div>
+            <div class="flexed-row">
+                <button class="btn btn-success" type="submit">Save changes</button>
+                <a class="btn btn-danger" href="/motorcycles/all">Cancel</a>
             </div>
-        </div>
-
-        <!--TODO: remove-->
-        <div class="form-check">
-            <input type="checkbox" class="form-check-input" id="sold" th:field="*{sold}">
-            <label class="form-check-label" for="sold">Was motorcycle sold?</label>
-            <div class="invalid-feedback" th:if="${#fields.hasErrors('sold')}" th:errors="*{sold}"></div>
-        </div>
-
-        <hr class="my-4">
-
-        <div class="flexed-row">
-            <button class="btn btn-success" type="submit">Save changes</button>
-            <a class="btn btn-danger" th:href="'/motorcycles/details/' + ${id}">Back to motorcycle details</a>
         </div>
     </form>
 </div>

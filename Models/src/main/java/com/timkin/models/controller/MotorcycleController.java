@@ -1,6 +1,8 @@
 package com.timkin.models.controller;
 
+import com.timkin.models.entity.Engine;
 import com.timkin.models.entity.Motorcycle;
+import com.timkin.models.repo.EngineRepository;
 import com.timkin.models.repo.MotorcycleRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,9 +17,11 @@ import java.util.Optional;
 @RequestMapping("/motorcycles")
 public class MotorcycleController {
     private final MotorcycleRepository repository;
+    private final EngineRepository engineRepository;
 
-    public MotorcycleController(MotorcycleRepository repository) {
+    public MotorcycleController(MotorcycleRepository repository, EngineRepository engineRepository) {
         this.repository = repository;
+        this.engineRepository = engineRepository;
     }
 
     @GetMapping
@@ -42,37 +46,48 @@ public class MotorcycleController {
         return "motorcycles/all_bikes";
     }
 
-    @GetMapping("/add")
-    public String openAddBikePage(Motorcycle motorcycle) {
-        return "motorcycles/add_new_bike";
-    }
-
-    @PostMapping("/add")
-    public String addBike(
-            @Valid Motorcycle motorcycle,
-            BindingResult validState
-    ) {
-        if (validState.hasErrors()) {
-            return "motorcycles/add_new_bike";
-        }
-        repository.save(motorcycle);
-        return "redirect:/motorcycles/all";
+    @GetMapping("{id}")
+    public String openMotorcycle(@PathVariable int id) {
+        return "redirect:/motorcycles/details/%d".formatted(id);
     }
 
     @GetMapping("/details/{id}")
     public String openDetails(
             @PathVariable int id,
-            Model model,
-            Motorcycle motorcycle
+            Model model
     ) {
         Optional<Motorcycle> found = repository.findById(id);
         if (found.isEmpty()) {
             return "redirect:/motorcycles/all";
         }
 
-        motorcycle = found.get();
+        Motorcycle motorcycle = found.get();
         model.addAttribute("motorcycle", motorcycle);
         return "motorcycles/motorcycle_details";
+    }
+
+    @GetMapping("/add")
+    public String openAddMotorcycle(
+            @ModelAttribute Motorcycle motorcycle,
+            Model model) {
+        List<Engine> allEngines = engineRepository.findAll();
+        model.addAttribute("engines", allEngines);
+        return "motorcycles/add_new_bike";
+    }
+
+    @PostMapping("/add")
+    public String addMotorcycle(
+            @ModelAttribute @Valid Motorcycle motorcycle,
+            BindingResult validationState,
+            Model model
+    ) {
+        if (validationState.hasErrors()) {
+            List<Engine> allEngines = engineRepository.findAll();
+            model.addAttribute("engines", allEngines);
+            return "motorcycles/add_new_bike";
+        }
+        repository.save(motorcycle);
+        return "redirect:/motorcycles/all";
     }
 
     @GetMapping("/details/{id}/edit")
@@ -87,6 +102,8 @@ public class MotorcycleController {
         }
         motorcycle = found.get();
         model.addAttribute("details", motorcycle);
+        List<Engine> allEngines = engineRepository.findAll();
+        model.addAttribute("engines", allEngines);
         return "motorcycles/edit_details";
     }
 
@@ -94,14 +111,17 @@ public class MotorcycleController {
     public String saveChangedDetails(
             @PathVariable int id,
             @ModelAttribute(name = "details") @Valid Motorcycle motorcycle,
-            BindingResult validState
+            BindingResult validationState,
+            Model model
     ) {
         Optional<Motorcycle> found = repository.findById(id);
         if (found.isEmpty()) {
             return "redirect:/motorcycles/all";
         }
 
-        if (validState.hasErrors()) {
+        if (validationState.hasErrors()) {
+            List<Engine> allEngines = engineRepository.findAll();
+            model.addAttribute("engines", allEngines);
             return "motorcycles/edit_details";
         }
 
@@ -109,10 +129,13 @@ public class MotorcycleController {
         return String.format("redirect:/motorcycles/details/%d", motorcycle.getId());
     }
 
-    @GetMapping("/delete-motorcycle/{id}")
-    public String deleteMotorcycle(
-            @PathVariable int id
-    ) {
+    @GetMapping("/{id}/delete")
+    public String deleteMotorcycle(@PathVariable int id) {
+        return "redirect:/motorcycles/details/%d/delete".formatted(id);
+    }
+
+    @GetMapping("/details/{id}/delete")
+    public String deleteMotorcycleDetails(@PathVariable int id) {
         Optional<Motorcycle> found = repository.findById(id);
         if (found.isPresent()) {
             Motorcycle deleting = found.get();

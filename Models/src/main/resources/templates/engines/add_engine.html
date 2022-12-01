@@ -47,11 +47,9 @@
             </div>
 
             <div class="form-floating">
-                <input type="number" required class="form-control" id="volume" placeholder="Volume"
-                       th:field="*{volume}">
-                <label for="volume" class="form-label">Volume in cm<sup>3</sup></label>
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('volume')}"
-                     th:errors="*{volume}"></div>
+                <input type="number" required class="form-control" id="vol" placeholder="Volume" th:field="*{volume}">
+                <label for="vol" class="form-label">Volume in cm<sup>3</sup></label>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('volume')}" th:errors="*{volume}"></div>
             </div>
 
             <div th:unless="${#lists.isEmpty(engine_types)}">
@@ -64,7 +62,7 @@
                                     th:value="${engine_type.getId()}"
                                     th:text="${engine_type.getName()}"></option>
                         </select>
-                        <label for="types">User's role</label>
+                        <label for="types">Engine's type</label>
                     </div>
                     <div class="invalid-feedback" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
                 </div>

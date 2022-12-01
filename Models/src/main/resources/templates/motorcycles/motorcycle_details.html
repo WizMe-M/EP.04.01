@@ -71,25 +71,31 @@
                 <div class="col col-1">Price:</div>
                 <div class="col col-2" th:text="${motorcycle.getPrice()}"></div>
             </li>
-            <li class="table-row">
-                <div class="col col-1">Was sold:</div>
-                <div class="col col-2" th:text="${motorcycle.isSold()}"></div>
-            </li>
+
             <li class="table-header">
                 <div>Engine details</div>
             </li>
-            <!--TODO: print engine's details here-->
             <li class="table-row">
-                <div class="col col-1">Volume:</div>
-                <div class="col col-2" th:text="${motorcycle.getEngineVolume()}"></div>
+                <div class="col col-1">Model:</div>
+                <div class="col col-2" th:text="${motorcycle.getEngine().getModel()}"></div>
+            </li>
+            <li class="table-row">
+                <div class="col col-1">Volume (cm<sup>3</sup>):</div>
+                <div class="col col-2" th:text="${motorcycle.getEngine().getVolume()}"></div>
             </li>
             <li class="table-row">
                 <div class="col col-1">Type:</div>
-                <div class="col col-2" th:text="${motorcycle.getEngineType()}"></div>
+                <div class="col col-2" th:text="${motorcycle.getEngine().getType().getName()}"></div>
             </li>
 
-
-            <!--TODO: print customers here-->
+            <div th:unless="${#lists.isEmpty(motorcycle.getCustomers())}">
+                <li class="table-header">Customers:</li>
+                <!--/*@thymesVar id="customer" type="com.timkin.models.entity.Profile"*/-->
+                <li class="table-row" th:each="customer : ${motorcycle.getCustomers()}">
+                    <div class="col col-1">Full name:</div>
+                    <div class="col col-2" th:text="${customer.getLastName() + ' ' +customer.getFirstName()}"></div>
+                </li>
+            </div>
         </ul>
     </div>
 </div>
