@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Engine info</title>
+
+    <link rel="stylesheet" type="text/css" href="/flexed-row.css">
+    <link rel="stylesheet" type="text/css" href="/table-list.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+          crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"></script>
+
+    <style>
+        div.main-content {
+            margin: 0 20%;
+        }
+
+        div.title {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 30px 0;
+        }
+
+        ul.responsive-table {
+            margin: 20px 20px;
+        }
+
+        .responsive-table .col-1, .responsive-table .col-2 {
+            flex-basis: 50%;
+        }
+
+        .responsive-table .col-2 text {
+            font-weight: bold;
+        }
+
+        div.col a {
+            width: 100%;
+        }
+
+        div.flexed-row a {
+            width: 200px;
+        }
+    </style>
+
+</head>
+<body>
+<div th:insert="fragments/headers :: header"></div>
+
+<div class="main-content">
+    <div class="title">
+        <h1>Engine info</h1>
+    </div>
+
+    <div class="flexed-row">
+        <div><a class="btn btn-warning" th:href="'/engines/' + ${engine_id} + '/edit/'">Edit</a></div>
+        <div><a class="btn btn-danger" th:href="'/engines/' + ${engine_id} + '/delete/'">Delete</a></div>
+    </div>
+
+    <hr class="my-4">
+
+    <div>
+        <ul class="responsive-table">
+            <li class="table-row">
+                <div class="col col-1">Model:</div>
+                <div class="col col-2" th:text="${info.getModel()}"></div>
+            </li>
+            <li class="table-row">
+                <div class="col col-1">Volume:</div>
+                <div class="col col-2" th:text="${info.getVolume()}"></div>
+            </li>
+            <li class="table-row">
+                <div class="col col-1">Type:</div>
+                <div class="col col-2" th:text="${info.getType().getName()}"></div>
+            </li>
+        </ul>
+    </div>
+</div>
+</body>
+</html>

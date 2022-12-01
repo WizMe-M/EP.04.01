@@ -59,8 +59,13 @@ public class EngineController {
             @ModelAttribute("info") Engine engine,
             Model model
     ) {
-
-        return "";
+        Optional<Engine> found = engineRepository.findById(id);
+        if (found.isEmpty()) {
+            return "redirect:/engines/all";
+        }
+        engine = found.get();
+        model.addAttribute("info", engine);
+        return "engines/engine_info";
     }
 
     @GetMapping("/add")
