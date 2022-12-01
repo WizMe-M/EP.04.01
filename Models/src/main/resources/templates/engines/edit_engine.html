@@ -60,8 +60,7 @@
 
             <div th:unless="${#lists.isEmpty(engine_types)}">
                 <div class="input-group">
-                    <button class="btn btn-outline-secondary" formaction="/engines/add-type" formmethod="get">Add type
-                    </button>
+                    <a class="btn btn-outline-secondary" href="/engines/types/add">Add type</a>
                     <div class="form-floating">
                         <select class="form-select" id="types" th:field="*{type}">
                             <!--/*@thymesVar id="engine_type" type="com.timkin.models.entity.EngineType"*/-->

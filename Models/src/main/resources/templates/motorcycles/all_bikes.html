@@ -53,9 +53,7 @@
     </div>
 
     <div class="flexed-row">
-        <div>
-            <a role="button" class="btn btn-success" href="/motorcycles/add">Add new motorcycle</a>
-        </div>
+        <div><a class="btn btn-success" href="/motorcycles/add">Add new motorcycle</a></div>
 
         <div class="filler"></div>
 
@@ -75,9 +73,8 @@
                 <th>ID</th>
                 <th>Model</th>
                 <th>Price</th>
-                <th>Engine volume</th>
+                <th>Engine</th>
                 <th>Engine type</th>
-                <th>Is sold?</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -90,24 +87,11 @@
                 <td th:text="${bike.getId()}">ID HERE</td>
                 <td th:text="${bike.getModel()}">MODEL HERE</td>
                 <td th:text="${bike.getPrice()}">PRICE HERE</td>
-                <!--TODO: replace with engine model name-->
-                <td th:text="${bike.getEngineVolume()}">ENGINE VOLUME HERE</td>
-                <td th:text="${bike.getEngineType()}">ENGINE TYPE HERE</td>
-                <td>
-                    <input type="checkbox" disabled th:checked="${bike.isSold()}">
-                </td>
-                <td>
-                    <a th:href="'/motorcycles/details/' + ${bike.getId()}" role="button"
-                       class="btn btn-primary">Details</a>
-                </td>
-                <td>
-                    <a th:href="'/motorcycles/details/' + ${bike.getId()} + '/edit'" role="button"
-                       class="btn btn-warning">Edit</a>
-                </td>
-                <td>
-                    <a th:href="'/motorcycles/delete-motorcycle/' + ${bike.getId()}" role="button"
-                       class="btn btn-danger">Delete</a>
-                </td>
+                <td th:text="${bike.getEngine().getModel()}">ENGINE MODEL</td>
+                <td th:text="${bike.getEngine().getType().getName()}">ENGINE TYPE HERE</td>
+                <td><a th:href="'/motorcycles/' + ${bike.getId()}" class="btn btn-primary">Details</a></td>
+                <td><a th:href="'/motorcycles/details/' + ${bike.getId()} + '/edit'" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="'/motorcycles/' + ${bike.getId()} + '/delete'" class="btn btn-danger">Delete</a></td>
             </tr>
             </tbody>
         </table>

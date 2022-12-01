@@ -66,12 +66,8 @@
                         profile</a>
                 </div>
             </div>
-            <div class="col">
-                <a role="button" class="btn btn-warning" th:href="'/users/' + ${login} + '/edit'">Edit</a>
-            </div>
-            <div class="col">
-                <a role="button" class="btn btn-danger" th:href="'/users/' + ${login} + '/delete'">Delete</a>
-            </div>
+            <div class="col"><a class="btn btn-warning" th:href="'/users/' + ${login} + '/edit'">Edit</a></div>
+            <div class="col"><a class="btn btn-danger" th:href="'/users/' + ${login} + '/delete'">Delete</a></div>
             <div class="row filler"></div>
         </div>
     </div>
