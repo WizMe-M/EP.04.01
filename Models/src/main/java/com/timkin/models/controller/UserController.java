@@ -180,14 +180,14 @@ public class UserController {
     public String saveEditProfile(
             @PathVariable String login,
             @ModelAttribute(name = "profile") @Valid User user,
-            BindingResult validState
+            BindingResult validationState
     ) {
         Optional<User> found = userRepository.findByLogin(login);
         if (found.isEmpty()) {
             return "redirect:/users/all";
         }
 
-        if (validState.hasErrors()) {
+        if (validationState.hasErrors()) {
             return "users/edit_profile";
         }
 
