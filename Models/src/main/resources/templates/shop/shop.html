@@ -33,7 +33,7 @@
                         <p class="card-text" th:text="'Engine model: ' + ${bike.getEngine().getModel()}"></p>
                         <p class="card-text" th:text="'Engine volume: ' + ${bike.getEngine().getVolume()}"></p>
                         <p class="card-text" th:text="'Engine type: ' + ${bike.getEngine().getType().getName()}"></p>
-                        <a class="btn btn-info w-100" href="/shop">Purchase</a>
+                        <a class="btn btn-info w-100" th:href="'/shop/purchase/' + ${bike.getId()}">Purchase</a>
                     </div>
                 </div>
             </div>

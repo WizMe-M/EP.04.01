@@ -6,12 +6,12 @@ import com.timkin.models.repo.MotorcycleRepository;
 import com.timkin.models.repo.ProfileRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/shop")
@@ -42,12 +42,38 @@ public class ShopController {
             @PathVariable("motorcycle_id") int id,
             Model model
     ) {
+        assignForPurchasePage(model, id);
+        return "shop/purchase";
+    }
+
+    @PostMapping("/purchase/{motorcycle_id}")
+    public String purchase(
+            @PathVariable("motorcycle_id") int id,
+            @RequestParam("customer_id") UUID customer_id,
+            Model model
+    ) {
+        Optional<Profile> foundProfile = profileRepository.findById(customer_id);
+        Optional<Motorcycle> foundBike = motorcycleRepository.findById(id);
+        if (foundProfile.isEmpty() || foundBike.isEmpty()) {
+            assignForPurchasePage(model, id);
+            return "shop/purchase";
+        }
+
+        Profile customer = foundProfile.get();
+        Motorcycle bike = foundBike.get();
+        customer.getPurchases().add(bike);
+        profileRepository.save(customer);
+        return "redirect:/shop";
+    }
+
+    private void assignForPurchasePage(Model model, int id) {
         Motorcycle motorcycle = motorcycleRepository.findById(id).orElseThrow();
         List<Profile> alreadyBoughtCustomers = motorcycle.getCustomers();
         List<Profile> allCustomers = profileRepository.findAll();
         List<Profile> customers = exceptCustomers(allCustomers, alreadyBoughtCustomers);
+
         model.addAttribute("customers", customers);
-        return "shop/purchase";
+        model.addAttribute("bike", motorcycle);
     }
 
     private static List<Profile> exceptCustomers(List<Profile> total, List<Profile> exceptable) {
