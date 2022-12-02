@@ -55,24 +55,23 @@
                     <input type="password" class="form-control" id="password" placeholder="Password"
                            th:field="*{password}">
                     <label for="password" class="form-label">Password</label>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}"
+                         th:errors="*{password}"></div>
                 </div>
             </div>
 
-            <div th:unless="${#lists.isEmpty(roles)}">
-                <div class="input-group">
-                    <button class="btn btn-outline-secondary" formaction="/roles/add">Add role</button>
-                    <div class="form-floating">
-                        <select class="form-select" id="roles" th:field="*{role}">
-                            <!--/*@thymesVar id="role" type="com.timkin.models.entity.Role"*/-->
-                            <option th:each="role : ${roles}"
-                                    th:value="${role.getId()}"
-                                    th:text="${role.getName()}"></option>
-                        </select>
-                        <label for="roles">User's role</label>
-                    </div>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></div>
+            <div class="input-group">
+                <button class="btn btn-outline-secondary" formaction="/roles/add">Add role</button>
+                <div class="form-floating">
+                    <select class="form-select" id="roles" th:field="*{role}">
+                        <!--/*@thymesVar id="role" type="com.timkin.models.entity.Role"*/-->
+                        <option th:each="role : ${roles}"
+                                th:value="${role.getId()}"
+                                th:text="${role.getName()}"></option>
+                    </select>
+                    <label for="roles">User's role</label>
                 </div>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('role')}" th:errors="*{role}"></div>
             </div>
 
             <div class="flexed-row">

@@ -52,20 +52,18 @@
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('volume')}" th:errors="*{volume}"></div>
             </div>
 
-            <div th:unless="${#lists.isEmpty(engine_types)}">
-                <div class="input-group">
-                    <a class="btn btn-outline-secondary" href="/engines/types/add">Add type</a>
-                    <div class="form-floating">
-                        <select class="form-select" id="types" th:field="*{type}">
-                            <!--/*@thymesVar id="engine_type" type="com.timkin.models.entity.EngineType"*/-->
-                            <option th:each="engine_type : ${engine_types}"
-                                    th:value="${engine_type.getId()}"
-                                    th:text="${engine_type.getName()}"></option>
-                        </select>
-                        <label for="types">Engine's type</label>
-                    </div>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
+            <div class="input-group">
+                <a class="btn btn-outline-secondary" href="/engines/types/add">Add type</a>
+                <div class="form-floating">
+                    <select class="form-select" id="types" th:field="*{type}">
+                        <!--/*@thymesVar id="engine_type" type="com.timkin.models.entity.EngineType"*/-->
+                        <option th:each="engine_type : ${engine_types}"
+                                th:value="${engine_type.getId()}"
+                                th:text="${engine_type.getName()}"></option>
+                    </select>
+                    <label for="types">Engine's type</label>
                 </div>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
             </div>
 
             <div class="flexed-row">
