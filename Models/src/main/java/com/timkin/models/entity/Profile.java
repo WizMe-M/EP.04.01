@@ -1,6 +1,7 @@
 package com.timkin.models.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,19 +15,16 @@ public class Profile {
     private UUID id;
 
     @Column
+    @NotBlank(message = "First name should not be empty")
     private String firstName;
 
     @Column
+    @NotBlank(message = "Last name should not be empty")
     private String lastName;
 
     @Column
+    @NotBlank(message = "Patronymic should not be empty")
     private String patronymic;
-
-    @Column
-    private int age;
-
-    @Column
-    private String description;
 
     @OneToOne(fetch = FetchType.EAGER)
     @MapsId
@@ -40,6 +38,7 @@ public class Profile {
             inverseJoinColumns = @JoinColumn(name = "motorcycle_id", referencedColumnName = "id"),
             inverseForeignKey = @ForeignKey(name = "fk_purchasedmotorcycles_motorcycle"))
     private List<Motorcycle> purchases;
+
     public Profile() {
     }
 
@@ -77,22 +76,6 @@ public class Profile {
 
     public void setPatronymic(String patronymic) {
         this.patronymic = patronymic;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public User getUser() {

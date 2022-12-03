@@ -3,9 +3,10 @@ package com.timkin.models.controller;
 import com.timkin.models.entity.Profile;
 import com.timkin.models.entity.Role;
 import com.timkin.models.entity.User;
+import com.timkin.models.exceptions.UserNotFoundException;
 import com.timkin.models.repo.ProfileRepository;
 import com.timkin.models.repo.RoleRepository;
-import com.timkin.models.repo.UserRepository;
+import com.timkin.models.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,26 +14,28 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/users")
 public class UserController {
 
+    //region ctor
+    private final UserService service;
     private final RoleRepository roleRepository;
-    private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
 
     public UserController(
-            UserRepository userRepository,
+            UserService service,
             RoleRepository roleRepository,
             ProfileRepository profileRepository
     ) {
-        this.userRepository = userRepository;
+        this.service = service;
         this.roleRepository = roleRepository;
         this.profileRepository = profileRepository;
     }
+    //endregion
 
+    //region table
     @GetMapping
     public String index() {
         return "redirect:/users/all";
@@ -40,7 +43,7 @@ public class UserController {
 
     @GetMapping("/all")
     public String openAllUsersTable(Model model) {
-        List<User> all = userRepository.findAll();
+        List<User> all = service.findAll();
         model.addAttribute("users", all);
         return "users/all_users";
     }
@@ -50,11 +53,13 @@ public class UserController {
             @RequestParam(name = "s") String searchString,
             Model model
     ) {
-        List<User> filtered = userRepository.findByLoginContainsIgnoreCase(searchString);
+        List<User> filtered = service.findAll(searchString);
         model.addAttribute("users", filtered);
         return "users/all_users";
     }
+    //endregion
 
+    //region add user
     @GetMapping("/add")
     public String openAddUserPage(
             @ModelAttribute User user,
@@ -66,7 +71,7 @@ public class UserController {
     }
 
     @PostMapping("/add")
-    public String createUser(
+    public String addUser(
             Model model,
             @Valid User user,
             BindingResult validationState
@@ -76,38 +81,32 @@ public class UserController {
             model.addAttribute("roles", roles);
             return "users/add_new_user";
         }
-        userRepository.save(user);
+        service.add(user);
         return "redirect:/users/all";
     }
+    //endregion
 
+    //region details
     @GetMapping("/{login}/details")
     public String openDetails(
             @PathVariable
             String login,
             @ModelAttribute("details") User details,
             Model model
-    ) {
-        Optional<User> found = userRepository.findByLogin(login);
-        if (found.isEmpty()) {
-            return "redirect:/users/all";
-        }
-        details = found.get();
+    ) throws UserNotFoundException {
+        details = service.find(login);
         model.addAttribute("details", details);
 
         return "users/details";
     }
 
-    @GetMapping("/{login}/edit-details")
+    @GetMapping("/{login}/details/edit")
     public String openEditDetails(
             @PathVariable String login,
             Model model,
             @ModelAttribute("details") User details
-    ) {
-        Optional<User> found = userRepository.findByLogin(login);
-        if (found.isEmpty()) {
-            return "redirect:/users/all";
-        }
-        details = found.get();
+    ) throws UserNotFoundException {
+        details = service.find(login);
         model.addAttribute("details", details);
 
         List<Role> roles = roleRepository.findAll();
@@ -115,95 +114,111 @@ public class UserController {
         return "users/edit_details";
     }
 
-    @PostMapping("/{login}/edit-details")
-    public String saveChangedDetails(
+    @PostMapping("/{login}/details/edit")
+    public String editDetails(
             @PathVariable String login,
             Model model,
             @ModelAttribute("details") User details,
             BindingResult validationState
-    ) {
+    ) throws UserNotFoundException {
+        service.find(login);
         if (validationState.hasErrors()) {
             List<Role> roles = roleRepository.findAll();
             model.addAttribute("roles", roles);
             return "users/edit_details";
         }
-        userRepository.save(details);
+        service.edit(details);
         return "redirect:/users/all";
     }
+    //endregion
 
+    //region profile
     @GetMapping("/{login}/profile/create")
-    public String createProfile(
-            @PathVariable String login
-    ) {
-        Optional<User> found = userRepository.findByLogin(login);
-        if (found.isEmpty()) {
-            return "redirect:/users/all";
+    public String openCreateProfile(
+            @PathVariable String login,
+            Model model
+    ) throws UserNotFoundException {
+        User user = service.find(login);
+        if (user.hasProfile()) {
+            return "redirect:/users/%s/profile".formatted(login);
         }
-        User user = found.get();
-        Profile profile = new Profile(user);
-        profileRepository.save(profile);
 
-        return "redirect:/users/%s/details".formatted(login);
+        Profile profile = new Profile();
+        model.addAttribute(profile);
+        return "users/create_profile";
     }
 
-    @GetMapping("/{login}")
+    @PostMapping("/{login}/profile/create")
+    public String createProfile(
+            @PathVariable String login,
+            @ModelAttribute @Valid Profile profile,
+            BindingResult validationState
+    ) throws UserNotFoundException {
+        User user = service.find(login);
+
+        if (validationState.hasErrors()) {
+            return "users/create_profile";
+        }
+        profile.setUser(user);
+        profileRepository.save(profile);
+        return "redirect:/users/%s/profile".formatted(login);
+    }
+
+    @GetMapping("/{login}/profile")
     public String openProfile(
             @PathVariable String login,
-            Model model,
-            User profile
-    ) {
-        Optional<User> found = userRepository.findByLogin(login);
-        if (found.isEmpty()) {
+            Model model
+    ) throws UserNotFoundException {
+        User user = service.find(login);
+
+        Profile profile = user.getProfile();
+        if (profile == null) {
             return "redirect:/users/all";
         }
-        profile = found.get();
-        model.addAttribute("profile", profile);
+        model.addAttribute(profile);
+
         return "users/profile";
     }
 
-    @GetMapping("/{login}/edit")
+    @GetMapping("/{login}/profile/edit")
     public String openEditProfile(
             @PathVariable String login,
-            Model model,
-            @ModelAttribute(name = "profile") User user
-    ) {
-        Optional<User> found = userRepository.findByLogin(login);
-        if (found.isEmpty()) {
+            Model model
+    ) throws UserNotFoundException {
+        User user = service.find(login);
+
+        Profile profile = user.getProfile();
+        if (profile == null) {
             return "redirect:/users/all";
         }
-        user = found.get();
-        model.addAttribute("profile", user);
+        model.addAttribute(profile);
+
         return "users/edit_profile";
     }
 
-    @PostMapping("/{login}/edit")
+    @PostMapping("/{login}/profile/edit")
     public String saveEditProfile(
             @PathVariable String login,
-            @ModelAttribute(name = "profile") @Valid User user,
+            @ModelAttribute @Valid Profile profile,
             BindingResult validationState
-    ) {
-        Optional<User> found = userRepository.findByLogin(login);
-        if (found.isEmpty()) {
-            return "redirect:/users/all";
-        }
-
+    ) throws UserNotFoundException {
+        service.find(login);
         if (validationState.hasErrors()) {
             return "users/edit_profile";
         }
 
-        userRepository.save(user);
-        return "redirect:/users/" + user.getLogin();
+        profileRepository.save(profile);
+        return "redirect:/users/%s/profile".formatted(login);
     }
+    //endregion
 
+    //region delete user
     @GetMapping("/{login}/delete")
     public String deleteUser(
             @PathVariable String login
-    ) {
-        Optional<User> found = userRepository.findByLogin(login);
-        if (found.isPresent()) {
-            User deleting = found.get();
-            userRepository.delete(deleting);
-        }
+    ) throws UserNotFoundException {
+        service.delete(login);
         return "redirect:/users/all";
     }
+    //endregion
 }

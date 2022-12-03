@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${profile.getLogin()}"><USER></title>
+    <title th:text="|${login} profile|"></title>
 
     <link rel="stylesheet" type="text/css" href="/flexed-row.css">
     <link rel="stylesheet" type="text/css" href="/table-list.css">
@@ -17,17 +17,6 @@
             crossorigin="anonymous"></script>
 
     <style>
-        div.main-content {
-            margin: 5% 20%;
-        }
-
-        div.title {
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
         ul.responsive-table {
             margin: 20px 20px;
         }
@@ -45,35 +34,52 @@
 <body>
 <div th:insert="fragments/headers :: header"></div>
 
-<!--TODO: this is not a profile but user's personal data-->
-<div class="main-content">
-    <div class="title">
-        <h1 th:text="${profile.getLogin()}">USER PROFILE</h1>
-    </div>
+<div class="container">
+    <h2 class="text-center my-lg-5" th:text="|${login} profile|"></h2>
 
-    <div class="flexed-row">
-        <a class="btn btn-primary" th:href="'/users/' + ${profile.getLogin()} + '/edit'">Edit</a>
-        <a class="btn btn-danger" th:href="'/users/' + ${profile.getLogin()} + '/delete'">Delete</a>
-    </div>
+    <a class="btn btn-primary w-25" th:href="@{/users/{login}/profile/edit(login=${login})}">Edit</a>
 
     <hr class="my-4">
 
     <div>
         <ul class="responsive-table">
             <li class="table-row">
-                <div class="col col-1">Password:</div>
-                <div class="col col-2" th:text="${profile.getPassword()}"></div>
+                <div class="col col-1">First name:</div>
+                <div class="col col-2" th:text="${profile.getFirstName()}"></div>
             </li>
             <li class="table-row">
-                <div class="col col-1">Registered at:</div>
-                <div class="col col-2" th:text="${profile.getRegistrationDate()}"></div>
+                <div class="col col-1">Last name:</div>
+                <div class="col col-2" th:text="${profile.getLastName()}"></div>
             </li>
-            <!--TODO: move to the profile-->
             <li class="table-row">
-                <div class="col col-1">User's age:</div>
-                <div class="col col-2" th:text="${profile.getAge()}"></div>
+                <div class="col col-1">Patronymic:</div>
+                <div class="col col-2" th:text="${profile.getPatronymic()}"></div>
             </li>
         </ul>
+
+        <div th:if="${#lists.isEmpty(profile.getPurchases())}">
+            <h3 class="text-center">There aren't purchased motorcycles yet</h3>
+            <div class="mx-auto" style="width: min-content;">
+                <a class="btn btn-outline-dark" style="width: 200px;" href="/shop">Purchase one</a>
+            </div>
+        </div>
+
+        <div th:unless="${#lists.isEmpty(profile.getPurchases())}">
+            <h3 class="text-center my-lg-3">Purchases</h3>
+            <div class="row row-cols-3 g-3">
+                <!--/*@thymesVar id="bike" type="com.timkin.models.entity.Motorcycle"*/-->
+                <div th:each="bike : ${profile.getPurchases()}" class="col">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="|Model: ${bike.getModel()}|"></h5>
+                            <p class="card-text" th:text="|Price: ${bike.getPrice()}|"></p>
+                            <p class="card-text" th:text="|Engine: ${bike.getEngine().getModel()}|"></p>
+                            <p class="card-text" th:text="|Engine type: ${bike.getEngine().getType().getName()}|"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </body>
