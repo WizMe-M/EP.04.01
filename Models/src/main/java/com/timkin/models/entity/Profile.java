@@ -8,8 +8,6 @@ import java.util.UUID;
 @Entity
 @Table(name = "profiles")
 public class Profile {
-
-    // TODO: add data validation
     @Id
     @Column
     private UUID id;
