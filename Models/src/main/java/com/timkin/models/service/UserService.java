@@ -15,6 +15,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public boolean existWithLogin(String login) {
+        return userRepository.existsByLogin(login);
+    }
+
     public User find(String login) throws UserNotFoundException {
         return userRepository.findByLogin(login).orElseThrow(UserNotFoundException::new);
     }

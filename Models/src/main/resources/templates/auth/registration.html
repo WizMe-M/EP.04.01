@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+
+<body>
+<div class="container">
+    <form th:object="${user}" method="post">
+        <div>
+            <label for="login">Login</label>
+            <input type="text" th:field="*{login}" id="login" placeholder="Login"/>
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="text" th:field="*{password}" id="password" placeholder="Password"/>
+        </div>
+
+        <div class="invalid-feedback" th:text="${message}"></div>
+
+        <input type="submit" value="Register"/>
+    </form>
+
+    <a href="/">Back</a>
+</div>
+</body>
+</html>

@@ -8,11 +8,11 @@ public class MainController {
 
     @GetMapping
     public String index() {
-        return "redirect:/home";
+        return "main/index";
     }
 
     @GetMapping("/home")
     public String openHomePage() {
-        return "main/index";
+        return "main/home";
     }
 }
