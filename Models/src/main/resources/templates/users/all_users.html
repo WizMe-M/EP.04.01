@@ -75,7 +75,7 @@
                 <th>ID</th>
                 <th>Login</th>
                 <th>Registration date</th>
-                <th>Role</th>
+                <th>Roles</th>
                 <th>Has profile?</th>
                 <th></th>
                 <th></th>
@@ -89,11 +89,14 @@
                 <td th:text="${user.getId()}">ID HERE</td>
                 <td th:text="${user.getLogin()}">LOGIN HERE</td>
                 <td th:text="${user.getRegistrationDate()}">REGISTRATION DATE HERE</td>
-                <td th:text="${user.getRoles().getName()}">ROLE NAME HERE</td>
+                <td>
+                    <!--/*@thymesVar id="role" type="com.timkin.models.entity.Role"*/-->
+                    <div th:each="role : ${user.getRoles()}" th:text="${role.name()}"></div>
+                </td>
                 <td><label><input type="checkbox" th:checked="${user.hasProfile()}" disabled></label></td>
-                <td><a th:href="'/users/' + ${user.getLogin()} + '/details'" class="btn btn-primary">View details</a></td>
-                <td><a th:href="'/users/' + ${user.getLogin()} + '/edit-details'" class="btn btn-warning">Edit</a></td>
-                <td><a th:href="'/users/' + ${user.getLogin()} + '/delete'" class="btn btn-danger">Delete</a></td>
+                <td><a th:href="@{/users/{login}/details(login=${user.getLogin()})}" class="btn btn-primary">View details</a></td>
+                <td><a th:href="@{/users/{login}/details/edit(login=${user.getLogin()})}" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="@{/users/{login}/delete(login=${user.getLogin()})}" class="btn btn-danger">Delete</a></td>
             </tr>
             </tbody>
         </table>

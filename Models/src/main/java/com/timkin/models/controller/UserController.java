@@ -106,7 +106,7 @@ public class UserController {
         model.addAttribute("details", details);
 
         Role[] roles = Role.values();
-        model.addAttribute("roles", roles);
+        model.addAttribute("available_roles", roles);
         return "users/edit_details";
     }
 
@@ -120,7 +120,7 @@ public class UserController {
         service.find(login);
         if (validationState.hasErrors()) {
             Role[] roles = Role.values();
-            model.addAttribute("roles", roles);
+            model.addAttribute("available_roles", roles);
             return "users/edit_details";
         }
         service.edit(details);
