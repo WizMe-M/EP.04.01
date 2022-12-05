@@ -3,6 +3,8 @@ package com.timkin.models.config;
 import com.timkin.models.service.AuthService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -12,6 +14,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.savedrequest.CookieRequestCache;
+import org.springframework.security.web.savedrequest.RequestCache;
 
 @Configuration
 @EnableWebSecurity
@@ -22,6 +26,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     public WebSecurityConfig(AuthService authService) {
         this.authService = authService;
+    }
+
+    @Bean
+    public RequestCache getRequestCache() {
+        return new CookieRequestCache();
     }
 
     @Bean
@@ -38,9 +47,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return provider;
     }
 
+    @Bean
+    public AuthenticationManager getAuthenticationManager() {
+        return new ProviderManager(getDaoAuthenticationProvider());
+    }
+
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) {
-        auth.authenticationProvider(getDaoAuthenticationProvider());
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth
+                .parentAuthenticationManager(getAuthenticationManager())
+                /*.authenticationProvider(getDaoAuthenticationProvider())*/;
     }
 
     @Override

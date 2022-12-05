@@ -5,7 +5,6 @@ import com.timkin.models.entity.Role;
 import com.timkin.models.entity.User;
 import com.timkin.models.exceptions.UserNotFoundException;
 import com.timkin.models.repo.ProfileRepository;
-import com.timkin.models.repo.RoleRepository;
 import com.timkin.models.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,16 +20,13 @@ public class UserController {
 
     //region ctor
     private final UserService service;
-    private final RoleRepository roleRepository;
     private final ProfileRepository profileRepository;
 
     public UserController(
             UserService service,
-            RoleRepository roleRepository,
             ProfileRepository profileRepository
     ) {
         this.service = service;
-        this.roleRepository = roleRepository;
         this.profileRepository = profileRepository;
     }
     //endregion
@@ -65,8 +61,8 @@ public class UserController {
             @ModelAttribute User user,
             Model model
     ) {
-        List<Role> all = roleRepository.findAll();
-        model.addAttribute("roles", all);
+        Role[] roles = Role.values();
+        model.addAttribute("roles", roles);
         return "users/add_new_user";
     }
 
@@ -77,7 +73,7 @@ public class UserController {
             BindingResult validationState
     ) {
         if (validationState.hasErrors()) {
-            List<Role> roles = roleRepository.findAll();
+            Role[] roles = Role.values();
             model.addAttribute("roles", roles);
             return "users/add_new_user";
         }
@@ -109,7 +105,7 @@ public class UserController {
         details = service.find(login);
         model.addAttribute("details", details);
 
-        List<Role> roles = roleRepository.findAll();
+        Role[] roles = Role.values();
         model.addAttribute("roles", roles);
         return "users/edit_details";
     }
@@ -123,7 +119,7 @@ public class UserController {
     ) throws UserNotFoundException {
         service.find(login);
         if (validationState.hasErrors()) {
-            List<Role> roles = roleRepository.findAll();
+            Role[] roles = Role.values();
             model.addAttribute("roles", roles);
             return "users/edit_details";
         }

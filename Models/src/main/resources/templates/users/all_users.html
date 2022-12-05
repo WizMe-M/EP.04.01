@@ -89,7 +89,7 @@
                 <td th:text="${user.getId()}">ID HERE</td>
                 <td th:text="${user.getLogin()}">LOGIN HERE</td>
                 <td th:text="${user.getRegistrationDate()}">REGISTRATION DATE HERE</td>
-                <td th:text="${user.getRole().getName()}">ROLE NAME HERE</td>
+                <td th:text="${user.getRoles().getName()}">ROLE NAME HERE</td>
                 <td><label><input type="checkbox" th:checked="${user.hasProfile()}" disabled></label></td>
                 <td><a th:href="'/users/' + ${user.getLogin()} + '/details'" class="btn btn-primary">View details</a></td>
                 <td><a th:href="'/users/' + ${user.getLogin()} + '/edit-details'" class="btn btn-warning">Edit</a></td>

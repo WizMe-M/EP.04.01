@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.time.Instant;
 import java.util.Date;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -32,13 +33,13 @@ public class User {
     @Column(name = "registration_date", nullable = false)
     private Date registrationDate = Date.from(Instant.now());
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "role_id", foreignKey = @ForeignKey(name = "fk_user_role"))
-    @NotNull(message = "Role must be set for user")
-    private Role role;
-
     @OneToOne(mappedBy = "user")
     private Profile profile;
+
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"))
+    @Enumerated(EnumType.STRING)
+    public Set<Role> roles;
 
     public boolean hasProfile() {
         return profile != null;
@@ -84,19 +85,19 @@ public class User {
         this.registrationDate = registrationDate;
     }
 
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
     public Profile getProfile() {
         return profile;
     }
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> role) {
+        this.roles = role;
     }
 }
