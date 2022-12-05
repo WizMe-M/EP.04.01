@@ -14,8 +14,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.savedrequest.CookieRequestCache;
-import org.springframework.security.web.savedrequest.RequestCache;
 
 @Configuration
 @EnableWebSecurity
@@ -26,11 +24,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     public WebSecurityConfig(AuthService authService) {
         this.authService = authService;
-    }
-
-    @Bean
-    public RequestCache getRequestCache() {
-        return new CookieRequestCache();
     }
 
     @Bean
@@ -53,10 +46,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .parentAuthenticationManager(getAuthenticationManager())
-                /*.authenticationProvider(getDaoAuthenticationProvider())*/;
+    protected void configure(AuthenticationManagerBuilder auth) {
+        auth.parentAuthenticationManager(getAuthenticationManager());
     }
 
     @Override

@@ -4,7 +4,6 @@ import com.timkin.models.entity.Role;
 import com.timkin.models.entity.User;
 import com.timkin.models.exceptions.UserNotFoundException;
 import com.timkin.models.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,12 +25,10 @@ import java.util.Collections;
 @RequestMapping("/auth")
 public class RegistrationController {
 
-    private final RequestCache requestCache;
     private final AuthenticationManager authenticationManager;
     private final UserService service;
 
-    public RegistrationController(RequestCache requestCache, UserService service, AuthenticationManager authenticationManager) {
-        this.requestCache = requestCache;
+    public RegistrationController(UserService service, AuthenticationManager authenticationManager) {
         this.service = service;
         this.authenticationManager = authenticationManager;
     }
@@ -45,8 +42,7 @@ public class RegistrationController {
     public String register(
             @ModelAttribute User user,
             Model model,
-            HttpServletRequest request,
-            HttpServletResponse response
+            HttpServletRequest request
     ) throws UserNotFoundException {
         if (service.existWithLogin(user.getLogin())) {
             model.addAttribute("message", "User with such login already exists!");
