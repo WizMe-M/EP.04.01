@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,18 +26,23 @@ import java.util.Collections;
 import java.util.Objects;
 
 @Controller
-public class RegistrationController {
+public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
     private final UserService service;
 
-    public RegistrationController(UserService service, AuthenticationManager authenticationManager) {
+    public AuthenticationController(UserService service, AuthenticationManager authenticationManager) {
         this.service = service;
         this.authenticationManager = authenticationManager;
     }
 
     @GetMapping("/sign")
-    public String openSignInAndUp(@RequestParam(name = "error", required = false) Object error, @ModelAttribute User user) {
+    public String openSignInAndUp(
+            @RequestParam(name = "error", required = false) Object error,
+            @ModelAttribute @Valid User user,
+            BindingResult validationState,
+            RedirectAttributes attributes
+    ) {
         return "auth/signing";
     }
 
@@ -47,23 +53,26 @@ public class RegistrationController {
 
     @GetMapping("/register")
     public String openRegistration() {
-        return "redirect:/sign#sign-up-tab";
+        return "redirect:/sign#sign-up-form";
     }
 
     @PostMapping("/register")
-    public ModelAndView register(
+    public String  register(
             @ModelAttribute @Valid User user,
             BindingResult validationState,
             Model model,
-            HttpServletRequest request
+            HttpServletRequest request,
+            RedirectAttributes attributes
     ) throws UserNotFoundException {
         if (validationState.hasErrors()) {
-            return new ModelAndView(new RedirectView("/sign#sign-up-tab"));
+            attributes.addFlashAttribute("user", user);
+            attributes.addFlashAttribute("org.springframework.validation.BindingResult", validationState);
+            return "redirect:/sign#sign-up-form";
         }
 
         if (service.existWithLogin(user.getLogin())) {
             model.addAttribute("message", "User with such login already exists!");
-            return new ModelAndView(new RedirectView("/sign#sign-up-tab"));
+            return "redirect:/sign#sign-up-form";
         }
         user.setRoles(Collections.singleton(Role.User));
         service.add(user);
@@ -71,7 +80,7 @@ public class RegistrationController {
         User authorized = service.find(user.getLogin());
         authenticateUserAndSetSession(authorized, request);
 
-        return new ModelAndView(new RedirectView("/home"));
+        return "redirect:/home";
     }
 
     private void authenticateUserAndSetSession(User user, HttpServletRequest request) {

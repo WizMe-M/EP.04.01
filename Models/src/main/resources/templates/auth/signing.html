@@ -59,12 +59,14 @@
                             <input th:field="*{login}" id="signup-login" type="text" class="form-control"
                                    placeholder="Login">
                             <label for="signup-login" class="form-label">Login</label>
+                            <div th:if="${#fields.hasErrors('login')}" th:errors="*{login}" class="text-danger"></div>
                         </div>
 
                         <div class="form-floating">
                             <input th:field="*{password}" id="signup-password" type="password" class="form-control"
                                    placeholder="Password">
                             <label for="signup-password" class="form-label">Password</label>
+                            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger"></div>
                         </div>
 
                         <button type="submit" class="btn btn-dark btn-block">Register</button>
