@@ -9,20 +9,22 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
-import org.springframework.security.web.savedrequest.RequestCache;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.util.Collections;
+import java.util.Objects;
 
 @Controller
-@RequestMapping("/auth")
 public class RegistrationController {
 
     private final AuthenticationManager authenticationManager;
@@ -33,20 +35,35 @@ public class RegistrationController {
         this.authenticationManager = authenticationManager;
     }
 
+    @GetMapping("/sign")
+    public String openSignInAndUp(@RequestParam(name = "error", required = false) Object error, @ModelAttribute User user) {
+        return "auth/signing";
+    }
+
+    @GetMapping("/login")
+    public String openLogin(@RequestParam(name = "error", required = false) String error) {
+        return Objects.equals(error, "") ? "redirect:/sign?error" : "redirect:/sign";
+    }
+
     @GetMapping("/register")
-    public String openRegistration(@ModelAttribute User user) {
-        return "auth/registration";
+    public String openRegistration() {
+        return "redirect:/sign#sign-up-tab";
     }
 
     @PostMapping("/register")
-    public String register(
-            @ModelAttribute User user,
+    public ModelAndView register(
+            @ModelAttribute @Valid User user,
+            BindingResult validationState,
             Model model,
             HttpServletRequest request
     ) throws UserNotFoundException {
+        if (validationState.hasErrors()) {
+            return new ModelAndView(new RedirectView("/sign#sign-up-tab"));
+        }
+
         if (service.existWithLogin(user.getLogin())) {
             model.addAttribute("message", "User with such login already exists!");
-            return "auth/registration";
+            return new ModelAndView(new RedirectView("/sign#sign-up-tab"));
         }
         user.setRoles(Collections.singleton(Role.User));
         service.add(user);
@@ -54,7 +71,7 @@ public class RegistrationController {
         User authorized = service.find(user.getLogin());
         authenticateUserAndSetSession(authorized, request);
 
-        return "redirect:/home";
+        return new ModelAndView(new RedirectView("/home"));
     }
 
     private void authenticateUserAndSetSession(User user, HttpServletRequest request) {
@@ -70,5 +87,4 @@ public class RegistrationController {
 
         SecurityContextHolder.getContext().setAuthentication(authenticatedUser);
     }
-
 }
