@@ -34,7 +34,8 @@ public class User {
     private Profile profile;
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"))
+    @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"), foreignKey = @ForeignKey(name = "fk_authority_user"))
+    @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     public Set<Role> roles;
 
