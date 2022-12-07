@@ -4,6 +4,7 @@ import com.timkin.models.entity.Motorcycle;
 import com.timkin.models.entity.Profile;
 import com.timkin.models.repo.MotorcycleRepository;
 import com.timkin.models.repo.ProfileRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -15,11 +16,10 @@ import java.util.UUID;
 
 @Controller
 @RequestMapping("/shop")
+@PreAuthorize("hasAnyAuthority('Seller', 'UnverifiedUser')")
 public class ShopController {
-
     private final MotorcycleRepository motorcycleRepository;
     private final ProfileRepository profileRepository;
-
     public ShopController(MotorcycleRepository motorcycleRepository, ProfileRepository profileRepository) {
         this.motorcycleRepository = motorcycleRepository;
         this.profileRepository = profileRepository;
@@ -37,6 +37,7 @@ public class ShopController {
         return "shop/shop";
     }
 
+    @PreAuthorize("hasAnyAuthority('Seller')")
     @GetMapping("/purchase/{motorcycle_id}")
     public String openPurchasePage(
             @PathVariable("motorcycle_id") int id,
@@ -46,6 +47,7 @@ public class ShopController {
         return "shop/purchase";
     }
 
+    @PreAuthorize("hasAnyAuthority('Seller')")
     @PostMapping("/purchase/{motorcycle_id}")
     public String purchase(
             @PathVariable("motorcycle_id") int id,

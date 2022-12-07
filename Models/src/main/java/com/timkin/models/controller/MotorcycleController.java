@@ -4,6 +4,7 @@ import com.timkin.models.entity.Engine;
 import com.timkin.models.entity.Motorcycle;
 import com.timkin.models.repo.EngineRepository;
 import com.timkin.models.repo.MotorcycleRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/motorcycles")
+@PreAuthorize("hasAnyAuthority('Technic')")
 public class MotorcycleController {
     private final MotorcycleRepository repository;
     private final EngineRepository engineRepository;

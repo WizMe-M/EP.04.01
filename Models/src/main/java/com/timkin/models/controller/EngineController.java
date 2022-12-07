@@ -2,10 +2,9 @@ package com.timkin.models.controller;
 
 import com.timkin.models.entity.Engine;
 import com.timkin.models.entity.EngineType;
-import com.timkin.models.entity.Role;
 import com.timkin.models.repo.EngineRepository;
 import com.timkin.models.repo.EngineTypeRepository;
-import org.springframework.boot.Banner;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,6 +16,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/engines")
+@PreAuthorize("hasAnyAuthority('Technic')")
 public class EngineController {
 
     private final EngineRepository engineRepository;
