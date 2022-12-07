@@ -23,10 +23,7 @@ public class User {
     @NotBlank(message = "Login should not be null, not be empty and not consist of only space characters")
     private String login;
 
-    @Column(length = 16, nullable = false)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~!@#$%^&*+\\-=])(?!.*\\s).+$",
-            message = "Password should contain at least one uppercase char, one lowercase char, one digit and one special character, and NOT contain space characters")
-    @Size(min = 8, max = 16, message = "Password's length should be in range from 8 to 16")
+    @Column(nullable = false)
     @NotEmpty(message = "Password can't be null or empty")
     private String password;
 

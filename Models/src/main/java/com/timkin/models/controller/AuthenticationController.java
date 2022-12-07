@@ -8,6 +8,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,9 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -28,10 +27,12 @@ import java.util.Objects;
 @Controller
 public class AuthenticationController {
 
+    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final UserService service;
 
-    public AuthenticationController(UserService service, AuthenticationManager authenticationManager) {
+    public AuthenticationController(PasswordEncoder passwordEncoder, UserService service, AuthenticationManager authenticationManager) {
+        this.passwordEncoder = passwordEncoder;
         this.service = service;
         this.authenticationManager = authenticationManager;
     }
@@ -74,7 +75,9 @@ public class AuthenticationController {
             model.addAttribute("message", "User with such login already exists!");
             return "redirect:/sign#sign-up-form";
         }
-        user.setRoles(Collections.singleton(Role.User));
+        user.setRoles(Collections.singleton(Role.UnverifiedUser));
+        String encoded = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encoded);
         service.add(user);
 
         User authorized = service.find(user.getLogin());
