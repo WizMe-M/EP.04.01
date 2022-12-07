@@ -34,10 +34,13 @@
 <div th:insert="fragments/headers :: header"></div>
 
 <div class="main-content">
-    <form th:action="'/users/' + ${login} + '/edit-details'" method="post" th:object="${details}">
+    <form th:action="@{/users/{login}/details/edit(login=${login})}" method="post" th:object="${details}">
         <fieldset>
-            <legend><h2 th:text="'Edit ' + ${login} + ' details'">EDIT USER</h2></legend>
+            <legend><h2 th:text="|Edit ${login} details|">EDIT USER</h2></legend>
         </fieldset>
+
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:field="*{password}">
 
         <div class="d-grid gap-3">
             <div class="input-group">
@@ -49,30 +52,12 @@
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('login')}" th:errors="*{login}"></div>
             </div>
 
-            <input type="hidden" th:field="*{id}">
-
-            <div class="col-12">
-                <div class="form-floating">
-                    <input type="password" class="form-control" id="password" placeholder="Password"
-                           th:field="*{password}">
-                    <label for="password" class="form-label">Password</label>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}"
-                         th:errors="*{password}"></div>
-                </div>
-            </div>
-
-            <div class="input-group">
-                <button class="btn btn-outline-secondary" formaction="/roles/add">Add role</button>
-                <div class="form-floating">
-                    <select class="form-select" id="roles" th:field="*{roles}" multiple>
-                        <!--/*@thymesVar id="role" type="com.timkin.models.entity.Role"*/-->
-                        <option th:each="role : ${available_roles}"
-                                th:value="${role.name()}"
-                                th:text="${role.name()}"></option>
-                    </select>
-                    <label for="roles">User's role</label>
-                </div>
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('roles')}" th:errors="*{roles}"></div>
+            <div class="form-floating">
+                <select class="form-select" id="roles" name="role">
+                    <!--/*@thymesVar id="role" type="com.timkin.models.entity.Role"*/-->
+                    <option th:each="role : ${available_roles}" th:value="${role}" th:text="${role.name()}"></option>
+                </select>
+                <label for="roles">User's role</label>
             </div>
 
             <div class="flexed-row">

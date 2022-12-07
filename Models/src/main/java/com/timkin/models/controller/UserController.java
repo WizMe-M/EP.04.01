@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Collections;
 import java.util.List;
 
 @Controller
@@ -70,8 +71,10 @@ public class UserController {
     public String addUser(
             Model model,
             @Valid User user,
-            BindingResult validationState
+            BindingResult validationState,
+            @RequestParam Role role
     ) {
+        user.setRoles(Collections.singleton(role));
         if (validationState.hasErrors()) {
             Role[] roles = Role.values();
             model.addAttribute("roles", roles);
@@ -115,9 +118,11 @@ public class UserController {
             @PathVariable String login,
             Model model,
             @ModelAttribute("details") User details,
-            BindingResult validationState
+            BindingResult validationState,
+            @RequestParam Role role
     ) throws UserNotFoundException {
         service.find(login);
+        details.setRoles(Collections.singleton(role));
         if (validationState.hasErrors()) {
             Role[] roles = Role.values();
             model.addAttribute("available_roles", roles);

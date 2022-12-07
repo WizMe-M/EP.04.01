@@ -52,22 +52,27 @@
 
 <div class="main-content">
     <div class="title">
-        <h1 th:text="${details.getLogin()} + ' details'">USER DETAILS</h1>
+        <h1 th:text="|${details.getLogin()} details|">USER DETAILS</h1>
     </div>
 
     <div class="d-grid gap-2">
         <div class="row">
             <div class="col">
                 <div th:if="${details.hasProfile()}">
-                    <a class="btn btn-outline-primary" th:href="'/users/' + ${login} + '/profile'">Profile</a>
+                    <a class="btn btn-outline-primary" th:href="@{/users/{login}/profile(login=${login})}">Profile</a>
                 </div>
                 <div th:unless="${details.hasProfile()}">
-                    <a class="btn btn-success" th:href="'/users/' + ${login} + '/profile/create'">Create
-                        profile</a>
+                    <a class="btn btn-success" th:href="@{/users/{login}/profile/create(login=${login})}">
+                        Create profile
+                    </a>
                 </div>
             </div>
-            <div class="col"><a class="btn btn-warning" th:href="'/users/' + ${login} + '/edit-details'">Edit</a></div>
-            <div class="col"><a class="btn btn-danger" th:href="'/users/' + ${login} + '/delete'">Delete</a></div>
+            <div class="col">
+                <a class="btn btn-warning" th:href="@{/users/{login}/details/edit(login=${login})}">Edit</a>
+            </div>
+            <div class="col">
+                <a class="btn btn-danger" th:href="@{/users/{login}/delete(login=${login})}">Delete</a>
+            </div>
             <div class="row filler"></div>
         </div>
     </div>
