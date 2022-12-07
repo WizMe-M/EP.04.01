@@ -7,6 +7,7 @@ import com.timkin.models.exceptions.UserNotFoundException;
 import com.timkin.models.repo.ProfileRepository;
 import com.timkin.models.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,13 +25,15 @@ public class UserController {
     //region ctor
     private final UserService service;
     private final ProfileRepository profileRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public UserController(
             UserService service,
-            ProfileRepository profileRepository
-    ) {
+            ProfileRepository profileRepository,
+            PasswordEncoder passwordEncoder) {
         this.service = service;
         this.profileRepository = profileRepository;
+        this.passwordEncoder = passwordEncoder;
     }
     //endregion
 
@@ -82,6 +85,7 @@ public class UserController {
             model.addAttribute("roles", roles);
             return "users/add_new_user";
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         service.add(user);
         return "redirect:/users/all";
     }
