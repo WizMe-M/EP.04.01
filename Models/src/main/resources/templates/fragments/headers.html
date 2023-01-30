@@ -16,7 +16,11 @@
                     <li sec:authorize="hasAnyAuthority('Technic')"><a href="/engines" class="nav-link px-2 text-white">Engines</a></li>
                 </ul>
 
-                <a href="/logout" class="btn btn-dark">Logout</a>
+                <div>
+                    <a th:href="@{/users/{login}/details(login=${#authentication.name})}"
+                       th:text="My details" class="btn btn-outline-light"></a>
+                    <a href="/logout" class="btn btn-dark">Logout</a>
+                </div>
             </div>
         </div>
     </header>
