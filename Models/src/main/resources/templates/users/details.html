@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.springframework.org/security/tags">
 <head>
     <meta charset="UTF-8">
     <title>User details</title>
@@ -70,7 +70,7 @@
             <div class="col">
                 <a class="btn btn-warning" th:href="@{/users/{login}/details/edit(login=${login})}">Edit</a>
             </div>
-            <div class="col">
+            <div class="col" th:unless="${#authentication.name == login}">
                 <a class="btn btn-danger" th:href="@{/users/{login}/delete(login=${login})}">Delete</a>
             </div>
             <div class="row filler"></div>
