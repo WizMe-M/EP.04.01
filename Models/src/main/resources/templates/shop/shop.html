@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.springframework.org/security/tags">
 <head>
     <meta charset="UTF-8">
     <title>Shop</title>
@@ -33,7 +33,8 @@
                         <p class="card-text" th:text="'Engine model: ' + ${bike.getEngine().getModel()}"></p>
                         <p class="card-text" th:text="'Engine volume: ' + ${bike.getEngine().getVolume()}"></p>
                         <p class="card-text" th:text="'Engine type: ' + ${bike.getEngine().getType().getName()}"></p>
-                        <a class="btn btn-info w-100" th:href="'/shop/purchase/' + ${bike.getId()}">Purchase</a>
+                        <a sec:authorize="hasAnyAuthority('Seller')" class="btn btn-info w-100"
+                           th:href="'/shop/purchase/' + ${bike.getId()}">Purchase</a>
                     </div>
                 </div>
             </div>
