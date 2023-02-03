@@ -61,16 +61,16 @@
                 <div th:if="${details.hasProfile()}">
                     <a class="btn btn-outline-primary" th:href="@{/users/{login}/profile(login=${login})}">Profile</a>
                 </div>
-                <div th:unless="${details.hasProfile()}">
+                <div th:unless="${details.hasProfile()}" sec:authorize="hasAnyAuthority('Administrator')">
                     <a class="btn btn-success" th:href="@{/users/{login}/profile/create(login=${login})}">
                         Create profile
                     </a>
                 </div>
             </div>
-            <div class="col">
+            <div class="col" sec:authorize="hasAnyAuthority('Administrator')">
                 <a class="btn btn-warning" th:href="@{/users/{login}/details/edit(login=${login})}">Edit</a>
             </div>
-            <div class="col" th:unless="${#authentication.name == login}">
+            <div class="col" sec:authorize="hasAnyAuthority('Administrator')" th:unless="${#authentication.name == login}">
                 <a class="btn btn-danger" th:href="@{/users/{login}/delete(login=${login})}">Delete</a>
             </div>
             <div class="row filler"></div>

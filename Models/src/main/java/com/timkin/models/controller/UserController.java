@@ -93,6 +93,7 @@ public class UserController {
 
     //region details
     @GetMapping("/{login}/details")
+    @PreAuthorize("hasAnyAuthority('UnverifiedUser', 'Administrator', 'Technic', 'Seller')")
     public String openDetails(
             @PathVariable
             String login,
@@ -171,6 +172,7 @@ public class UserController {
         return "redirect:/users/%s/profile".formatted(login);
     }
 
+    @PreAuthorize("hasAnyAuthority('UnverifiedUser', 'Administrator', 'Technic', 'Seller')")
     @GetMapping("/{login}/profile")
     public String openProfile(
             @PathVariable String login,
