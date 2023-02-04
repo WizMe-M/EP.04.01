@@ -18,9 +18,9 @@
 
 <div th:insert="fragments/headers :: header"></div>
 
-<div class="container">
-    <h1 class="text-center">Welcome</h1>
-
+<div class="card my-5 mx-auto w-25">
+    <div class="card-header text-center" th:text="|Welcome, ${#authentication.name}|"></div>
+    <p class="card-text m-2 text-center" th:utext="|You authorized as ${#authentication.getAuthorities()[0]}|">Error java.lang.NullPointerException</p>
 </div>
 
 </body>
