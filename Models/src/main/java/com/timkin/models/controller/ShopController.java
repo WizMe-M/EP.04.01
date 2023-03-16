@@ -11,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,7 +57,7 @@ public class ShopController {
     @PostMapping("/purchase/{motorcycle_id}")
     public String purchase(
             @PathVariable("motorcycle_id") int motorcycleId,
-            @RequestParam("customerId") int customerId,
+            @RequestParam("customer_id") int customerId,
             Model model
     ) {
         Optional<Client> foundProfile = clientRepository.findById(customerId);
@@ -74,6 +76,23 @@ public class ShopController {
         purchase.setMotorcycle(bike);
         purchaseRepository.save(purchase);
 
+        return "redirect:/shop";
+    }
+
+    @GetMapping("/return/{purchase_id}")
+    public String returnPurchase(@PathVariable("purchase_id") int id) {
+        Optional<Purchase> found = purchaseRepository.findById(id);
+        if (found.isEmpty()) {
+            return "redirect:/shop";
+        }
+
+        Purchase purchase = found.get();
+        if (purchase.isReturned()) {
+            return "redirect:/shop";
+        }
+
+        purchase.setReturnDate(Date.from(Instant.now()));
+        purchaseRepository.save(purchase);
         return "redirect:/shop";
     }
 
