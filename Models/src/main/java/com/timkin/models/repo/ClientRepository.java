@@ -1,9 +1,9 @@
 package com.timkin.models.repo;
 
-import com.timkin.models.entity.Profile;
+import com.timkin.models.entity.Client;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;
 
-public interface ProfileRepository extends JpaRepository<Profile, UUID> {
+public interface ClientRepository extends JpaRepository<Client, UUID> {
 }

@@ -37,7 +37,7 @@
                 <a class="btn btn-outline-secondary" href="/users/add">Add user</a>
                 <div class="form-floating">
                     <select class="form-select" id="users" required name="customer_id">
-                        <!--/*@thymesVar id="customer" type="com.timkin.models.entity.Profile"*/-->
+                        <!--/*@thymesVar id="customer" type="com.timkin.models.entity.Client"*/-->
                         <option th:each="customer : ${customers}" th:value="${customer.getId()}"
                                 th:text="${customer.getLastName() + ' ' + customer.getFirstName()}"></option>
                     </select>

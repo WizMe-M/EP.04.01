@@ -33,8 +33,8 @@ public class Motorcycle {
             joinColumns = @JoinColumn(name = "motorcycle_id", referencedColumnName = "id"),
             foreignKey = @ForeignKey(name = "fk_purchasedmotorcycles_motorcycle"),
             inverseJoinColumns = @JoinColumn(name = "profile_id", referencedColumnName = "id"),
-            inverseForeignKey = @ForeignKey(name = "fk_purchasedmotorcycles_profile"))
-    private List<Profile> customers;
+            inverseForeignKey = @ForeignKey(name = "fk_purchasedmotorcycles_client"))
+    private List<Client> customers;
 
     public Motorcycle() {
     }
@@ -76,11 +76,11 @@ public class Motorcycle {
         this.engine = engine;
     }
 
-    public List<Profile> getCustomers() {
+    public List<Client> getCustomers() {
         return customers;
     }
 
-    public void setCustomers(List<Profile> customers) {
+    public void setCustomers(List<Client> customers) {
         this.customers = customers;
     }
 }

@@ -3,14 +3,14 @@ package com.timkin.models.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
-import java.util.UUID;
 
 @Entity
-@Table(name = "profiles")
-public class Profile {
+@Table(name = "clients")
+public class Client {
     @Id
     @Column
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
 
     @Column
     @NotBlank(message = "First name should not be empty")
@@ -24,31 +24,22 @@ public class Profile {
     @NotBlank(message = "Patronymic should not be empty")
     private String patronymic;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @MapsId
-    @JoinColumn(name = "id", foreignKey = @ForeignKey(name = "fk_profile_user"))
-    private User user;
-
     @ManyToMany
     @JoinTable(name = "purchased_motorcycles",
             joinColumns = @JoinColumn(name = "profile_id", referencedColumnName = "id"),
-            foreignKey = @ForeignKey(name = "fk_purchasedmotorcycles_profile"),
+            foreignKey = @ForeignKey(name = "fk_purchasedmotorcycles_client"),
             inverseJoinColumns = @JoinColumn(name = "motorcycle_id", referencedColumnName = "id"),
             inverseForeignKey = @ForeignKey(name = "fk_purchasedmotorcycles_motorcycle"))
     private List<Motorcycle> purchases;
 
-    public Profile() {
+    public Client() {
     }
 
-    public Profile(User user) {
-        this.user = user;
-    }
-
-    public UUID getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -74,14 +65,6 @@ public class Profile {
 
     public void setPatronymic(String patronymic) {
         this.patronymic = patronymic;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public List<Motorcycle> getPurchases() {

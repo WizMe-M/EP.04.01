@@ -1,10 +1,9 @@
 package com.timkin.models.controller;
 
-import com.timkin.models.entity.Profile;
 import com.timkin.models.entity.Role;
 import com.timkin.models.entity.User;
 import com.timkin.models.exceptions.UserNotFoundException;
-import com.timkin.models.repo.ProfileRepository;
+import com.timkin.models.repo.ClientRepository;
 import com.timkin.models.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,15 +23,12 @@ public class UserController {
 
     //region ctor
     private final UserService service;
-    private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
 
     public UserController(
             UserService service,
-            ProfileRepository profileRepository,
             PasswordEncoder passwordEncoder) {
         this.service = service;
-        this.profileRepository = profileRepository;
         this.passwordEncoder = passwordEncoder;
     }
     //endregion
