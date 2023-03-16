@@ -2,7 +2,6 @@ package com.timkin.models.controller;
 
 import com.timkin.models.entity.Role;
 import com.timkin.models.entity.User;
-import com.timkin.models.exceptions.UserNotFoundException;
 import com.timkin.models.service.UserService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
