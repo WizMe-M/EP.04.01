@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Suppliers table</title>
+
+  <link rel="stylesheet" type="text/css" href="/table.css"/>
+  <link rel="stylesheet" type="text/css" href="/flexed-row.css"/>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+        crossorigin="anonymous">
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+          crossorigin="anonymous"></script>
+</head>
+<body>
+<div th:insert="fragments/headers :: header"></div>
+<div class="main-content">
+  <div class="title">
+    <h1>All suppliers listed below:</h1>
+  </div>
+
+  <div class="flexed-row">
+    <div>
+      <a class="btn btn-success" href="/suppliers/add">Add new supplier</a>
+    </div>
+
+    <div class="filler"></div>
+
+    <form action="/supplier/search" method="get">
+      <div class="flexed-row">
+        <input type="search" class="form-control" id="search-input-field" placeholder="Search" name="s"
+               aria-label="Search">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="table-wrapper">
+    <table class="fl-table">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Correspondent</th>
+        <th>Settlement</th>
+        <th>Tin</th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <!--/*@thymesVar id="supplier" type="com.timkin.models.entity.Supplier"*/-->
+      <tr th:each="supplier : ${suppliers}">
+        <td th:text="${supplier.id}"></td>
+        <td th:text="${supplier.correspondentAccount}"></td>
+        <td th:text="${supplier.settlementAccount}"></td>
+        <td th:text="${supplier.tin}"></td>
+        <td><a th:href="@{/suppliers/{id}/(id=${supplier.getId()})}" class="btn btn-primary">View</a></td>
+        <td><a th:href="@{/suppliers/{id}/edit(id=${supplier.getId()})}" class="btn btn-warning">Edit</a></td>
+        <td><a th:href="@{/suppliers/{id}/delete(id=${supplier.getId()})}" class="btn btn-danger">Delete</a>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+</body>
+</html>
