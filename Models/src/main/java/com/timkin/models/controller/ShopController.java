@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @Controller
 @RequestMapping("/shop")
-@PreAuthorize("hasAnyAuthority('Seller', 'UnverifiedUser')")
+@PreAuthorize("hasAnyAuthority('Seller')")
 public class ShopController {
     private final MotorcycleRepository motorcycleRepository;
     private final ClientRepository clientRepository;
@@ -43,7 +43,6 @@ public class ShopController {
         return "shop/shop";
     }
 
-    @PreAuthorize("hasAnyAuthority('Seller')")
     @GetMapping("/purchase/{motorcycle_id}")
     public String openPurchasePage(
             @PathVariable("motorcycle_id") int id,
@@ -53,7 +52,6 @@ public class ShopController {
         return "shop/purchase";
     }
 
-    @PreAuthorize("hasAnyAuthority('Seller')")
     @PostMapping("/purchase/{motorcycle_id}")
     public String purchase(
             @PathVariable("motorcycle_id") int motorcycleId,

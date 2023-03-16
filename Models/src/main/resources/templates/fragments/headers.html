@@ -10,7 +10,7 @@
 
                 <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="/home" class="nav-link px-2 text-secondary">Home</a></li>
-                    <li sec:authorize="hasAnyAuthority('UnverifiedUser', 'Seller')"><a href="/shop" class="nav-link px-2 text-white">Shop</a></li>
+                    <li sec:authorize="hasAnyAuthority('Seller')"><a href="/shop" class="nav-link px-2 text-white">Shop</a></li>
                     <li sec:authorize="hasAnyAuthority('Seller')"><a href="/clients" class="nav-link px-2 text-white">Clients</a></li>
                     <li sec:authorize="hasAnyAuthority('Administrator')"><a href="/users" class="nav-link px-2 text-white">Users</a></li>
                     <li sec:authorize="hasAnyAuthority('Technic')"><a href="/motorcycles" class="nav-link px-2 text-white">Motorcycles</a></li>

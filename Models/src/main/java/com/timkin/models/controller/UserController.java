@@ -89,7 +89,7 @@ public class UserController {
 
     //region details
     @GetMapping("/{login}/details")
-    @PreAuthorize("hasAnyAuthority('UnverifiedUser', 'Administrator', 'Technic', 'Seller')")
+    @PreAuthorize("hasAnyAuthority('Administrator', 'Technic', 'Seller')")
     public String openDetails(
             @PathVariable
             String login,
