@@ -58,37 +58,38 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public String  register(
+    public String register(
             @ModelAttribute @Valid User user,
             BindingResult validationState,
             Model model,
             HttpServletRequest request,
             RedirectAttributes attributes
-    ) throws UserNotFoundException {
+    ) {
+        String login = user.getLogin();
+        String password = user.getPassword();
+
         if (validationState.hasErrors()) {
             attributes.addFlashAttribute("user", user);
             attributes.addFlashAttribute("org.springframework.validation.BindingResult", validationState);
             return "redirect:/sign#sign-up-form";
         }
 
-        if (service.existWithLogin(user.getLogin())) {
+        if (service.existWithLogin(login)) {
             model.addAttribute("message", "User with such login already exists!");
             return "redirect:/sign#sign-up-form";
         }
+
         user.setRoles(Collections.singleton(Role.UnverifiedUser));
-        String encoded = passwordEncoder.encode(user.getPassword());
+        String encoded = passwordEncoder.encode(password);
         user.setPassword(encoded);
         service.add(user);
 
-        User authorized = service.find(user.getLogin());
-        authenticateUserAndSetSession(authorized, request);
+        authenticateUserAndSetSession(login, password, request);
 
         return "redirect:/home";
     }
 
-    private void authenticateUserAndSetSession(User user, HttpServletRequest request) {
-        String username = user.getLogin();
-        String password = user.getPassword();
+    private void authenticateUserAndSetSession(String username, String password, HttpServletRequest request) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
 
         // generate session if one doesn't exist
