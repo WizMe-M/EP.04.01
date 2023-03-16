@@ -24,16 +24,8 @@ public class Client {
     @NotBlank(message = "Patronymic should not be empty")
     private String patronymic;
 
-    @ManyToMany
-    @JoinTable(name = "purchased_motorcycles",
-            joinColumns = @JoinColumn(name = "profile_id", referencedColumnName = "id"),
-            foreignKey = @ForeignKey(name = "fk_purchasedmotorcycles_client"),
-            inverseJoinColumns = @JoinColumn(name = "motorcycle_id", referencedColumnName = "id"),
-            inverseForeignKey = @ForeignKey(name = "fk_purchasedmotorcycles_motorcycle"))
-    private List<Motorcycle> purchases;
-
-    public Client() {
-    }
+    @OneToMany(mappedBy = "client")
+    private List<Purchase> purchases;
 
     public int getId() {
         return id;
@@ -67,11 +59,11 @@ public class Client {
         this.patronymic = patronymic;
     }
 
-    public List<Motorcycle> getPurchases() {
+    public List<Purchase> getPurchases() {
         return purchases;
     }
 
-    public void setPurchases(List<Motorcycle> purchases) {
+    public void setPurchases(List<Purchase> purchases) {
         this.purchases = purchases;
     }
 }

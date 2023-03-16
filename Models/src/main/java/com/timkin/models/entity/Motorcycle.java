@@ -1,5 +1,7 @@
 package com.timkin.models.entity;
 
+import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.util.List;
@@ -18,9 +20,7 @@ public class Motorcycle {
     private String model;
 
     @Column(nullable = false)
-    @Positive(message = "Price should be positive")
-    @Min(value = 10, message = "Minimum price is 10")
-    @Max(value = 1000000000, message = "Maximum price is 1'000'000'000")
+    @Range(min = 10, max = 1000000000, message = "Price must be in range from 10 to 1'000'000'000")
     @NotNull(message = "Price can't be null")
     private double price;
 
@@ -28,13 +28,8 @@ public class Motorcycle {
     @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "fk_motorcycle_engine"))
     private Engine engine;
 
-    @ManyToMany
-    @JoinTable(name = "purchased_motorcycles",
-            joinColumns = @JoinColumn(name = "motorcycle_id", referencedColumnName = "id"),
-            foreignKey = @ForeignKey(name = "fk_purchasedmotorcycles_motorcycle"),
-            inverseJoinColumns = @JoinColumn(name = "profile_id", referencedColumnName = "id"),
-            inverseForeignKey = @ForeignKey(name = "fk_purchasedmotorcycles_client"))
-    private List<Client> customers;
+    @OneToMany(mappedBy = "motorcycle", fetch = FetchType.EAGER)
+    private List<Purchase> purchases;
 
     public Motorcycle() {
     }
@@ -76,11 +71,11 @@ public class Motorcycle {
         this.engine = engine;
     }
 
-    public List<Client> getCustomers() {
-        return customers;
+    public List<Purchase> getPurchases() {
+        return purchases;
     }
 
-    public void setCustomers(List<Client> customers) {
-        this.customers = customers;
+    public void setPurchases(List<Purchase> purchases) {
+        this.purchases = purchases;
     }
 }
