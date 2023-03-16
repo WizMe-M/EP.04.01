@@ -22,12 +22,12 @@ public class Purchase {
     @Column(name = "return_date")
     private Date returnDate;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_id", foreignKey = @ForeignKey(name = "fk_purchase_client"))
     @NotNull(message = "Client can't be null")
     private Client client;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "motorcycle_id", foreignKey = @ForeignKey(name = "fk_purchase_motorcycle"))
     @NotNull(message = "Motorcycle can't be null")
     private Motorcycle motorcycle;

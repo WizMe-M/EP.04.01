@@ -1,18 +1,18 @@
 package com.timkin.models.controller;
 
-import com.timkin.models.entity.Motorcycle;
 import com.timkin.models.entity.Client;
-import com.timkin.models.repo.MotorcycleRepository;
+import com.timkin.models.entity.Motorcycle;
+import com.timkin.models.entity.Purchase;
+import com.timkin.models.repo.PurchaseRepository;
 import com.timkin.models.repo.ClientRepository;
+import com.timkin.models.repo.MotorcycleRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/shop")
@@ -20,10 +20,13 @@ import java.util.UUID;
 public class ShopController {
     private final MotorcycleRepository motorcycleRepository;
     private final ClientRepository clientRepository;
+    private final PurchaseRepository purchaseRepository;
 
-    public ShopController(MotorcycleRepository motorcycleRepository, ClientRepository clientRepository) {
+    public ShopController(MotorcycleRepository motorcycleRepository, ClientRepository clientRepository,
+                          PurchaseRepository purchaseRepository) {
         this.motorcycleRepository = motorcycleRepository;
         this.clientRepository = clientRepository;
+        this.purchaseRepository = purchaseRepository;
     }
 
     @GetMapping
@@ -51,46 +54,34 @@ public class ShopController {
     @PreAuthorize("hasAnyAuthority('Seller')")
     @PostMapping("/purchase/{motorcycle_id}")
     public String purchase(
-            @PathVariable("motorcycle_id") int id,
-            @RequestParam("customer_id") UUID customer_id,
+            @PathVariable("motorcycle_id") int motorcycleId,
+            @RequestParam("customerId") int customerId,
             Model model
     ) {
-        Optional<Client> foundProfile = clientRepository.findById(customer_id);
-        Optional<Motorcycle> foundBike = motorcycleRepository.findById(id);
+        Optional<Client> foundProfile = clientRepository.findById(customerId);
+        Optional<Motorcycle> foundBike = motorcycleRepository.findById(motorcycleId);
         if (foundProfile.isEmpty() || foundBike.isEmpty()) {
-            assignForPurchasePage(model, id);
+            assignForPurchasePage(model, motorcycleId);
             return "shop/purchase";
         }
 
-        Client customer = foundProfile.get();
+        Client client = foundProfile.get();
         Motorcycle bike = foundBike.get();
-        customer.getPurchases().add(bike);
-        clientRepository.save(customer);
+
+        Purchase purchase = new Purchase();
+        purchase.setPurchaseSum(bike.getPrice());
+        purchase.setClient(client);
+        purchase.setMotorcycle(bike);
+        purchaseRepository.save(purchase);
+
         return "redirect:/shop";
     }
 
     private void assignForPurchasePage(Model model, int id) {
         Motorcycle motorcycle = motorcycleRepository.findById(id).orElseThrow();
-        List<Client> alreadyBoughtCustomers = motorcycle.getCustomers();
-        List<Client> allCustomers = clientRepository.findAll();
-        List<Client> customers = exceptCustomers(allCustomers, alreadyBoughtCustomers);
+        List<Client> clients = clientRepository.findAll();
 
-        model.addAttribute("customers", customers);
+        model.addAttribute("customers", clients);
         model.addAttribute("bike", motorcycle);
-    }
-
-    private static List<Client> exceptCustomers(List<Client> total, List<Client> exceptable) {
-        List<Client> customers = new ArrayList<>();
-
-        for (Client profile : total) {
-            for (Client sub : exceptable) {
-                if (profile.getId() == sub.getId()) {
-                    break;
-                }
-            }
-            customers.add(profile);
-        }
-
-        return customers;
     }
 }
