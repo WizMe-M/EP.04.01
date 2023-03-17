@@ -2,9 +2,9 @@ package com.timkin.models.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.sql.Date;
 import java.time.Instant;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "contracts")
@@ -15,7 +15,7 @@ public class Contract {
     private int id;
 
     @Column(name = "process_date", nullable = false)
-    private Date processDate = Date.from(Instant.now());
+    private Date processDate = Date.valueOf(LocalDate.now());
 
     @Column(name = "supply_date", nullable = false)
     @NotNull(message = "Supply date can't be null")
@@ -23,15 +23,13 @@ public class Contract {
 
     @ManyToOne
     @JoinColumn(name = "consumer_id", foreignKey = @ForeignKey(name = "fk_contract_consumer"))
+    @NotNull(message = "Consumer can't be null")
     private Consumer consumer;
 
-    @ManyToMany
-    @JoinTable(name = "orders",
-            joinColumns = @JoinColumn(name = "contract_id", referencedColumnName = "id"),
-            foreignKey = @ForeignKey(name = "fk_orders_contract"),
-            inverseJoinColumns = @JoinColumn(name = "motorcycle_id", referencedColumnName = "id"),
-            inverseForeignKey = @ForeignKey(name = "fk_orders_motorcycle"))
-    private List<Motorcycle> motorcycles;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "motorcycle_id", foreignKey = @ForeignKey(name = "fk_contract_motorcycle"))
+    @NotNull(message = "Motorcycle can't be null")
+    private Motorcycle motorcycle;
 
     public int getId() {
         return id;
@@ -65,11 +63,11 @@ public class Contract {
         this.consumer = consumer;
     }
 
-    public List<Motorcycle> getMotorcycles() {
-        return motorcycles;
+    public Motorcycle getMotorcycle() {
+        return motorcycle;
     }
 
-    public void setMotorcycles(List<Motorcycle> motorcycles) {
-        this.motorcycles = motorcycles;
+    public void setMotorcycle(Motorcycle motorcycle) {
+        this.motorcycle = motorcycle;
     }
 }

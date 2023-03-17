@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Consumers table</title>
+    <title>Contracts table</title>
 
     <link rel="stylesheet" type="text/css" href="/css/table.css"/>
     <link rel="stylesheet" type="text/css" href="/css/flexed-row.css"/>
@@ -15,7 +15,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
             crossorigin="anonymous"></script>
-
 
     <style>
         div.main-content {
@@ -50,23 +49,11 @@
 
 <div class="main-content">
     <div class="title">
-        <h1>All consumers listed below:</h1>
+        <h1>All contracts listed below:</h1>
     </div>
 
-    <div class="flexed-row">
-        <div>
-            <a class="btn btn-success" href="/consumers/add">Add new consumer</a>
-        </div>
-
-        <div class="filler"></div>
-
-        <form action="/consumer/search" method="get">
-            <div class="flexed-row">
-                <input type="search" class="form-control" id="search-input-field" placeholder="Search" name="s"
-                       aria-label="Search">
-                <button class="btn btn-outline-primary" type="submit">Search</button>
-            </div>
-        </form>
+    <div>
+        <a class="btn btn-success" href="/contracts/add">Add contract</a>
     </div>
 
     <div class="table-wrapper">
@@ -74,10 +61,11 @@
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Correspondent</th>
-                <th>Settlement</th>
-                <th>TIN</th>
-                <th>Country</th>
+                <th>Supply date</th>
+                <th>Process date</th>
+                <th>Consumer TIN</th>
+                <th>Consumer country</th>
+                <th>Motorcycle</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -85,16 +73,17 @@
             </thead>
 
             <tbody>
-            <!--/*@thymesVar id="consumer" type="com.timkin.models.entity.Consumer"*/-->
-            <tr th:each="consumer : ${consumers}">
-                <td th:text="${consumer.id}"></td>
-                <td th:text="${consumer.correspondentAccount}"></td>
-                <td th:text="${consumer.settlementAccount}"></td>
-                <td th:text="${consumer.tin}"></td>
-                <td th:text="${consumer.country.code}"></td>
-                <td><a th:href="@{/consumers/{id}/(id=${consumer.id})}" class="btn btn-primary">View</a></td>
-                <td><a th:href="@{/consumers/{id}/edit(id=${consumer.id})}" class="btn btn-warning">Edit</a></td>
-                <td><a th:href="@{/consumers/{id}/delete(id=${consumer.id})}" class="btn btn-danger">Delete</a>
+            <!--/*@thymesVar id="contract" type="com.timkin.models.entity.Contract"*/-->
+            <tr th:each="contract : ${contracts}">
+                <td th:text="${contract.id}"></td>
+                <td th:text="${contract.supplyDate}"></td>
+                <td th:text="${contract.processDate}"></td>
+                <td th:text="${contract.consumer.tin}"></td>
+                <td th:text="${contract.consumer.country.code}"></td>
+                <td th:text="${contract.motorcycle.model}"></td>
+                <td><a th:href="@{/contracts/{id}/(id=${contract.id})}" class="btn btn-primary">View</a></td>
+                <td><a th:href="@{/contracts/{id}/edit(id=${contract.id})}" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="@{/contracts/{id}/delete(id=${contract.id})}" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
             </tbody>

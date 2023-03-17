@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create contract</title>
+
+    <link rel="stylesheet" type="text/css" href="/css/flexed-row.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
+          crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+            crossorigin="anonymous"></script>
+
+    <style>
+        div.main-content {
+            margin: 0 20%;
+        }
+
+        .invalid-feedback {
+            display: block;
+        }
+
+        legend h2 {
+            text-align: center;
+        }
+    </style>
+
+</head>
+<body>
+<div th:insert="fragments/headers :: header"></div>
+
+<div class="main-content">
+
+    <div th:if="${motorcycles.isEmpty()}" class="m-5">
+        <h1 class="text-center">There aren't motorcycles to sell yet</h1>
+    </div>
+    <!--/*@thymesVar id="contract" type="com.timkin.models.entity.Contract"*/-->
+    <form th:unless="${motorcycles.isEmpty()}" method="post" th:object="${contract}">
+        <fieldset>
+            <legend><h2>Create contract</h2></legend>
+        </fieldset>
+
+        <div class="d-grid gap-3">
+            <div class="form-floating">
+                <input type="date" required class="form-control" id="supply" placeholder="Supply date"
+                       th:field="*{supplyDate}">
+                <label for="supply" class="form-label">Supply date</label>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('supplyDate')}"
+                     th:errors="*{supplyDate}"></div>
+            </div>
+
+            <div class="input-group">
+                <a class="btn btn-outline-secondary" href="/consumers/add">Add consumer</a>
+                <div class="form-floating">
+                    <select class="form-select" id="consumer" th:field="*{consumer}">
+                        <!--/*@thymesVar id="consumer" type="com.timkin.models.entity.Consumer"*/-->
+                        <option th:each="consumer : ${consumers}"
+                                th:value="${consumer.id}"
+                                th:text="${consumer.tin}"></option>
+                    </select>
+                    <label for="consumer">Consumer (by TIN)</label>
+                </div>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('consumer')}"
+                     th:errors="*{consumer}"></div>
+            </div>
+
+            <div class="form-floating">
+                <select class="form-select" id="bike" th:field="*{motorcycle}">
+                    <!--/*@thymesVar id="bike" type="com.timkin.models.entity.Motorcycle"*/-->
+                    <option th:each="bike : ${motorcycles}"
+                            th:value="${bike.id}"
+                            th:text="${bike.model}"></option>
+                </select>
+                <label for="bike">Motorcycle</label>
+            </div>
+
+        </div>
+
+
+        <div class="flexed-row">
+            <button class="btn btn-success" type="submit">Add contract</button>
+            <a class="btn btn-danger" href="/contracts/all">Cancel</a>
+        </div>
+    </form>
+</div>
+</body>
+</html>
