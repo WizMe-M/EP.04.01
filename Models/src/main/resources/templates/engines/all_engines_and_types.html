@@ -99,10 +99,10 @@
             <tbody>
             <!--/*@thymesVar id="engine" type="com.timkin.models.entity.Engine"*/-->
             <tr th:each="engine : ${engines}">
-                <td th:text="${engine.getId()}">ID HERE</td>
-                <td th:text="${engine.getModel()}">MODEL HERE</td>
-                <td th:text="${engine.getVolume()}">VOLUME HERE</td>
-                <td th:text="${engine.getType().getName()}">TYPE NAME HERE</td>
+                <td th:text="${engine.id}"></td>
+                <td th:text="${engine.model}"></td>
+                <td th:text="${engine.volume.name}"></td>
+                <td th:text="${engine.type.name}"></td>
                 <td><a th:href="'/engines/' + ${engine.getId()}" class="btn btn-primary">Info</a></td>
                 <td><a th:href="'/engines/' + ${engine.getId()} + '/edit'" class="btn btn-warning">Edit</a></td>
                 <td><a th:href="'/engines/' + ${engine.getId()} + '/delete'" class="btn btn-danger">Delete</a></td>

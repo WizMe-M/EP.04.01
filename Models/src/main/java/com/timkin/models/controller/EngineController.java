@@ -2,8 +2,10 @@ package com.timkin.models.controller;
 
 import com.timkin.models.entity.Engine;
 import com.timkin.models.entity.EngineType;
+import com.timkin.models.entity.EngineVolume;
 import com.timkin.models.repo.EngineRepository;
 import com.timkin.models.repo.EngineTypeRepository;
+import com.timkin.models.repo.EngineVolumeRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,10 +23,12 @@ public class EngineController {
 
     private final EngineRepository engineRepository;
     private final EngineTypeRepository typeRepository;
+    private final EngineVolumeRepository volumeRepository;
 
-    public EngineController(EngineRepository engineRepository, EngineTypeRepository typeRepository) {
+    public EngineController(EngineRepository engineRepository, EngineTypeRepository typeRepository, EngineVolumeRepository volumeRepository) {
         this.engineRepository = engineRepository;
         this.typeRepository = typeRepository;
+        this.volumeRepository = volumeRepository;
     }
 
     @GetMapping
@@ -81,7 +85,9 @@ public class EngineController {
             Model model
     ) {
         List<EngineType> types = typeRepository.findAll();
+        List<EngineVolume> volumes = volumeRepository.findAll();
         model.addAttribute("engine_types", types);
+        model.addAttribute("engine_volumes", volumes);
         return "engines/add_engine";
     }
 
@@ -92,8 +98,10 @@ public class EngineController {
             Model model
     ) {
         if (validationState.hasErrors()) {
-            List<EngineType> engines = typeRepository.findAll();
-            model.addAttribute("engine_types", engines);
+            List<EngineType> types = typeRepository.findAll();
+            List<EngineVolume> volumes = volumeRepository.findAll();
+            model.addAttribute("engine_types", types);
+            model.addAttribute("engine_volumes", volumes);
             return "engines/add_engine";
         }
         engineRepository.save(engine);
@@ -114,7 +122,9 @@ public class EngineController {
         model.addAttribute(engine);
 
         List<EngineType> types = typeRepository.findAll();
+        List<EngineVolume> volumes = volumeRepository.findAll();
         model.addAttribute("engine_types", types);
+        model.addAttribute("engine_volumes", volumes);
 
         return "engines/edit_engine";
     }
@@ -128,7 +138,9 @@ public class EngineController {
     ) {
         if (validationState.hasErrors()) {
             List<EngineType> types = typeRepository.findAll();
+            List<EngineVolume> volumes = volumeRepository.findAll();
             model.addAttribute("engine_types", types);
+            model.addAttribute("engine_volumes", volumes);
             return "engines/edit_engine";
         }
         engineRepository.save(engine);

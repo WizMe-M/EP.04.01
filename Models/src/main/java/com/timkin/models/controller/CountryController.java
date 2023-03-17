@@ -77,7 +77,7 @@ public class CountryController {
     }
 
     @GetMapping("{id}/delete")
-    public String deleteClient(@PathVariable int id) {
+    public String delete(@PathVariable int id) {
         repository.deleteById(id);
         return "redirect:/countries/all";
     }

@@ -41,35 +41,38 @@
 
         <div class="d-grid gap-3">
             <input type="hidden" th:field="*{id}">
-
-            <div class="col-12">
-                <div class="form-floating">
-                    <input type="text" class="form-control" id="model" placeholder="Model name" th:field="*{model}">
-                    <label for="model" class="form-label">Model name</label>
-                    <div class="invalid-feedback" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></div>
-                </div>
-            </div>
-
             <div class="form-floating">
-                <input type="number" required class="form-control" id="volume" placeholder="Volume"
-                       th:field="*{volume}">
-                <label for="volume" class="form-label">Volume in cm<sup>3</sup></label>
-                <div class="invalid-feedback" th:if="${#fields.hasErrors('volume')}"
-                     th:errors="*{volume}"></div>
+                <input type="text" class="form-control" id="model" placeholder="Model" th:field="*{model}">
+                <label for="model">Model name</label>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('model')}" th:errors="*{model}"></div>
             </div>
 
             <div class="input-group">
                 <a class="btn btn-outline-secondary" href="/engines/types/add">Add type</a>
                 <div class="form-floating">
                     <select class="form-select" id="types" th:field="*{type}">
-                        <!--/*@thymesVar id="engine_type" type="com.timkin.models.entity.EngineType"*/-->
-                        <option th:each="engine_type : ${engine_types}"
-                                th:value="${engine_type.getId()}"
-                                th:text="${engine_type.getName()}"></option>
+                        <!--/*@thymesVar id="eng_type" type="com.timkin.models.entity.EngineType"*/-->
+                        <option th:each="eng_type : ${engine_types}"
+                                th:value="${eng_type.id}"
+                                th:text="${eng_type.name}"></option>
                     </select>
-                    <label for="types">User's role</label>
+                    <label for="types">Engine's type</label>
                 </div>
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
+            </div>
+
+            <div class="input-group">
+                <a class="btn btn-outline-secondary" href="/volumes/add">Add volume</a>
+                <div class="form-floating">
+                    <select class="form-select" id="volume" th:field="*{volume}">
+                        <!--/*@thymesVar id="eng_volume" type="com.timkin.models.entity.EngineVolume"*/-->
+                        <option th:each="eng_volume : ${engine_volumes}"
+                                th:value="${eng_volume.id}"
+                                th:text="|${eng_volume.name} (${eng_volume.value})|"></option>
+                    </select>
+                    <label for="volume">Engine's volume</label>
+                </div>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('volume')}" th:errors="*{volume}"></div>
             </div>
 
             <div class="flexed-row">

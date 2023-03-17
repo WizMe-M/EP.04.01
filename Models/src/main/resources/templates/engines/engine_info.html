@@ -70,15 +70,15 @@
         <ul class="responsive-table">
             <li class="table-row">
                 <div class="col col-1">Model:</div>
-                <div class="col col-2" th:text="${info.getModel()}"></div>
+                <div class="col col-2" th:text="${info.model}"></div>
             </li>
             <li class="table-row">
                 <div class="col col-1">Volume:</div>
-                <div class="col col-2" th:text="${info.getVolume()}"></div>
+                <div class="col col-2" th:text="|${info.volume.name} (${info.volume.value})|"></div>
             </li>
             <li class="table-row">
                 <div class="col col-1">Type:</div>
-                <div class="col col-2" th:text="${info.getType().getName()}"></div>
+                <div class="col col-2" th:text="${info.type.name}"></div>
             </li>
         </ul>
     </div>

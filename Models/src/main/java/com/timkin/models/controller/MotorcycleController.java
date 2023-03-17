@@ -85,8 +85,10 @@ public class MotorcycleController {
     public String openAddMotorcycle(
             @ModelAttribute Motorcycle motorcycle,
             Model model) {
+        List<MotorcycleType> types = typeRepository.findAll();
         List<Engine> allEngines = engineRepository.findAll();
         model.addAttribute("engines", allEngines);
+        model.addAttribute("types", types);
         return "motorcycles/add_new_bike";
     }
 
@@ -97,8 +99,10 @@ public class MotorcycleController {
             Model model
     ) {
         if (validationState.hasErrors()) {
+            List<MotorcycleType> types = typeRepository.findAll();
             List<Engine> allEngines = engineRepository.findAll();
             model.addAttribute("engines", allEngines);
+            model.addAttribute("types", types);
             return "motorcycles/add_new_bike";
         }
         repository.save(motorcycle);
@@ -117,8 +121,10 @@ public class MotorcycleController {
         }
         motorcycle = found.get();
         model.addAttribute("details", motorcycle);
+        List<MotorcycleType> types = typeRepository.findAll();
         List<Engine> allEngines = engineRepository.findAll();
         model.addAttribute("engines", allEngines);
+        model.addAttribute("types", types);
         return "motorcycles/edit_details";
     }
 
@@ -135,8 +141,10 @@ public class MotorcycleController {
         }
 
         if (validationState.hasErrors()) {
+            List<MotorcycleType> types = typeRepository.findAll();
             List<Engine> allEngines = engineRepository.findAll();
             model.addAttribute("engines", allEngines);
+            model.addAttribute("types", types);
             return "motorcycles/edit_details";
         }
 
@@ -161,7 +169,7 @@ public class MotorcycleController {
 
     @PostMapping("/add-type")
     public String addType(
-            @ModelAttribute("type") MotorcycleType motorcycleType,
+            @Valid @ModelAttribute("type") MotorcycleType motorcycleType,
             BindingResult validationState,
             Model model
     ) {
@@ -191,8 +199,8 @@ public class MotorcycleController {
     @PostMapping("/edit-type/{id}")
     public String editType(
             @PathVariable int id,
-            BindingResult validationResult,
-            @ModelAttribute("type") MotorcycleType motorcycleType
+            @Valid @ModelAttribute("type") MotorcycleType motorcycleType,
+            BindingResult validationResult
     ) {
         if (validationResult.hasErrors()) {
             return "motorcycles/edit_motorcycle_type";
@@ -202,7 +210,7 @@ public class MotorcycleController {
         return "redirect:/motorcycles";
     }
 
-    @PostMapping("/delete-type/{id}")
+    @GetMapping("/delete-type/{id}")
     public String deleteType(@PathVariable int id) {
         Optional<MotorcycleType> found = typeRepository.findById(id);
         if (found.isPresent()) {

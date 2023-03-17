@@ -13,30 +13,19 @@ public class Engine {
     private int id;
 
     @Column(length = 30, nullable = false)
-    @Size(min = 3, max = 30,message = "Model name's length should be from 3 to 30 characters")
+    @Size(min = 3, max = 30, message = "Model name's length should be from 3 to 30 characters")
     @NotBlank(message = "Model name should not be null, empty or contain only space characters")
     private String model;
 
-    @Column(nullable = false)
-    @Positive(message = "Engine volume should be positive")
-    @Min(value = 5, message = "Minimum volume is 5")
-    @Max(value = 1000, message = "Maximum volume is 1000")
+    @ManyToOne
+    @JoinColumn(name = "engine_volume_id", foreignKey = @ForeignKey(name = "fk_engine_enginevolume"))
     @NotNull(message = "Engine volume can't be null")
-    private double volume;
+    private EngineVolume volume;
 
     @ManyToOne
     @JoinColumn(name = "engine_type_id", foreignKey = @ForeignKey(name = "fk_engine_enginetype"))
     @NotNull(message = "Engine type can't be null")
     private EngineType type;
-
-    public Engine() {
-    }
-
-    public Engine(String model, double volume, EngineType type) {
-        this.model = model;
-        this.volume = volume;
-        this.type = type;
-    }
 
     public int getId() {
         return id;
@@ -54,11 +43,11 @@ public class Engine {
         this.model = model;
     }
 
-    public double getVolume() {
+    public EngineVolume getVolume() {
         return volume;
     }
 
-    public void setVolume(double volume) {
+    public void setVolume(EngineVolume volume) {
         this.volume = volume;
     }
 

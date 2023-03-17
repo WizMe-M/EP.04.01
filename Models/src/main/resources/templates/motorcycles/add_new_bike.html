@@ -66,6 +66,20 @@
                 <div class="invalid-feedback" th:if="${#fields.hasErrors('engine')}" th:errors="*{engine}"></div>
             </div>
 
+            <div class="input-group">
+                <a class="btn btn-outline-secondary" href="/motorcycles/all">Add type</a>
+                <div class="form-floating">
+                    <select class="form-select" id="type" th:field="*{type}">
+                        <!--/*@thymesVar id="type" type="com.timkin.models.entity.MotorcycleType"*/-->
+                        <option th:each="type : ${engines}"
+                                th:value="${type.id}"
+                                th:text="${type.name}"></option>
+                    </select>
+                    <label for="engines">Motorcycle's type</label>
+                </div>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('type')}" th:errors="*{type}"></div>
+            </div>
+
             <div class="flexed-row">
                 <button class="btn btn-success" type="submit">Add motorcycle</button>
                 <a class="btn btn-danger" href="/motorcycles/all">Cancel</a>

@@ -35,14 +35,6 @@ public class Motorcycle {
     @OneToMany(mappedBy = "motorcycle", fetch = FetchType.EAGER)
     private List<Purchase> purchases;
 
-    public Motorcycle() {
-    }
-
-    public Motorcycle(String model, double price) {
-        this.model = model;
-        this.price = price;
-    }
-
     public int getId() {
         return id;
     }
@@ -73,6 +65,14 @@ public class Motorcycle {
 
     public void setEngine(Engine engine) {
         this.engine = engine;
+    }
+
+    public MotorcycleType getType() {
+        return type;
+    }
+
+    public void setType(MotorcycleType type) {
+        this.type = type;
     }
 
     public List<Purchase> getPurchases() {
