@@ -49,7 +49,7 @@ public class ShopController {
             Model model
     ) {
         assignForPurchasePage(model, id);
-        return "shop/purchase";
+        return "shop/selling";
     }
 
     @PostMapping("/purchase/{motorcycle_id}")
@@ -62,7 +62,7 @@ public class ShopController {
         Optional<Motorcycle> foundBike = motorcycleRepository.findById(motorcycleId);
         if (foundProfile.isEmpty() || foundBike.isEmpty()) {
             assignForPurchasePage(model, motorcycleId);
-            return "shop/purchase";
+            return "shop/selling";
         }
 
         Client client = foundProfile.get();

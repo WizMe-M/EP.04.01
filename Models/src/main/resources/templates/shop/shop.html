@@ -27,14 +27,13 @@
             <!--/*@thymesVar id="bike" type="com.timkin.models.entity.Motorcycle"*/-->
             <div th:each="bike : ${bikes}" class="col">
                 <div class="card text-bg-secondary">
-                    <h2 class="card-header" th:text="'Motorcycle ' + ${bike.getModel()}"></h2>
+                    <h2 class="card-header" th:text="|Motorcycle ${bike.model}|"></h2>
                     <div class="card-body">
-                        <h5 class="card-title" th:text="'Cost ' + ${bike.getPrice()} + '$'"></h5>
-                        <p class="card-text" th:text="'Engine model: ' + ${bike.getEngine().getModel()}"></p>
-                        <p class="card-text" th:text="'Engine volume: ' + ${bike.getEngine().getVolume()}"></p>
-                        <p class="card-text" th:text="'Engine type: ' + ${bike.getEngine().getType().getName()}"></p>
-                        <a sec:authorize="hasAnyAuthority('Seller')" class="btn btn-info w-100"
-                           th:href="'/shop/purchase/' + ${bike.getId()}">Purchase</a>
+                        <h5 class="card-title" th:text="|Cost: ${bike.price}|"></h5>
+                        <p class="card-text" th:text="|Engine model: ${bike.engine.model}|"></p>
+                        <p class="card-text" th:text="|Engine volume: ${bike.engine.volume.value}|"></p>
+                        <p class="card-text" th:text="|Engine type: ${bike.engine.type.name}|"></p>
+                        <a class="btn btn-info w-100" th:href="@{/shop/purchase/{id}(id=${bike.id})}">Sell</a>
                     </div>
                 </div>
             </div>
