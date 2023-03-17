@@ -18,12 +18,11 @@
 
     <style>
         div.main-content {
-            margin: 10% 0;
+            margin: 20px 0;
         }
 
         div.title {
             width: 100%;
-            padding-bottom: 7%;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -48,8 +47,49 @@
 
 
 <div class="main-content">
+
+
     <div class="title">
-        <h1>All motorcycles listed below:</h1>
+        <h1>All motorcycles' types are listed below:</h1>
+    </div>
+
+    <div class="flexed-row">
+        <form th:object="${type}" action="/motorcycles/add-type" method="post">
+            <div class="form-floating">
+                <input th:field="*{name}" type="text" class="form-control" id="name" placeholder="Motorcycle type name">
+                <label for="name" class="form-label">Motorcycle type name</label>
+                <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+            </div>
+
+            <button class="btn btn-success" type="submit">Add</button>
+        </form>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="fl-table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Type</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <!--/*@thymesVar id="t" type="com.timkin.models.entity.MotorcycleType"*/-->
+            <tr th:each="t : ${types}">
+                <td th:text="${t.id}"></td>
+                <td th:text="${t.name}"></td>
+                <td><a th:href="@{/motorcycles/edit-type/{id}/(id=${t.id})}" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="@{/motorcycles/delete-type/{id}/(id=${t.id})}" class="btn btn-danger">Delete</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="title">
+        <h1>All motorcycles are listed below:</h1>
     </div>
 
     <div class="flexed-row">
@@ -90,7 +130,8 @@
                 <td th:text="${bike.getEngine().getModel()}">ENGINE MODEL</td>
                 <td th:text="${bike.getEngine().getType().getName()}">ENGINE TYPE HERE</td>
                 <td><a th:href="'/motorcycles/' + ${bike.getId()}" class="btn btn-primary">Details</a></td>
-                <td><a th:href="'/motorcycles/details/' + ${bike.getId()} + '/edit'" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="'/motorcycles/details/' + ${bike.getId()} + '/edit'" class="btn btn-warning">Edit</a>
+                </td>
                 <td><a th:href="'/motorcycles/' + ${bike.getId()} + '/delete'" class="btn btn-danger">Delete</a></td>
             </tr>
             </tbody>

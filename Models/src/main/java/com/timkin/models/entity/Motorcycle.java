@@ -28,6 +28,10 @@ public class Motorcycle {
     @JoinColumn(name = "engine_id", foreignKey = @ForeignKey(name = "fk_motorcycle_engine"))
     private Engine engine;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "type_id", foreignKey = @ForeignKey(name = "fk_motorcycle_mototype"))
+    private MotorcycleType type;
+
     @OneToMany(mappedBy = "motorcycle", fetch = FetchType.EAGER)
     private List<Purchase> purchases;
 

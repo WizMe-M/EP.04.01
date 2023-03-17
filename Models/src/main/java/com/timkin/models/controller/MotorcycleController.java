@@ -2,8 +2,10 @@ package com.timkin.models.controller;
 
 import com.timkin.models.entity.Engine;
 import com.timkin.models.entity.Motorcycle;
+import com.timkin.models.entity.MotorcycleType;
 import com.timkin.models.repo.EngineRepository;
 import com.timkin.models.repo.MotorcycleRepository;
+import com.timkin.models.repo.MotorcycleTypeRepository;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,10 +22,13 @@ import java.util.Optional;
 public class MotorcycleController {
     private final MotorcycleRepository repository;
     private final EngineRepository engineRepository;
+    private final MotorcycleTypeRepository typeRepository;
 
-    public MotorcycleController(MotorcycleRepository repository, EngineRepository engineRepository) {
+    public MotorcycleController(MotorcycleRepository repository, EngineRepository engineRepository,
+                                MotorcycleTypeRepository typeRepository) {
         this.repository = repository;
         this.engineRepository = engineRepository;
+        this.typeRepository = typeRepository;
     }
 
     @GetMapping
@@ -32,19 +37,27 @@ public class MotorcycleController {
     }
 
     @GetMapping("/all")
-    public String openAllBikesTable(Model model) {
-        List<Motorcycle> all = repository.findAll();
-        model.addAttribute("bikes", all);
+    public String openAllBikesTable(
+            @ModelAttribute("type") MotorcycleType motorcycleType,
+            Model model
+    ) {
+        List<Motorcycle> motorcycles = repository.findAll();
+        List<MotorcycleType> types = typeRepository.findAll();
+        model.addAttribute("bikes", motorcycles);
+        model.addAttribute("types", types);
         return "motorcycles/all_bikes";
     }
 
     @GetMapping("/search")
     public String searchBikes(
+            @ModelAttribute("type") MotorcycleType motorcycleType,
             @RequestParam(name = "s") String searchString,
             Model model
     ) {
         List<Motorcycle> filtered = repository.findByModelContainsIgnoreCase(searchString);
+        List<MotorcycleType> types = typeRepository.findAll();
         model.addAttribute("bikes", filtered);
+        model.addAttribute("types", types);
         return "motorcycles/all_bikes";
     }
 
@@ -144,5 +157,57 @@ public class MotorcycleController {
             repository.delete(deleting);
         }
         return "redirect:/motorcycles/all";
+    }
+
+    @PostMapping("/add-type")
+    public String addType(
+            @ModelAttribute("type") MotorcycleType motorcycleType,
+            BindingResult validationState,
+            Model model
+    ) {
+        if (validationState.hasErrors()) {
+            List<Motorcycle> all = repository.findAll();
+            model.addAttribute("bikes", all);
+            return "motorcycles/all_bikes";
+        }
+
+        typeRepository.save(motorcycleType);
+        return "redirect:/motorcycles";
+    }
+
+    @GetMapping("/edit-type/{id}")
+    public String openEditType(
+            @PathVariable int id,
+            Model model
+    ) {
+        Optional<MotorcycleType> found = typeRepository.findById(id);
+        if (found.isEmpty()) {
+            return "redirect:/motorcycles";
+        }
+        model.addAttribute("type", found.get());
+        return "motorcycles/edit_motorcycle_type";
+    }
+
+    @PostMapping("/edit-type/{id}")
+    public String editType(
+            @PathVariable int id,
+            BindingResult validationResult,
+            @ModelAttribute("type") MotorcycleType motorcycleType
+    ) {
+        if (validationResult.hasErrors()) {
+            return "motorcycles/edit_motorcycle_type";
+        }
+
+        typeRepository.save(motorcycleType);
+        return "redirect:/motorcycles";
+    }
+
+    @PostMapping("/delete-type/{id}")
+    public String deleteType(@PathVariable int id) {
+        Optional<MotorcycleType> found = typeRepository.findById(id);
+        if (found.isPresent()) {
+            typeRepository.deleteById(id);
+        }
+        return "redirect:/motorcycles";
     }
 }
