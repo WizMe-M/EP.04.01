@@ -1,7 +1,9 @@
 package com.timkin.models.controller;
 
 import com.timkin.models.entity.Consumer;
+import com.timkin.models.entity.Country;
 import com.timkin.models.repo.ConsumerRepository;
+import com.timkin.models.repo.CountryRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,85 +17,101 @@ import java.util.Optional;
 @RequestMapping("consumers")
 public class ConsumerController {
     private final ConsumerRepository repository;
+    private final CountryRepository countryRepository;
 
-    public ConsumerController(ConsumerRepository repository) {
+    public ConsumerController(ConsumerRepository repository,
+                              CountryRepository countryRepository) {
         this.repository = repository;
+        this.countryRepository = countryRepository;
     }
 
     @GetMapping
     public String index() {
-        return "redirect:/suppliers/all";
+        return "redirect:/consumers/all";
     }
 
     @GetMapping("/all")
     public String openAll(Model model) {
         List<Consumer> all = repository.findAll();
-        model.addAttribute("suppliers", all);
-        return "suppliers/all";
+        model.addAttribute("consumers", all);
+        return "consumers/all";
     }
 
     @GetMapping("{id}")
-    public String openSupplier(
+    public String open(
             @PathVariable int id,
             Model model
     ) {
         Optional<Consumer> found = repository.findById(id);
         if (found.isEmpty()) {
-            return "redirect:/suppliers/all";
+            return "redirect:/consumers/all";
         }
 
         Consumer consumer = found.get();
         model.addAttribute("supplier", consumer);
-        return "suppliers/details";
+        return "consumers/details";
     }
 
     @GetMapping("/add")
-    public String openAddSupplier(@ModelAttribute Consumer consumer) {
-        return "suppliers/add";
+    public String openAdd(
+            @ModelAttribute Consumer consumer,
+            Model model
+    ) {
+        List<Country> countries = countryRepository.findAll();
+        model.addAttribute("countries", countries);
+        return "consumers/add";
     }
 
     @PostMapping("/add")
-    public String addSupplier(
+    public String add(
             @ModelAttribute @Valid Consumer consumer,
-            BindingResult validationState
+            BindingResult validationState,
+            Model model
     ) {
         if (validationState.hasErrors()) {
-            return "suppliers/add";
+            List<Country> countries = countryRepository.findAll();
+            model.addAttribute("countries", countries);
+            return "consumers/add";
         }
 
         repository.save(consumer);
-        return "redirect:/suppliers/all";
+        return "redirect:/consumers/all";
     }
 
     @GetMapping("{id}/edit")
-    public String openEditSupplier(
+    public String openEdit(
             @PathVariable int id,
             Model model
     ) {
-        Optional<Consumer> supplier = repository.findById(id);
-        if (supplier.isEmpty()) {
-            return "redirect:/suppliers/all";
+        List<Country> countries = countryRepository.findAll();
+        Optional<Consumer> consumer = repository.findById(id);
+        if (consumer.isEmpty()) {
+            return "redirect:/consumers/all";
         }
-        model.addAttribute("supplier", supplier.get());
-        return "suppliers/edit";
+        model.addAttribute("consumer", consumer.get());
+        model.addAttribute("countries", countries);
+        return "consumers/edit";
     }
 
     @PostMapping("{id}/edit")
-    public String editSupplier(
+    public String edit(
             @PathVariable String id,
             @ModelAttribute @Valid Consumer consumer,
-            BindingResult validationState
+            BindingResult validationState,
+            Model model
     ) {
         if (validationState.hasErrors()) {
-            return "suppliers/edit";
+            List<Country> countries = countryRepository.findAll();
+            model.addAttribute("countries", countries);
+            return "consumers/edit";
         }
         repository.save(consumer);
-        return "redirect:/suppliers/all";
+        return "redirect:/consumers/all";
     }
 
     @GetMapping("{id}/delete")
-    public String deleteSupplier(@PathVariable int id) {
+    public String delete(@PathVariable int id) {
         repository.deleteById(id);
-        return "redirect:/suppliers/all";
+        return "redirect:/consumers/all";
     }
 }

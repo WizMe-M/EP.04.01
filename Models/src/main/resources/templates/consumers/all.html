@@ -76,7 +76,8 @@
                 <th>ID</th>
                 <th>Correspondent</th>
                 <th>Settlement</th>
-                <th>Tin</th>
+                <th>TIN</th>
+                <th>Country</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -85,11 +86,12 @@
 
             <tbody>
             <!--/*@thymesVar id="consumer" type="com.timkin.models.entity.Consumer"*/-->
-            <tr th:each="consumer : ${suppliers}">
+            <tr th:each="consumer : ${consumers}">
                 <td th:text="${consumer.id}"></td>
                 <td th:text="${consumer.correspondentAccount}"></td>
                 <td th:text="${consumer.settlementAccount}"></td>
                 <td th:text="${consumer.tin}"></td>
+                <td th:text="${consumer.country.code}"></td>
                 <td><a th:href="@{/consumers/{id}/(id=${consumer.id})}" class="btn btn-primary">View</a></td>
                 <td><a th:href="@{/consumers/{id}/edit(id=${consumer.id})}" class="btn btn-warning">Edit</a></td>
                 <td><a th:href="@{/consumers/{id}/delete(id=${consumer.id})}" class="btn btn-danger">Delete</a>
