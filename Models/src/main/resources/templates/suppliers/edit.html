@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Edit supplier</title>
+    <title>Edit consumer</title>
 
     <link rel="stylesheet" type="text/css" href="/css/flexed-row.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css"
@@ -33,10 +33,10 @@
 <div th:insert="fragments/headers :: header"></div>
 
 <div class="main-content">
-    <!--/*@thymesVar id="supplier" type="com.timkin.models.entity.Supplier"*/-->
-    <form method="post" th:object="${supplier}">
+    <!--/*@thymesVar id="consumer" type="com.timkin.models.entity.Consumer"*/-->
+    <form method="post" th:object="${consumer}">
         <fieldset>
-            <legend><h2>Create supplier</h2></legend>
+            <legend><h2>Create consumer</h2></legend>
         </fieldset>
 
         <input type="hidden" th:field="*{id}"/>
@@ -81,8 +81,8 @@
             </div>
 
             <div class="flexed-row">
-                <button class="btn btn-success" type="submit">Edit supplier</button>
-                <a class="btn btn-danger" href="/suppliers/all">Cancel</a>
+                <button class="btn btn-success" type="submit">Edit consumer</button>
+                <a class="btn btn-danger" href="/consumers/all">Cancel</a>
             </div>
         </div>
     </form>

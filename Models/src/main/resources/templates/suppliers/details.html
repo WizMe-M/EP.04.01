@@ -37,33 +37,33 @@
 <div class="container">
   <h2 class="text-center my-lg-5">Supplier</h2>
 
-  <a class="btn btn-primary w-25" th:href="@{/suppliers/{id}/edit(id=${id})}">Edit</a>
-  <a class="btn btn-primary w-25" th:href="@{/suppliers/{id}/delete(id=${id})}">Delete</a>
+  <a class="btn btn-primary w-25" th:href="@{/consumers/{id}/edit(id=${id})}">Edit</a>
+  <a class="btn btn-primary w-25" th:href="@{/consumers/{id}/delete(id=${id})}">Delete</a>
 
   <hr class="my-4">
 
   <div>
-    <!--/*@thymesVar id="supplier" type="com.timkin.models.entity.Supplier"*/-->
+      <!--/*@thymesVar id="consumer" type="com.timkin.models.entity.Consumer"*/-->
     <ul class="responsive-table">
       <li class="table-row">
         <div class="col col-1">Legal address:</div>
-        <div class="col col-2" th:text="${supplier.legalAddress}"></div>
+        <div class="col col-2" th:text="${consumer.legalAddress}"></div>
       </li>
       <li class="table-row">
         <div class="col col-1">Postal address:</div>
-        <div class="col col-2" th:text="${supplier.postalAddress}"></div>
+        <div class="col col-2" th:text="${consumer.postalAddress}"></div>
       </li>
       <li class="table-row">
         <div class="col col-1">Correspondent account:</div>
-        <div class="col col-2" th:text="${supplier.correspondentAccount}"></div>
+        <div class="col col-2" th:text="${consumer.correspondentAccount}"></div>
       </li>
       <li class="table-row">
         <div class="col col-1">Settlement account:</div>
-        <div class="col col-2" th:text="${supplier.settlementAccount}"></div>
+        <div class="col col-2" th:text="${consumer.settlementAccount}"></div>
       </li>
       <li class="table-row">
         <div class="col col-1">TIN:</div>
-        <div class="col col-2" th:text="${supplier.tin}"></div>
+        <div class="col col-2" th:text="${consumer.tin}"></div>
       </li>
     </ul>
 

@@ -2,11 +2,12 @@ package com.timkin.models.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Entity
-@Table(name = "suppliers")
-public class Supplier {
+@Table(name = "counsumers")
+public class Consumer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column
@@ -31,6 +32,11 @@ public class Supplier {
     @Column(name = "tin", nullable = false)
     @Pattern(regexp = "^\\d{12}$", message = "Taxpayer Identification Number should be 12-digits number")
     private String tin;
+
+    @ManyToOne
+    @JoinColumn(name = "country_id", foreignKey = @ForeignKey(name = "fk_consumer_country"))
+    @NotNull(message = "Country can't be null")
+    private Country country;
 
     public int getId() {
         return id;

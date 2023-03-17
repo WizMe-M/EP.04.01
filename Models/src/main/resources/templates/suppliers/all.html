@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Suppliers table</title>
+    <title>Consumers table</title>
 
     <link rel="stylesheet" type="text/css" href="/css/table.css"/>
     <link rel="stylesheet" type="text/css" href="/css/flexed-row.css"/>
@@ -55,12 +55,12 @@
 
     <div class="flexed-row">
         <div>
-            <a class="btn btn-success" href="/suppliers/add">Add new supplier</a>
+            <a class="btn btn-success" href="/consumers/add">Add new consumer</a>
         </div>
 
         <div class="filler"></div>
 
-        <form action="/supplier/search" method="get">
+        <form action="/consumer/search" method="get">
             <div class="flexed-row">
                 <input type="search" class="form-control" id="search-input-field" placeholder="Search" name="s"
                        aria-label="Search">
@@ -84,15 +84,15 @@
             </thead>
 
             <tbody>
-            <!--/*@thymesVar id="supplier" type="com.timkin.models.entity.Supplier"*/-->
-            <tr th:each="supplier : ${suppliers}">
-                <td th:text="${supplier.id}"></td>
-                <td th:text="${supplier.correspondentAccount}"></td>
-                <td th:text="${supplier.settlementAccount}"></td>
-                <td th:text="${supplier.tin}"></td>
-                <td><a th:href="@{/suppliers/{id}/(id=${supplier.getId()})}" class="btn btn-primary">View</a></td>
-                <td><a th:href="@{/suppliers/{id}/edit(id=${supplier.getId()})}" class="btn btn-warning">Edit</a></td>
-                <td><a th:href="@{/suppliers/{id}/delete(id=${supplier.getId()})}" class="btn btn-danger">Delete</a>
+            <!--/*@thymesVar id="consumer" type="com.timkin.models.entity.Consumer"*/-->
+            <tr th:each="consumer : ${suppliers}">
+                <td th:text="${consumer.id}"></td>
+                <td th:text="${consumer.correspondentAccount}"></td>
+                <td th:text="${consumer.settlementAccount}"></td>
+                <td th:text="${consumer.tin}"></td>
+                <td><a th:href="@{/consumers/{id}/(id=${consumer.id})}" class="btn btn-primary">View</a></td>
+                <td><a th:href="@{/consumers/{id}/edit(id=${consumer.id})}" class="btn btn-warning">Edit</a></td>
+                <td><a th:href="@{/consumers/{id}/delete(id=${consumer.id})}" class="btn btn-danger">Delete</a>
                 </td>
             </tr>
             </tbody>
