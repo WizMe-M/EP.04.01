@@ -58,8 +58,8 @@
                     <select class="form-select" id="engines" th:field="*{engine}">
                         <!--/*@thymesVar id="engine" type="com.timkin.models.entity.Engine"*/-->
                         <option th:each="engine : ${engines}"
-                                th:value="${engine.getId()}"
-                                th:text="${engine.getModel()}"></option>
+                                th:value="${engine.id}"
+                                th:text="${engine.model}"></option>
                     </select>
                     <label for="engines">Motorcycle's engine Model</label>
                 </div>
@@ -71,7 +71,7 @@
                 <div class="form-floating">
                     <select class="form-select" id="type" th:field="*{type}">
                         <!--/*@thymesVar id="type" type="com.timkin.models.entity.MotorcycleType"*/-->
-                        <option th:each="type : ${engines}"
+                        <option th:each="type : ${types}"
                                 th:value="${type.id}"
                                 th:text="${type.name}"></option>
                     </select>

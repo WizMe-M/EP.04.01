@@ -73,7 +73,7 @@
                 <div class="form-floating">
                     <select class="form-select" id="type" th:field="*{type}">
                         <!--/*@thymesVar id="type" type="com.timkin.models.entity.MotorcycleType"*/-->
-                        <option th:each="type : ${engines}"
+                        <option th:each="type : ${types}"
                                 th:value="${type.id}"
                                 th:text="${type.name}"></option>
                     </select>

@@ -65,11 +65,11 @@
             </li>
             <li class="table-row">
                 <div class="col col-1">Model:</div>
-                <div class="col col-2" th:text="${motorcycle.getModel()}"></div>
+                <div class="col col-2" th:text="${motorcycle.model}"></div>
             </li>
             <li class="table-row">
                 <div class="col col-1">Price:</div>
-                <div class="col col-2" th:text="${motorcycle.getPrice()}"></div>
+                <div class="col col-2" th:text="${motorcycle.price}"></div>
             </li>
 
             <li class="table-header">
@@ -77,23 +77,24 @@
             </li>
             <li class="table-row">
                 <div class="col col-1">Model:</div>
-                <div class="col col-2" th:text="${motorcycle.getEngine().getModel()}"></div>
+                <div class="col col-2" th:text="${motorcycle.engine.model}"></div>
             </li>
             <li class="table-row">
                 <div class="col col-1">Volume (cm<sup>3</sup>):</div>
-                <div class="col col-2" th:text="${motorcycle.getEngine().getVolume()}"></div>
+                <div class="col col-2"
+                     th:text="|${motorcycle.engine.volume.name} (${motorcycle.engine.volume.value})|"></div>
             </li>
             <li class="table-row">
                 <div class="col col-1">Type:</div>
-                <div class="col col-2" th:text="${motorcycle.getEngine().getType().getName()}"></div>
+                <div class="col col-2" th:text="${motorcycle.engine.type.name}"></div>
             </li>
 
-            <div th:unless="${#lists.isEmpty(motorcycle.getCustomers())}">
+            <div th:unless="${#lists.isEmpty(motorcycle.purchases)}">
                 <li class="table-header">Customers:</li>
-                <!--/*@thymesVar id="customer" type="com.timkin.models.entity.Client"*/-->
-                <li class="table-row" th:each="customer : ${motorcycle.getCustomers()}">
-                    <div class="col col-1">Full name:</div>
-                    <div class="col col-2" th:text="${customer.getLastName() + ' ' +customer.getFirstName()}"></div>
+                <!--/*@thymesVar id="purchase" type="com.timkin.models.entity.Purchase"*/-->
+                <li class="table-row" th:each="purchase : ${motorcycle.purchases}">
+                    <div class="col col-1">Purchase date:</div>
+                    <div class="col col-2" th:text="${purchase.purchaseDate}"></div>
                 </li>
             </div>
         </ul>
