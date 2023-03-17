@@ -51,7 +51,6 @@
                 <th>Code</th>
                 <th></th>
                 <th></th>
-                <th></th>
             </tr>
             </thead>
 
@@ -61,7 +60,6 @@
                 <td th:text="${country.id}"></td>
                 <td th:text="${country.name}"></td>
                 <td th:text="${country.code}"></td>
-                <td><a th:href="@{/countries/{id}/(id=${country.id})}" class="btn btn-primary">View</a></td>
                 <td><a th:href="@{/countries/{id}/edit(id=${country.id})}" class="btn btn-warning">Edit</a></td>
                 <td><a th:href="@{/countries/{id}/delete(id=${country.id})}" class="btn btn-danger">Delete</a>
                 </td>

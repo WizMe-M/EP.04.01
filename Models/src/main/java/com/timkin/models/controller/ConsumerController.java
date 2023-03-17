@@ -48,7 +48,7 @@ public class ConsumerController {
         }
 
         Consumer consumer = found.get();
-        model.addAttribute("supplier", consumer);
+        model.addAttribute("consumer", consumer);
         return "consumers/details";
     }
 
