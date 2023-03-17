@@ -76,7 +76,6 @@
                 <th>Login</th>
                 <th>Registration date</th>
                 <th>Roles</th>
-                <th>Has profile?</th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -93,7 +92,6 @@
                     <!--/*@thymesVar id="role" type="com.timkin.models.entity.Role"*/-->
                     <div th:each="role : ${user.getRoles()}" th:text="${role.name()}"></div>
                 </td>
-                <td><label><input type="checkbox" th:checked="${user.hasProfile()}" disabled></label></td>
                 <td><a th:href="@{/users/{login}/details(login=${user.getLogin()})}" class="btn btn-primary">View details</a></td>
                 <td><a th:href="@{/users/{login}/details/edit(login=${user.getLogin()})}" class="btn btn-warning">Edit</a></td>
                 <td><a th:href="@{/users/{login}/delete(login=${user.getLogin()})}" class="btn btn-danger">Delete</a></td>

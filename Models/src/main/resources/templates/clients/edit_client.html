@@ -31,9 +31,9 @@
 <div th:insert="fragments/headers :: header"></div>
 
 <div class="container">
-    <form method="post" th:object="${profile}">
+    <form method="post" th:object="${client}">
         <fieldset>
-            <legend><h2 class="text-center my-5" th:text="|Edit ${login}|"></h2></legend>
+            <legend><h2 class="text-center my-5" th:text="|Edit client '#'${id}|"></h2></legend>
         </fieldset>
 
         <input type="hidden" th:field="*{id}"/>
@@ -70,7 +70,7 @@
 
             <div class="flexed-row">
                 <button class="btn btn-success" type="submit">Save changes</button>
-                <a class="btn btn-danger" th:href="@{/users/{login}/profile(login=${login})}">Back to profile</a>
+                <a class="btn btn-danger" th:href="@{/clients/{id}(id=${id})}">Back to profile</a>
             </div>
         </div>
     </form>

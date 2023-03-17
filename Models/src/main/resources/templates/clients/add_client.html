@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Create profile</title>
+    <title>Create client</title>
 
     <link rel="stylesheet" type="text/css" href="/flexed-row.css">
 
@@ -19,10 +19,10 @@
 <div th:insert="fragments/headers :: header"></div>
 
 <div class="container">
-    <!--/*@thymesVar id="profile" type="com.timkin.models.entity.Profile"*/-->
-    <form method="post" th:object="${profile}">
+    <!--/*@thymesVar id="client" type="com.timkin.models.entity.Client"*/-->
+    <form method="post" th:object="${client}">
         <fieldset>
-            <legend><h2 class="text-center" style="margin: 40px;">Create profile</h2></legend>
+            <legend><h2 class="text-center" style="margin: 40px;">Create client</h2></legend>
         </fieldset>
 
         <div class="d-grid gap-3 ms-5 me-5">
@@ -52,7 +52,7 @@
 
             <div class="flexed-row">
                 <button class="btn btn-success" type="submit">Create</button>
-                <a class="btn btn-danger" th:href="@{/users/{login}/details(login=${login})}">Cancel</a>
+                <a class="btn btn-danger" th:href="@{/clients/all}">Cancel</a>
             </div>
         </div>
     </form>

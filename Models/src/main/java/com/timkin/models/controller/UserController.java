@@ -1,10 +1,9 @@
 package com.timkin.models.controller;
 
-import com.timkin.models.entity.Profile;
 import com.timkin.models.entity.Role;
 import com.timkin.models.entity.User;
 import com.timkin.models.exceptions.UserNotFoundException;
-import com.timkin.models.repo.ProfileRepository;
+import com.timkin.models.repo.ClientRepository;
 import com.timkin.models.service.UserService;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,15 +23,12 @@ public class UserController {
 
     //region ctor
     private final UserService service;
-    private final ProfileRepository profileRepository;
     private final PasswordEncoder passwordEncoder;
 
     public UserController(
             UserService service,
-            ProfileRepository profileRepository,
             PasswordEncoder passwordEncoder) {
         this.service = service;
-        this.profileRepository = profileRepository;
         this.passwordEncoder = passwordEncoder;
     }
     //endregion
@@ -93,7 +89,7 @@ public class UserController {
 
     //region details
     @GetMapping("/{login}/details")
-    @PreAuthorize("hasAnyAuthority('UnverifiedUser', 'Administrator', 'Technic', 'Seller')")
+    @PreAuthorize("hasAnyAuthority('Administrator', 'Technic', 'Seller')")
     public String openDetails(
             @PathVariable
             String login,
@@ -137,87 +133,6 @@ public class UserController {
         }
         service.edit(details);
         return "redirect:/users/all";
-    }
-    //endregion
-
-    //region profile
-    @GetMapping("/{login}/profile/create")
-    public String openCreateProfile(
-            @PathVariable String login,
-            Model model
-    ) throws UserNotFoundException {
-        User user = service.find(login);
-        if (user.hasProfile()) {
-            return "redirect:/users/%s/profile".formatted(login);
-        }
-
-        Profile profile = new Profile();
-        model.addAttribute(profile);
-        return "users/create_profile";
-    }
-
-    @PostMapping("/{login}/profile/create")
-    public String createProfile(
-            @PathVariable String login,
-            @ModelAttribute @Valid Profile profile,
-            BindingResult validationState
-    ) throws UserNotFoundException {
-        User user = service.find(login);
-
-        if (validationState.hasErrors()) {
-            return "users/create_profile";
-        }
-        profile.setUser(user);
-        profileRepository.save(profile);
-        return "redirect:/users/%s/profile".formatted(login);
-    }
-
-    @PreAuthorize("hasAnyAuthority('UnverifiedUser', 'Administrator', 'Technic', 'Seller')")
-    @GetMapping("/{login}/profile")
-    public String openProfile(
-            @PathVariable String login,
-            Model model
-    ) throws UserNotFoundException {
-        User user = service.find(login);
-
-        Profile profile = user.getProfile();
-        if (profile == null) {
-            return "redirect:/users/all";
-        }
-        model.addAttribute(profile);
-
-        return "users/profile";
-    }
-
-    @GetMapping("/{login}/profile/edit")
-    public String openEditProfile(
-            @PathVariable String login,
-            Model model
-    ) throws UserNotFoundException {
-        User user = service.find(login);
-
-        Profile profile = user.getProfile();
-        if (profile == null) {
-            return "redirect:/users/all";
-        }
-        model.addAttribute(profile);
-
-        return "users/edit_profile";
-    }
-
-    @PostMapping("/{login}/profile/edit")
-    public String saveEditProfile(
-            @PathVariable String login,
-            @ModelAttribute @Valid Profile profile,
-            BindingResult validationState
-    ) throws UserNotFoundException {
-        service.find(login);
-        if (validationState.hasErrors()) {
-            return "users/edit_profile";
-        }
-
-        profileRepository.save(profile);
-        return "redirect:/users/%s/profile".formatted(login);
     }
     //endregion
 

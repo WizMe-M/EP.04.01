@@ -90,7 +90,7 @@
 
             <div th:unless="${#lists.isEmpty(motorcycle.getCustomers())}">
                 <li class="table-header">Customers:</li>
-                <!--/*@thymesVar id="customer" type="com.timkin.models.entity.Profile"*/-->
+                <!--/*@thymesVar id="customer" type="com.timkin.models.entity.Client"*/-->
                 <li class="table-row" th:each="customer : ${motorcycle.getCustomers()}">
                     <div class="col col-1">Full name:</div>
                     <div class="col col-2" th:text="${customer.getLastName() + ' ' +customer.getFirstName()}"></div>

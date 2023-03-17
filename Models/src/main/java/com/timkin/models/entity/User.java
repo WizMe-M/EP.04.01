@@ -30,18 +30,11 @@ public class User {
     @Column(name = "registration_date", nullable = false)
     private Date registrationDate = Date.from(Instant.now());
 
-    @OneToOne(mappedBy = "user")
-    private Profile profile;
-
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "authorities", joinColumns = @JoinColumn(name = "user_id"), foreignKey = @ForeignKey(name = "fk_authority_user"))
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     public Set<Role> roles;
-
-    public boolean hasProfile() {
-        return profile != null;
-    }
 
     public User() {
     }
@@ -81,14 +74,6 @@ public class User {
 
     public void setRegistrationDate(Date registrationDate) {
         this.registrationDate = registrationDate;
-    }
-
-    public Profile getProfile() {
-        return profile;
-    }
-
-    public void setProfile(Profile profile) {
-        this.profile = profile;
     }
 
     public Set<Role> getRoles() {
